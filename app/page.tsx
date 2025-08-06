@@ -4,8 +4,15 @@ import { Separator } from "@/components/ui/separator"
 import { Home, Search, Radio, List, Music, Smile, ChevronDown, ChevronRight } from 'lucide-react'
 import Image from "next/image"
 import Link from "next/link"
+import MobileNav from "@/components/mobile-nav" // Corrected import
 
 export default function LandingPage() {
+  const navLinks = [
+    { href: "#", label: "Home", isActive: true },
+    { href: "/about", label: "About Us" },
+    { href: "#", label: "Contact Us" },
+  ];
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -20,9 +27,14 @@ export default function LandingPage() {
             />
           </div>
           <div className="hidden md:flex items-center space-x-12">
-            <Link href="#" className="text-sm text-gray-900 hover:text-green-600">Home</Link>
-            <Link href="/about" className="text-sm text-gray-900 hover:text-green-600">About Us</Link>
-            <Link href="#" className="text-sm text-gray-900 hover:text-green-600">Contact Us</Link>
+            {navLinks.map((link) => (
+              <Link key={link.href} href={link.href} className={`text-sm text-gray-900 hover:text-green-600 ${link.isActive ? 'font-semibold' : ''}`}>
+                {link.label}
+              </Link>
+            ))}
+          </div>
+          <div className="md:hidden">
+            <MobileNav links={navLinks} />
           </div>
         </div>
         <Button className="bg-green-600 hover:bg-green-700 text-white px-6">
