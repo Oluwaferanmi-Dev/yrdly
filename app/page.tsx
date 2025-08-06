@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator"
 import { Home, Search, Radio, List, Music, Smile, ChevronDown, ChevronRight } from 'lucide-react'
 import Image from "next/image"
 import Link from "next/link"
-import MobileNav from "@/components/mobile-nav" // Corrected import
+import MobileNav from "@/components/mobile-nav"
 
 export default function LandingPage() {
   const navLinks = [
@@ -202,7 +202,7 @@ export default function LandingPage() {
    <section 
   className="py-20 text-white relative border-y-4 border-yellow-300"
   style={{
-    backgroundImage: `url('/newsletter-bg.png')`, // make sure this matches the uploaded background
+    backgroundImage: `url('/newsletter-bg.png')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'repeat', // to give it the full pattern look

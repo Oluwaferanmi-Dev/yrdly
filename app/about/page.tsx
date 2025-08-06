@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator"
 import Image from "next/image"
 import Link from "next/link"
 import { Input } from "@/components/ui/input"
-import MobileNav from "@/components/mobile-nav" // Corrected import
+import MobileNav from "@/components/mobile-nav" 
 
 export default function AboutPage() {
 const navLinks = [

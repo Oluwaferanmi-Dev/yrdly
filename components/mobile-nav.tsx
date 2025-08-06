@@ -1,9 +1,9 @@
 "use client"
 import { useState } from "react";
 import Link from "next/link";
-import { Menu } from 'lucide-react'; // Import the Menu icon
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"; // Import shadcn Sheet components
-import { Button } from "@/components/ui/button"; // Import shadcn Button
+import { Menu } from 'lucide-react'; 
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button"; 
 
 export default function MobileNav({ links }: { links: { href: string; label: string; isActive?: boolean }[] }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +23,7 @@ export default function MobileNav({ links }: { links: { href: string; label: str
               key={link.href}
               href={link.href}
               className={`text-lg font-medium hover:text-green-600 ${link.isActive ? 'text-green-600' : 'text-gray-900'}`}
-              onClick={() => setIsOpen(false)} // Close sheet on link click
+              onClick={() => setIsOpen(false)} 
             >
               {link.label}
             </Link>
