@@ -16,31 +16,43 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="flex items-center justify-between px-8 py-6 border-b">
-        <div className="flex items-center space-x-12">
-          <div className="flex items-center space-x-4">
-            <Image
-              src="/yrdly-logo.png"
-              alt="YRDLY Logo"
-              width={62}
-              height={44}
-            />
-          </div>
-          <div className="hidden md:flex items-center space-x-12">
-            {navLinks.map((link) => (
-              <Link key={link.href} href={link.href} className={`text-sm text-gray-900 hover:text-green-600 ${link.isActive ? 'font-semibold' : ''}`}>
-                {link.label}
-              </Link>
-            ))}
-          </div>
-          <div className="md:hidden">
-            <MobileNav links={navLinks} />
-          </div>
-        </div>
-        <Button className="bg-green-600 hover:bg-green-700 text-white px-6">
-          Join
-        </Button>
-      </nav>
+<nav className="flex items-center justify-between px-8 py-6 border-b">
+  <div className="flex items-center space-x-12">
+    <div className="flex items-center space-x-4">
+      <Image
+        src="/yrdly-logo.png"
+        alt="YRDLY Logo"
+        width={62}
+        height={44}
+      />
+    </div>
+    <div className="hidden md:flex items-center space-x-12">
+      {navLinks.map((link) => (
+        <Link
+          key={link.href}
+          href={link.href}
+          className={`text-sm text-gray-900 hover:text-green-600 ${link.isActive ? 'font-semibold' : ''}`}
+        >
+          {link.label}
+        </Link>
+      ))}
+    </div>
+    <div className="md:hidden">
+      <MobileNav links={navLinks} />
+    </div>
+  </div>
+
+  <a
+    href="https://yrdly-app.vercel.app/"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <Button className="bg-green-600 hover:bg-green-700 text-white px-6">
+      Join
+    </Button>
+  </a>
+</nav>
+
 
       {/* Hero Section */}
       <section className="relative h-[800px] flex items-center justify-center">
