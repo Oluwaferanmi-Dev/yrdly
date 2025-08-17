@@ -15,7 +15,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation */}
+
 <nav className="flex items-center justify-between px-8 py-6 border-b">
   <div className="flex items-center space-x-12">
     <div className="flex items-center space-x-4">
@@ -54,7 +54,7 @@ export default function LandingPage() {
 </nav>
 
 
-      {/* Hero Section */}
+
       <section className="relative h-[800px] flex items-center justify-center">
         <div 
           className="absolute inset-0 bg-cover bg-center"
@@ -65,14 +65,13 @@ export default function LandingPage() {
         <div className="absolute inset-0 bg-black/40" />
         
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-            Your Guide to Buying and Selling Locally
-          </h1>
-          <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
-            Welcome to your go-to platform for buying and selling pre-loved items in your area. Connect with your community, find great deals, and share local events all in one place.
-          </p>
-          
-          {/* Newsletter Signup */}
+         <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+          Your Neighborhood, Connected with Yrdly
+        </h1>
+        <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+          Yrdly is more than a marketplace — it’s your community hub. Discover and share local listings, connect with neighbors, attend nearby events, and stay updated on what’s happening around you, all in one place.
+        </p>  
+
           <div className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
             <Input 
               placeholder="Enter your email to sign up for our Newsletter"
@@ -85,7 +84,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Discover Section */}
+
       <section className="py-20 bg-gray-900 text-white relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="text-center">
@@ -140,7 +139,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Features Section */}
+
       <section className="py-20 bg-gradient-to-b from-white to-green-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
@@ -210,14 +209,14 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Newsletter Section */}
+
    <section 
   className="py-20 text-white relative border-y-4 border-yellow-300"
   style={{
     backgroundImage: `url('/newsletter-bg.png')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundRepeat: 'repeat', // to give it the full pattern look
+    backgroundRepeat: 'repeat',
   }}
 >
   <div className="max-w-4xl mx-auto px-4">
@@ -247,7 +246,7 @@ export default function LandingPage() {
 </section>
 
 
-      {/* FAQ Section */}
+
       <section className="py-20">
         <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-16">
@@ -261,28 +260,25 @@ export default function LandingPage() {
             {[
               {
                 question: "How to create listings?",
-                answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                answer: "To create a listing, navigate to the 'Create Listing' section from your dashboard. Fill in the required details such as title, description, price, and category, then upload images if necessary. Once you submit, your listing will be visible to the community."
               },
               {
                 question: "How to purchase items?",
-                answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam"
+                answer: "To purchase an item, browse available listings and click on the one you’re interested in. Tap the 'Buy Now' or 'Contact Seller' button to proceed. Payments can be made securely through our supported payment gateways, and you will receive a confirmation once the purchase is complete."
               },
               {
                 question: "How to attend events?",
-                answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-              },
-              {
-                question: "How to attend events?",
-                answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                answer: "To attend an event, go to the 'Events' section of the app. Select the event you’re interested in, check the details, and click 'Join' or 'Get Ticket'. If it’s a paid event, you’ll need to complete the payment process before your spot is confirmed."
               },
               {
                 question: "Can I save listings?",
-                answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                answer: "Yes, you can save listings to view later. Simply tap the 'Save' or 'Bookmark' button on any listing. Your saved listings will be available under your profile in the 'Saved Items' section."
               },
               {
                 question: "What if I have a question?",
-                answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                answer: "If you have a question, you can visit our Help Center or contact support directly from the app. Go to 'Settings' → 'Support' to chat with our team or send us an email. You can also check our community forums for quick answers."
               }
+
             ].map((faq, index) => (
               <div key={index}>
                 <div className="py-8">
@@ -312,7 +308,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
+
       <footer className="bg-white border-t py-16">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-12 mb-12">
