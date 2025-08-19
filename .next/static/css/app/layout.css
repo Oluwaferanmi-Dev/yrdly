@@ -47,10 +47,12 @@ font-weight: 100 900;
     --color-green-700: oklch(52.7% 0.154 150.069);
     --color-purple-300: oklch(82.7% 0.119 306.383);
     --color-gray-50: oklch(98.5% 0.002 247.839);
+    --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-400: oklch(70.7% 0.022 261.325);
     --color-gray-500: oklch(55.1% 0.027 264.364);
     --color-gray-600: oklch(44.6% 0.03 256.802);
     --color-gray-700: oklch(37.3% 0.034 259.733);
+    --color-gray-800: oklch(27.8% 0.033 256.848);
     --color-gray-900: oklch(21% 0.034 264.665);
     --color-black: #000;
     --color-white: #fff;
@@ -264,6 +266,9 @@ font-weight: 100 900;
   }
   .invisible {
     visibility: hidden;
+  }
+  .visible {
+    visibility: visible;
   }
   .sr-only {
     position: absolute;
@@ -589,6 +594,9 @@ font-weight: 100 900;
   }
   .h-\[260px\] {
     height: 260px;
+  }
+  .h-\[320px\] {
+    height: 320px;
   }
   .h-\[800px\] {
     height: 800px;
@@ -1173,8 +1181,20 @@ font-weight: 100 900;
   .bg-gray-50 {
     background-color: var(--color-gray-50);
   }
+  .bg-gray-100 {
+    background-color: var(--color-gray-100);
+  }
+  .bg-gray-700 {
+    background-color: var(--color-gray-700);
+  }
+  .bg-gray-800 {
+    background-color: var(--color-gray-800);
+  }
   .bg-gray-900 {
     background-color: var(--color-gray-900);
+  }
+  .bg-green-500 {
+    background-color: var(--color-green-500);
   }
   .bg-green-600 {
     background-color: var(--color-green-600);
@@ -1326,6 +1346,9 @@ font-weight: 100 900;
   .py-20 {
     padding-block: calc(var(--spacing) * 20);
   }
+  .py-24 {
+    padding-block: calc(var(--spacing) * 24);
+  }
   .pt-0 {
     padding-top: calc(var(--spacing) * 0);
   }
@@ -1392,6 +1415,10 @@ font-weight: 100 900;
   .text-5xl {
     font-size: var(--text-5xl);
     line-height: var(--tw-leading, var(--text-5xl--line-height));
+  }
+  .text-6xl {
+    font-size: var(--text-6xl);
+    line-height: var(--tw-leading, var(--text-6xl--line-height));
   }
   .text-8xl {
     font-size: var(--text-8xl);
@@ -2196,6 +2223,13 @@ font-weight: 100 900;
       }
     }
   }
+  .hover\:bg-green-600 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-green-600);
+      }
+    }
+  }
   .hover\:bg-green-700 {
     &:hover {
       @media (hover: hover) {
@@ -2272,6 +2306,13 @@ font-weight: 100 900;
     &:hover {
       @media (hover: hover) {
         color: var(--foreground);
+      }
+    }
+  }
+  .hover\:text-green-500 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-green-500);
       }
     }
   }

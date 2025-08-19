@@ -8,9 +8,9 @@ import MobileNav from "@/components/mobile-nav"
 
 export default function LandingPage() {
   const navLinks = [
-    { href: "#", label: "Home", isActive: true },
+    { href: "/", label: "Home", isActive: true },
     { href: "/about", label: "About Us" },
-    { href: "#", label: "Contact Us" },
+    { href: "/contact", label: "Contact Us" },
   ];
 
   return (
