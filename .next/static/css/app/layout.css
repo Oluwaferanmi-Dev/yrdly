@@ -737,6 +737,9 @@ font-weight: 100 900;
   .max-w-max {
     max-width: max-content;
   }
+  .max-w-none {
+    max-width: none;
+  }
   .min-w-\(--cell-size\) {
     min-width: var(--cell-size);
   }
