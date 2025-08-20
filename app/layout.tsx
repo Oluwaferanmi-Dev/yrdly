@@ -5,9 +5,8 @@ import './globals.css'
 import { CookieConsent } from '@/components/cookie-consent'
 
 export const metadata: Metadata = {
-  title: 'YRDLY',
-  description: 'Created by caleb.dev',
-  generator: 'caleb.dev',
+   title: 'Yrdly - Your Neighborhood Network',
+  description: 'Connect with your neighbors, share updates, and build a stronger community with Yrdly.',
 }
 
 export const viewport: Viewport = {
