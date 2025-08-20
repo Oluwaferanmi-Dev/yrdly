@@ -8,11 +8,12 @@ export const metadata: Metadata = {
   title: 'YRDLY',
   description: 'Created by caleb.dev',
   generator: 'caleb.dev',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-  },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 }
 
 export default function RootLayout({
