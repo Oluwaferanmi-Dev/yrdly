@@ -1,90 +1,82 @@
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import Image from "next/image"
-import Link from "next/link"
-import MobileNav from "@/components/mobile-nav"
+import React from 'react';
 
-export default function PrivacyPolicyPage() {
-  const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About Us" },
-    { href: "#", label: "Contact Us" },
-  ];
-
+const PrivacyPolicy = () => {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Navigation */}
-      <nav className="flex items-center justify-between px-8 py-6 border-b">
-        <div className="flex items-center space-x-12">
-          <div className="flex items-center space-x-4">
-            <Image
-              src="/yrdly-logo.png"
-              alt="YRDLY Logo"
-              width={62}
-              height={44}
-            />
-          </div>
-          <div className="hidden md:flex items-center space-x-12">
-            {navLinks.map((link) => (
-              <Link key={link.href} href={link.href} className={`text-sm text-gray-900 hover:text-green-600 ${link.isActive ? 'font-semibold' : ''}`}>
-                {link.label}
-              </Link>
-            ))}
-          </div>
-          <div className="md:hidden">
-            <MobileNav links={navLinks} />
-          </div>
-        </div>
-        <Button className="bg-green-600 hover:bg-green-700 text-white px-6">
-          Join
-        </Button>
-      </nav>
+    <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        <h1 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">Yrdly Privacy Policy</h1>
+        <p className="text-center text-gray-500 mb-8">Last updated: August 20, 2025</p>
+        <div className="prose prose-lg text-gray-700 mx-auto">
+          <p className="mb-4">At Yrdly, your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your personal information when you use our platform.</p>
 
-      {/* Hero Section */}
-      <section className="relative h-[260px] flex items-center justify-center" style={{
-        background: `linear-gradient(rgba(26, 42, 48, 0.9), rgba(26, 42, 48, 0.9)), url('/about-bg.png')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center'
-      }}>
-        <div className="relative z-10 text-center text-white">
-          <h1 className="text-5xl font-bold tracking-tight">
-            Privacy Policy
-          </h1>
-        </div>
-      </section>
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-xl font-bold text-gray-800">1. Information We Collect</h2>
+              <p>When you use Yrdly, we may collect:</p>
+              <ul className="list-disc list-inside pl-4">
+                <li><strong>Account details:</strong> Name, email, phone number, and profile information you provide.</li>
+                <li><strong>Usage data:</strong> Listings you create, events you attend, items you purchase, and how you interact with the app.</li>
+                <li><strong>Device information:</strong> IP address, browser type, and device identifiers, used to help keep your account secure.</li>
+              </ul>
+            </div>
 
-      {/* Privacy Policy Content Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-8">
-          <div className="prose prose-lg max-w-none">
-            <p>This is a placeholder for the Privacy Policy page. Please provide the content for this page.</p>
-          </div>
-        </div>
-      </section>
+            <div>
+              <h2 className="text-xl font-bold text-gray-800">2. How We Use Your Information</h2>
+              <p>We use your information to:</p>
+              <ul className="list-disc list-inside pl-4">
+                <li>Enable core features such as creating listings, purchasing items, and joining events.</li>
+                <li>Personalize your experience and suggest content relevant to your neighborhood.</li>
+                <li>Improve our services through analytics and user feedback.</li>
+                <li>Communicate with you about updates, promotions, or customer support.</li>
+              </ul>
+            </div>
 
-      {/* Footer */}
-      <footer className="bg-white border-t py-16">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-12 mb-12">
-            <Link href="/about" className="text-sm font-bold text-gray-900 hover:text-green-600">About Us</Link>
-            <Link href="#" className="text-sm font-bold text-gray-900 hover:text-green-600">Contact Us</Link>
-            <Link href="#" className="text-sm font-bold text-gray-900 hover:text-green-600">Help Center</Link>
-          </div>
-          
-          <Separator className="mb-8" />
-          
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-xs font-bold text-gray-900">
-              © 2025 Yrdly. All rights reserved.
-            </p>
-            <div className="flex space-x-6">
-              <Link href="/privacy-policy" className="text-sm text-gray-900 hover:text-green-600 underline">Privacy Policy</Link>
-              <Link href="/terms" className="text-sm text-gray-900 hover:text-green-600 underline">Terms of Service</Link>
-              <Link href="#" className="text-sm text-gray-900 hover:text-green-600 underline">Cookies Settings</Link>
+            <div>
+              <h2 className="text-xl font-bold text-gray-800">3. Sharing of Information</h2>
+              <p>We do not sell your personal data.</p>
+              <p>We may share information only with:</p>
+              <ul className="list-disc list-inside pl-4">
+                <li>Trusted service providers who support our platform (e.g., hosting, payment processing).</li>
+                <li>Law enforcement or legal authorities, if required by law.</li>
+              </ul>
+            </div>
+
+            <div>
+              <h2 className="text-xl font-bold text-gray-800">4. Data Security</h2>
+              <p>We use industry-standard measures to protect your data. However, no system is 100% secure, so we also encourage you to keep your login details private.</p>
+            </div>
+
+            <div>
+              <h2 className="text-xl font-bold text-gray-800">5. Your Choices</h2>
+              <p>You can:</p>
+              <ul className="list-disc list-inside pl-4">
+                <li>Update or delete your account information in your profile settings.</li>
+                <li>Opt out of promotional emails by clicking the “unsubscribe” link.</li>
+                <li>Contact us if you want your account permanently deleted.</li>
+              </ul>
+            </div>
+
+            <div>
+              <h2 className="text-xl font-bold text-gray-800">6. Children’s Privacy</h2>
+              <p>Yrdly is not intended for children under 13.</p>
+              <p>We do not knowingly collect personal data from minors.</p>
+            </div>
+
+            <div>
+              <h2 className="text-xl font-bold text-gray-800">7. Updates to This Policy</h2>
+              <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with the updated “Last updated” date.</p>
+            </div>
+
+            <div>
+              <h2 className="text-xl font-bold text-gray-800">8. Contact Us</h2>
+              <p>If you have questions about this Privacy Policy, please reach out to us:</p>
+              <p>📩 <a href="mailto:yardlyng234@gmail.com" className="text-blue-600 hover:underline">yardlyng234@gmail.com</a></p>
             </div>
           </div>
         </div>
-      </footer>
+      </div>
     </div>
-  )
-}
+  );
+};
+
+export default PrivacyPolicy;

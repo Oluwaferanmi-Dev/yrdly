@@ -16,7 +16,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white">
 
-<nav className="flex items-center justify-between px-8 py-6 border-b">
+<nav className="sticky top-0 z-50 flex items-center justify-between px-8 py-6 border-b bg-white">
   <div className="flex items-center space-x-12">
     <div className="flex items-center space-x-4">
       <Image
@@ -31,7 +31,7 @@ export default function LandingPage() {
         <Link
           key={link.href}
           href={link.href}
-          className={`text-sm text-gray-900 hover:text-green-600 ${link.isActive ? 'font-semibold' : ''}`}
+          className={`text-sm text-gray-900 hover:text-green-600 ${link.isActive ? 'font-semibold text-green-600' : ''}`}
         >
           {link.label}
         </Link>
@@ -221,7 +221,7 @@ export default function LandingPage() {
 >
   <div className="max-w-4xl mx-auto px-4">
     <div className="max-w-2xl">
-      <h2 className="text-5xl font-bold mb-6">
+      <h2 className="text-4xl sm:text-5xl font-bold mb-6">
         Stay Updated with Our <br /> Newsletter
       </h2>
       <p className="text-xl mb-8">
@@ -257,7 +257,7 @@ export default function LandingPage() {
           </div>
 
           <div className="space-y-0">
-            {[
+            {[ 
               {
                 question: "How to create listings?",
                 answer: "To create a listing, navigate to the 'Create Listing' section from your dashboard. Fill in the required details such as title, description, price, and category, then upload images if necessary. Once you submit, your listing will be visible to the community."

@@ -2,11 +2,17 @@ import type { Metadata } from 'next'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import './globals.css'
+import { CookieConsent } from '@/components/cookie-consent'
 
 export const metadata: Metadata = {
   title: 'YRDLY',
   description: 'Created by caleb.dev',
   generator: 'caleb.dev',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+  },
 }
 
 export default function RootLayout({
@@ -25,7 +31,7 @@ html {
 }
         `}</style>
       </head>
-      <body>{children}</body>
+      <body>{children}<CookieConsent /></body>
     </html>
   )
 }
