@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
@@ -5,8 +7,12 @@ import { Home, Search, Radio, List, Music, Smile, ChevronDown, ChevronRight } fr
 import Image from "next/image"
 import Link from "next/link"
 import MobileNav from "@/components/mobile-nav"
+import { TermsModal } from "@/components/terms-modal"
+import { NewsletterSignup } from "@/components/newsletter-signup"
+import { useState } from "react"
 
 export default function LandingPage() {
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false)
   const navLinks = [
     { href: "/", label: "Home", isActive: true },
     { href: "/about", label: "About Us" },
@@ -72,15 +78,11 @@ export default function LandingPage() {
           Yrdly is more than a marketplace — it’s your community hub. Discover and share local listings, connect with neighbors, attend nearby events, and stay updated on what’s happening around you, all in one place.
         </p>  
 
-          <div className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
-            <Input 
-              placeholder="Enter your email to sign up for our Newsletter"
-              className="flex-1 h-14 bg-white text-gray-900 placeholder:text-gray-500"
-            />
-            <Button className="bg-green-600 hover:bg-green-700 h-14 px-8">
-              Sign Up
-            </Button>
-          </div>
+          <NewsletterSignup 
+            placeholder="Enter your email to sign up for our Newsletter"
+            buttonText="Sign Up"
+            source="hero-newsletter"
+          />
         </div>
       </section>
 
@@ -228,18 +230,20 @@ export default function LandingPage() {
         Sign up to recieve the lastest listings and local events directly to your inbox. <span className="text-purple-300">✦</span>
       </p>
 
-      <div className="flex flex-col sm:flex-row gap-4 mb-4">
-        <Input 
-          placeholder="Enter your email"
-          className="flex-1 h-14 bg-white text-gray-900 placeholder:text-gray-400 border-0"
-        />
-        <Button className="bg-yellow-300 hover:bg-yellow-400 text-gray-900 h-14 px-8 font-semibold">
-          Sign Up
-        </Button>
-      </div>
+      <NewsletterSignup 
+        placeholder="Enter your email"
+        buttonText="Sign Up"
+        source="newsletter-section"
+        className="mb-4"
+      />
 
       <p className="text-sm text-white/80">
-        By clicking Sign Up, you agree to our <span className="underline">Terms and Conditions</span>
+        By clicking Sign Up, you agree to our <button 
+          onClick={() => setIsTermsModalOpen(true)}
+          className="underline hover:text-yellow-200 cursor-pointer"
+        >
+          Terms and Conditions
+        </button>
       </p>
     </div>
   </div>
@@ -331,6 +335,11 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+      
+      <TermsModal 
+        isOpen={isTermsModalOpen} 
+        onClose={() => setIsTermsModalOpen(false)} 
+      />
     </div>
   )
 }
