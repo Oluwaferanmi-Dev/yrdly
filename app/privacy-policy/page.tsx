@@ -70,7 +70,7 @@ const PrivacyPolicy = () => {
             <div>
               <h2 className="text-xl font-bold text-gray-800">8. Contact Us</h2>
               <p>If you have questions about this Privacy Policy, please reach out to us:</p>
-              <p>📩 <a href="mailto:yardlyng234@gmail.com" className="text-blue-600 hover:underline">yardlyng234@gmail.com</a></p>
+              <p>📩 <a href="mailto:support@yrdly.ng" className="text-blue-600 hover:underline">support@yrdly.ng</a></p>
             </div>
           </div>
         </div>

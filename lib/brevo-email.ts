@@ -13,6 +13,13 @@ export interface EmailData {
   source?: string;
 }
 
+export interface ContactData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
 export async function sendWelcomeEmail({ email, name, source }: EmailData) {
   try {
     const sendSmtpEmail = new brevo.SendSmtpEmail();
@@ -21,7 +28,7 @@ export async function sendWelcomeEmail({ email, name, source }: EmailData) {
     sendSmtpEmail.subject = "Welcome to Yrdly Newsletter! 🎉";
     sendSmtpEmail.sender = { 
       name: "Yrdly Team", 
-      email: "noreply@yrdly.com" 
+      email: "noreply@yrdly.ng" 
     };
     sendSmtpEmail.to = [{ email, name: name || "Yrdly User" }];
     
@@ -141,5 +148,106 @@ export async function sendWelcomeSMS(phoneNumber: string, name?: string) {
   } catch (error) {
     console.error('Brevo SMS error:', error);
     return { success: false, error };
+  }
+}
+
+// Send contact form email to support team
+export async function sendContactEmail({ name, email, subject, message }: ContactData) {
+  try {
+    const sendSmtpEmail = new brevo.SendSmtpEmail();
+    
+    // Email configuration
+    sendSmtpEmail.subject = `Contact Form: ${subject}`;
+    sendSmtpEmail.sender = { 
+      name: name || "Contact Form User", 
+      email: email 
+    };
+    sendSmtpEmail.to = [{ email: "support@yrdly.ng", name: "Yrdly Support Team" }];
+    sendSmtpEmail.replyTo = { email, name: name || "Contact Form User" };
+    
+    // HTML content
+    sendSmtpEmail.htmlContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>New Contact Form Submission</title>
+        </head>
+        <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f5f5f5;">
+          <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 20px;">
+            <!-- Header -->
+            <div style="text-align: center; padding: 20px 0; border-bottom: 2px solid #16a34a;">
+              <h1 style="color: #16a34a; margin: 0; font-size: 24px;">Contact Form Message</h1>
+              <p style="color: #666; margin: 10px 0 0 0;">From: ${name} (${email})</p>
+            </div>
+            
+            <!-- Main Content -->
+            <div style="padding: 30px 20px;">
+              <div style="background-color: #f0fdf4; border-left: 4px solid #16a34a; padding: 20px; margin-bottom: 20px;">
+                <h3 style="color: #16a34a; margin-top: 0;">Contact Details</h3>
+                <p style="margin: 5px 0; color: #555;"><strong>Name:</strong> ${name}</p>
+                <p style="margin: 5px 0; color: #555;"><strong>Email:</strong> <a href="mailto:${email}" style="color: #16a34a;">${email}</a></p>
+                <p style="margin: 5px 0; color: #555;"><strong>Subject:</strong> ${subject || 'No subject provided'}</p>
+                <p style="margin: 5px 0; color: #555;"><strong>Submitted:</strong> ${new Date().toLocaleString()}</p>
+              </div>
+              
+              <div style="margin-bottom: 20px;">
+                <h3 style="color: #333; margin-bottom: 10px;">Message:</h3>
+                <div style="background-color: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #e9ecef;">
+                  <p style="margin: 0; color: #555; line-height: 1.6; white-space: pre-wrap;">${message}</p>
+                </div>
+              </div>
+              
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="mailto:${email}?subject=Re: ${subject || 'Your Yrdly Inquiry'}" 
+                   style="background-color: #16a34a; color: white; padding: 12px 30px; 
+                          text-decoration: none; border-radius: 6px; font-weight: bold; 
+                          display: inline-block; margin-right: 10px;">
+                  Reply to ${name}
+                </a>
+                <a href="https://yrdly.ng/admin/contacts" 
+                   style="background-color: #6b7280; color: white; padding: 12px 30px; 
+                          text-decoration: none; border-radius: 6px; font-weight: bold; 
+                          display: inline-block;">
+                  View in Admin
+                </a>
+              </div>
+            </div>
+            
+            <!-- Footer -->
+            <div style="border-top: 1px solid #eee; padding: 20px; text-align: center; color: #666; font-size: 12px;">
+              <p>© 2025 Yrdly. All rights reserved.</p>
+              <p>This message was sent via the Yrdly contact form by ${name} (${email})</p>
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+    
+    // Send email
+    const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    
+    console.log('Contact email sent successfully:', {
+      from: email,
+      to: 'support@yrdly.ng',
+      name,
+      subject,
+      messageId: data.messageId,
+      timestamp: new Date().toISOString()
+    });
+    
+    return { 
+      success: true, 
+      messageId: data.messageId,
+      data 
+    };
+    
+  } catch (error) {
+    console.error('Contact email error:', error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
   }
 }

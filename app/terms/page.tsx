@@ -96,8 +96,8 @@ const TermsAndConditions = () => {
             <div>
               <h2 className="text-xl font-bold text-gray-800">12. Contact Us</h2>
               <p>If you have any questions or need assistance, please contact us at:</p>
-              <p>Email: <a href="mailto:yardlyng234@gmail.com" className="text-blue-600 hover:underline">yardlyng234@gmail.com</a></p>
-              <p>Support: <a href="mailto:yardlyng234@gmail.com" className="text-blue-600 hover:underline">yardlyng234@gmail.com</a></p>
+              <p>Email: <a href="mailto:support@yrdly.ng" className="text-blue-600 hover:underline">support@yrdly.ng</a></p>
+              <p>Support: <a href="mailto:support@yrdly.ng" className="text-blue-600 hover:underline">support@yrdly.ng</a></p>
             </div>
           </div>
 

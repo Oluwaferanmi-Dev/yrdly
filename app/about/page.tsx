@@ -9,7 +9,7 @@ export default function AboutPage() {
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us", isActive: true },
-  { href: "#", label: "Contact Us" },
+  { href: "/contact", label: "Contact Us" },
 ];
   return (
     <div className="min-h-screen bg-white">
@@ -22,6 +22,7 @@ const navLinks = [
                       alt="YRDLY Logo"
                       width={62}
                       height={44}
+                      style={{ width: "auto", height: "auto" }}
                     />
                   </div>
         <div className="hidden md:flex items-center space-x-12">
@@ -157,9 +158,11 @@ const navLinks = [
             <p className="text-lg text-gray-600 mb-8">
               We're here to help you!
             </p>
-            <Button className="bg-green-600 hover:bg-green-700 text-white px-8">
-              Contact Us
-            </Button>
+            <Link href="/contact">
+              <Button className="bg-green-600 hover:bg-green-700 text-white px-8">
+                Contact Us
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -168,8 +171,8 @@ const navLinks = [
       <footer className="bg-white border-t py-16">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-12 mb-12">
-            <Link href="#" className="text-sm font-bold text-gray-900 hover:text-green-600">About Us</Link>
-            <Link href="#" className="text-sm font-bold text-gray-900 hover:text-green-600">Contact Us</Link>
+            <Link href="/about" className="text-sm font-bold text-gray-900 hover:text-green-600">About Us</Link>
+            <Link href="/contact" className="text-sm font-bold text-gray-900 hover:text-green-600">Contact Us</Link>
             <Link href="#" className="text-sm font-bold text-gray-900 hover:text-green-600">Help Center</Link>
           </div>
           
