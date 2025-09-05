@@ -3,6 +3,7 @@ import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 import { CookieConsent } from '@/components/cookie-consent'
+import { Analytics } from '@vercel/analytics/react'
 
 export const metadata: Metadata = {
    title: 'Yrdly - Your Neighborhood Network',
@@ -31,7 +32,7 @@ html {
 }
         `}</style>
       </head>
-      <body>{children}<CookieConsent /></body>
+      <body>{children}<CookieConsent /><Analytics /></body>
     </html>
   )
 }
