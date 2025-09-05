@@ -16,13 +16,14 @@ export default function LandingPage() {
   const navLinks = [
     { href: "/", label: "Home", isActive: true },
     { href: "/about", label: "About Us" },
+    { href: "/learn-more", label: "Learn More" },
     { href: "/contact", label: "Contact Us" },
   ];
 
   return (
     <div className="min-h-screen bg-white">
 
-<nav className="sticky top-0 z-50 flex items-center justify-between px-8 py-6 border-b bg-white">
+<nav className="sticky top-0 z-50 flex items-center justify-between px-8 py-3 border-b bg-white">
   <div className="flex items-center space-x-12">
     <div className="flex items-center space-x-4">
       <Image
@@ -133,10 +134,10 @@ export default function LandingPage() {
                 height={600}
                 className="rounded-lg mb-4"
               />
-              <div className="flex items-center justify-between">
+              <Link href="/learn-more" className="flex items-center justify-between hover:text-green-400 transition-colors">
                 <span>Learn More</span>
                 <ChevronRight className="w-6 h-6" />
-              </div>
+              </Link>
             </div>
           </div>
         </div>
