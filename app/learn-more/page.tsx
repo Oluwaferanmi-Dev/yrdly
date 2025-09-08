@@ -201,15 +201,11 @@ export default function LearnMorePage() {
           </div>
         </div>
 
-        <a
-          href="https://yrdly-app.vercel.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <Link href="/coming-soon">
           <Button className="bg-green-600 hover:bg-green-700 text-white px-6">
             Join Now
           </Button>
-        </a>
+        </Link>
       </nav>
 
       {/* Hero Section */}
@@ -487,16 +483,12 @@ export default function LearnMorePage() {
           </div>
 
           <div className="text-center mt-12">
-            <a
-              href="https://yrdly-app.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <Link href="/coming-soon">
               <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg">
                 Start Your Journey
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -511,15 +503,11 @@ export default function LearnMorePage() {
             Join thousands of neighbors who are already building stronger communities with Yrdly.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="https://yrdly-app.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <Link href="/coming-soon">
               <Button size="lg" variant="secondary" className="px-8 py-4 text-lg">
                 Get Started Free
               </Button>
-            </a>
+            </Link>
             <Link href="/contact">
               <Button size="lg" variant="outline" className="px-8 py-4 text-lg border-2 border-white text-white hover:bg-white hover:text-green-600 bg-transparent">
                 Contact Us

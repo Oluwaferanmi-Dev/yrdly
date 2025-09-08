@@ -17,6 +17,7 @@ export default function LandingPage() {
     { href: "/", label: "Home", isActive: true },
     { href: "/about", label: "About Us" },
     { href: "/learn-more", label: "Learn More" },
+    { href: "/coming-soon", label: "Coming Soon" },
     { href: "/contact", label: "Contact Us" },
   ];
 
@@ -50,15 +51,11 @@ export default function LandingPage() {
     </div>
   </div>
 
-  <a
-    href="https://yrdly-app.vercel.app/"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
+  <Link href="/coming-soon">
     <Button className="bg-green-600 hover:bg-green-700 text-white px-6">
       Join
     </Button>
-  </a>
+  </Link>
 </nav>
 
 
