@@ -42,15 +42,11 @@ export default function ContactPage() {
             <MobileNav links={navLinks} />
           </div>
         </div>
-        <a
-          href="https://yrdly-app.vercel.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <Link href="/coming-soon">
           <Button className="bg-green-600 hover:bg-green-700 text-white px-6">
             Join
           </Button>
-        </a>
+        </Link>
       </nav>
 
       {/* Hero Section */}

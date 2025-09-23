@@ -69,12 +69,9 @@ export async function sendWelcomeEmail({ email, name, source }: EmailData) {
               </div>
               
               <div style="text-align: center; margin: 30px 0;">
-                <a href="https://yrdly-app.vercel.app/" 
-                   style="background-color: #16a34a; color: white; padding: 12px 30px; 
-                          text-decoration: none; border-radius: 6px; font-weight: bold; 
-                          display: inline-block;">
-                  Explore Yrdly Now
-                </a>
+                <p style="color: #16a34a; font-weight: bold; font-size: 18px;">
+                  Stay tuned for the Yrdly app launch!
+                </p>
               </div>
               
               <p style="color: #666; font-size: 14px; line-height: 1.5;">
