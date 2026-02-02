@@ -1,12 +1,13 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 import { CookieConsent } from '@/components/cookie-consent'
 import { Analytics } from '@vercel/analytics/next'
+import Script from 'next/script'
 
 export const metadata: Metadata = {
-   title: 'Yrdly - Your Neighborhood Network',
+  title: 'Yrdly - Your Neighborhood Network',
   description: 'Connect with your neighbors, share updates, and build a stronger community with Yrdly.',
 }
 
@@ -24,6 +25,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+
+        {/* ✅ Google AdSense */}
+        <Script
+          async
+          strategy="afterInteractive"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7576498244677518"
+          crossOrigin="anonymous"
+        />
+
         <style>{`
 html {
   font-family: ${GeistSans.style.fontFamily};
@@ -32,7 +42,12 @@ html {
 }
         `}</style>
       </head>
-      <body>{children}<CookieConsent /><Analytics /></body>
+
+      <body>
+        {children}
+        <CookieConsent />
+        <Analytics />
+      </body>
     </html>
   )
 }
