@@ -172,6 +172,13 @@ export async function POST(request: NextRequest) {
 
     if (!emailResult.success) {
       console.error('Failed to send ticket email:', emailResult.error);
+      return NextResponse.json(
+        { 
+          success: false, 
+          message: `Registration failed: Unable to send ticket email. ${emailResult.error}. Please try again later.` 
+        },
+        { status: 500 }
+      );
     }
 
     // 4. Hide ticketId in response for security
