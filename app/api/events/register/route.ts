@@ -165,6 +165,7 @@ export async function POST(request: NextRequest) {
     // Send email via Brevo
     const emailResult = await sendTicketEmail({
       email,
+      name: email.split('@')[0], // Use email prefix as name if not provided
       eventName,
       ticketId,
       qrCodeDataUrl

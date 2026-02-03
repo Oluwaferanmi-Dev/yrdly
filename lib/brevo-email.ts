@@ -245,6 +245,8 @@ export async function sendContactEmail({ name, email, subject, message }: Contac
 // Send ticket email with QR code
 export async function sendTicketEmail({ email, name, eventName, ticketId, qrCodeDataUrl }: EmailData & { eventName: string, ticketId: string, qrCodeDataUrl: string }) {
   try {
+    console.log("[v0] Starting ticket email send:", { email, eventName, ticketId });
+    
     const sendSmtpEmail = new brevo.SendSmtpEmail();
     
     // Email configuration
@@ -254,6 +256,7 @@ export async function sendTicketEmail({ email, name, eventName, ticketId, qrCode
       email: "noreply@yrdly.ng" 
     };
     sendSmtpEmail.to = [{ email, name: name || "Yrdly User" }];
+    console.log("[v0] Email recipient configured:", { email, name: name || "Yrdly User" });
     
     // HTML content
     sendSmtpEmail.htmlContent = `
@@ -306,12 +309,14 @@ export async function sendTicketEmail({ email, name, eventName, ticketId, qrCode
     `;
     
     // Send email
+    console.log("[v0] About to send email via Brevo API");
     const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
     
-    console.log('Ticket email sent successfully:', {
+    console.log('[v0] Ticket email sent successfully:', {
       email,
       ticketId,
-      messageId: (data.body as any).messageId
+      messageId: (data.body as any).messageId,
+      responseStatus: (data.response as any)?.status
     });
     
     return { 
@@ -320,7 +325,11 @@ export async function sendTicketEmail({ email, name, eventName, ticketId, qrCode
     };
     
   } catch (error) {
-    console.error('Ticket email error:', error);
+    console.error('[v0] Ticket email error:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      error: error,
+      stack: error instanceof Error ? error.stack : undefined
+    });
     return { 
       success: false, 
       error: error instanceof Error ? error.message : 'Unknown error'
