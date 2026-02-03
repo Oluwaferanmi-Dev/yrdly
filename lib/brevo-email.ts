@@ -245,20 +245,17 @@ export async function sendContactEmail({ name, email, subject, message }: Contac
 // Send ticket email with QR code
 export async function sendTicketEmail({ email, name, eventName, ticketId, qrCodeDataUrl }: EmailData & { eventName: string, ticketId: string, qrCodeDataUrl: string }) {
   try {
-    console.log("[v0] Starting ticket email send:", { email, eventName, ticketId });
-    
     const sendSmtpEmail = new brevo.SendSmtpEmail();
     
     // Email configuration
     sendSmtpEmail.subject = `Your Ticket for ${eventName}! 🎟️`;
     sendSmtpEmail.sender = { 
-      name: "Yrdly Events", 
+      name: "Yrdly Team", 
       email: "noreply@yrdly.ng" 
     };
     sendSmtpEmail.to = [{ email, name: name || "Yrdly User" }];
-    console.log("[v0] Email recipient configured:", { email, name: name || "Yrdly User" });
     
-    // HTML content
+    // HTML content with embedded QR code
     sendSmtpEmail.htmlContent = `
       <!DOCTYPE html>
       <html>
@@ -281,14 +278,14 @@ export async function sendTicketEmail({ email, name, eventName, ticketId, qrCode
               <p style="color: #666; margin-bottom: 30px;">Show this QR code at the entrance for admission.</p>
               
               <div style="background-color: white; padding: 20px; border: 2px solid #eee; display: inline-block; border-radius: 12px; margin-bottom: 30px;">
-                <img src="${qrCodeDataUrl}" alt="Ticket QR Code" style="width: 250px; height: 250px; display: block;">
-                <p style="margin: 10px 0 0 0; font-family: monospace; font-weight: bold; color: #333;">ID: ${ticketId}</p>
+                <img src="${qrCodeDataUrl}" alt="Ticket QR Code" style="width: 250px; height: 250px; display: block; margin: 0 auto;">
+                <p style="margin: 10px 0 0 0; font-family: monospace; font-weight: bold; color: #333; font-size: 18px;">Ticket ID: ${ticketId}</p>
               </div>
               
               <div style="background-color: #f0fdf4; border-radius: 8px; padding: 20px; text-align: left; margin-bottom: 30px;">
                 <h3 style="color: #16a34a; margin-top: 0; margin-bottom: 10px;">Important Information:</h3>
                 <ul style="color: #555; line-height: 1.6; margin: 0; padding-left: 20px;">
-                  <li>This ticket is unique and can only be scanned <strong>once</strong>.</li>
+                  <li>This ticket is unique and can only be scanned once.</li>
                   <li>Please arrive 15 minutes before the event starts.</li>
                   <li>Have this email ready on your phone or printed out.</li>
                 </ul>
@@ -309,27 +306,23 @@ export async function sendTicketEmail({ email, name, eventName, ticketId, qrCode
     `;
     
     // Send email
-    console.log("[v0] About to send email via Brevo API");
     const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
     
-    console.log('[v0] Ticket email sent successfully:', {
+    console.log('Ticket email sent successfully:', {
       email,
       ticketId,
       messageId: (data.body as any).messageId,
-      responseStatus: (data.response as any)?.status
+      timestamp: new Date().toISOString()
     });
     
     return { 
       success: true, 
-      messageId: (data.body as any).messageId 
+      messageId: (data.body as any).messageId,
+      data: data.body
     };
     
   } catch (error) {
-    console.error('[v0] Ticket email error:', {
-      message: error instanceof Error ? error.message : 'Unknown error',
-      error: error,
-      stack: error instanceof Error ? error.stack : undefined
-    });
+    console.error('Ticket email error:', error);
     return { 
       success: false, 
       error: error instanceof Error ? error.message : 'Unknown error'
