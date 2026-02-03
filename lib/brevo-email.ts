@@ -245,6 +245,8 @@ export async function sendContactEmail({ name, email, subject, message }: Contac
 // Send ticket email with QR code
 export async function sendTicketEmail({ email, name, eventName, ticketId, qrCodeDataUrl }: EmailData & { eventName: string, ticketId: string, qrCodeDataUrl: string }) {
   try {
+    console.log('[v0] sendTicketEmail called with:', { email, name, eventName, ticketId, hasQR: !!qrCodeDataUrl });
+    
     const sendSmtpEmail = new brevo.SendSmtpEmail();
     
     sendSmtpEmail.subject = `Your Ticket for ${eventName}`;
@@ -253,6 +255,7 @@ export async function sendTicketEmail({ email, name, eventName, ticketId, qrCode
       email: "noreply@yrdly.ng" 
     };
     sendSmtpEmail.to = [{ email, name: name || "Yrdly User" }];
+    console.log('[v0] Email recipient set:', sendSmtpEmail.to);
     
     sendSmtpEmail.htmlContent = `
       <!DOCTYPE html>
@@ -292,7 +295,9 @@ export async function sendTicketEmail({ email, name, eventName, ticketId, qrCode
       </html>
     `;
     
+    console.log('[v0] About to call apiInstance.sendTransacEmail');
     const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log('[v0] API response received:', { hasData: !!data, messageId: (data.body as any)?.messageId });
     
     console.log('Ticket email sent:', { email, ticketId, messageId: (data.body as any).messageId });
     
