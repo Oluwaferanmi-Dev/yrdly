@@ -86,7 +86,7 @@ export default function LandingPage() {
     </div>
   </div>
 
-  <Link href="/coming-soon">
+  <Link href="/coming-soon" className="hidden md:block">
     <Button className="bg-green-600 hover:bg-green-700 text-white px-5 md:px-6 h-10 rounded-full transition-smooth hover:shadow-lg hover:shadow-green-600/20">
       Join
     </Button>
