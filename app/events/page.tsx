@@ -96,14 +96,16 @@ export default function EventsPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {events.map((event) => (
               <Card key={event.id} className="overflow-hidden border-none shadow-md hover:shadow-xl transition-shadow flex flex-col">
-                <div className="relative h-48 w-full">
-                  <Image
-                    src={event.image || '/hero-image.png'}
-                    alt={event.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+                <Link href={`/events/${event.id}`}>
+                  <div className="relative h-48 w-full cursor-pointer">
+                    <Image
+                      src={event.image || '/hero-image.png'}
+                      alt={event.name}
+                      fill
+                      className="object-cover hover:opacity-90 transition-opacity"
+                    />
+                  </div>
+                </Link>
                 <CardHeader className="pb-2">
                   <div className="flex justify-between items-start mb-2">
                     <span className="bg-green-100 text-green-800 text-xs font-bold px-2.5 py-0.5 rounded uppercase tracking-wider">
@@ -114,9 +116,11 @@ export default function EventsPage() {
                       {event.attendees}
                     </span>
                   </div>
-                  <CardTitle className="text-xl font-bold text-gray-900 leading-tight">
-                    {event.name}
-                  </CardTitle>
+                  <Link href={`/events/${event.id}`}>
+                    <CardTitle className="text-xl font-bold text-gray-900 leading-tight cursor-pointer hover:text-green-600 transition-colors">
+                      {event.name}
+                    </CardTitle>
+                  </Link>
                   <CardDescription className="flex items-center text-green-600 font-medium pt-1">
                     <Calendar className="w-4 h-4 mr-2" />
                     {event.date}
