@@ -50,93 +50,101 @@ export default function EventsPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 flex items-center justify-between px-8 py-4 border-b bg-white shadow-sm">
-        <div className="flex items-center space-x-8">
+      <nav className="sticky top-0 z-50 flex items-center justify-between px-4 md:px-8 py-3 md:py-4 border-b bg-white shadow-sm">
+        <div className="flex items-center gap-4 md:gap-8">
           <Link href="/">
             <Image
               src="/yrdly-logo.png"
               alt="YRDLY Logo"
-              width={62}
-              height={44}
-              className="hover:opacity-80 transition-opacity"
+              width={50}
+              height={36}
+              className="hover:opacity-80 transition-opacity md:w-[62px] md:h-[44px]"
             />
           </Link>
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center gap-8">
             <Link href="/" className="text-sm font-medium text-gray-600 hover:text-green-600">Home</Link>
             <Link href="/events" className="text-sm font-semibold text-green-600">Events</Link>
             <Link href="/about" className="text-sm font-medium text-gray-600 hover:text-green-600">About</Link>
           </div>
         </div>
         <Link href="/">
-          <Button variant="ghost" size="sm" className="text-gray-600 hover:text-green-600">
-            <Home className="w-4 h-4 mr-2" />
-            Back Home
+          <Button variant="ghost" size="sm" className="text-gray-600 hover:text-green-600 px-2 md:px-4">
+            <Home className="w-4 h-4 md:mr-2" />
+            <span className="hidden md:inline">Back Home</span>
           </Button>
         </Link>
       </nav>
 
       {/* Hero Section */}
-      <div className="bg-green-600 py-16 text-white text-center">
-        <div className="max-w-4xl mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Community Events</h1>
-          <p className="text-xl text-green-50 opacity-90 max-w-2xl mx-auto">
+      <div className="bg-gradient-to-br from-green-600 via-green-600 to-green-700 py-12 md:py-20 text-white text-center relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-72 h-72 bg-green-500/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-green-400/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+        
+        <div className="max-w-4xl mx-auto px-4 relative">
+          <span className="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-4 border border-white/20 animate-fade-in">
+            Explore What's Happening
+          </span>
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 text-balance animate-fade-in-up">Community Events</h1>
+          <p className="text-base md:text-xl text-green-50/90 max-w-2xl mx-auto text-pretty animate-fade-in-up delay-100">
             Discover neighborhood gatherings, markets, and workshops happening right where you live.
           </p>
         </div>
       </div>
 
       {/* Main Content */}
-      <main className="flex-grow max-w-7xl mx-auto px-4 py-12 w-full">
+      <main className="flex-grow max-w-7xl mx-auto px-4 py-6 md:py-12 w-full">
         {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="w-10 h-10 text-green-600 animate-spin mb-4" />
-            <p className="text-gray-500 font-medium">Checking for upcoming events...</p>
+          <div className="flex flex-col items-center justify-center py-16 md:py-20">
+            <Loader2 className="w-8 h-8 md:w-10 md:h-10 text-green-600 animate-spin mb-4" />
+            <p className="text-gray-500 font-medium text-sm md:text-base">Checking for upcoming events...</p>
           </div>
         ) : events.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {events.map((event) => (
-              <Card key={event.id} className="overflow-hidden border-none shadow-md hover:shadow-xl transition-shadow flex flex-col">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+            {events.map((event, index) => (
+              <Card key={event.id} className="group overflow-hidden border-none shadow-soft hover-lift card-glow flex flex-col bg-white rounded-2xl animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
                 <Link href={`/events/${event.id}`}>
-                  <div className="relative h-48 w-full cursor-pointer">
+                  <div className="relative h-44 sm:h-52 w-full cursor-pointer overflow-hidden">
                     <Image
                       src={event.image || '/hero-image.png'}
                       alt={event.name}
                       fill
-                      className="object-cover hover:opacity-90 transition-opacity"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
                 </Link>
-                <CardHeader className="pb-2">
+                <CardHeader className="pb-2 px-4 md:px-6">
                   <div className="flex justify-between items-start mb-2">
-                    <span className="bg-green-100 text-green-800 text-xs font-bold px-2.5 py-0.5 rounded uppercase tracking-wider">
+                    <span className="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">
                       Upcoming
                     </span>
-                    <span className="text-xs text-gray-500 flex items-center">
+                    <span className="text-xs text-gray-500 flex items-center bg-gray-100 px-2 py-1 rounded-full">
                       <Users className="w-3 h-3 mr-1" />
                       {event.attendees}
                     </span>
                   </div>
                   <Link href={`/events/${event.id}`}>
-                    <CardTitle className="text-xl font-bold text-gray-900 leading-tight cursor-pointer hover:text-green-600 transition-colors">
+                    <CardTitle className="text-lg md:text-xl font-bold text-gray-900 leading-tight cursor-pointer hover:text-green-600 transition-smooth">
                       {event.name}
                     </CardTitle>
                   </Link>
-                  <CardDescription className="flex items-center text-green-600 font-medium pt-1">
+                  <CardDescription className="flex items-center text-green-600 font-medium pt-2 text-sm">
                     <Calendar className="w-4 h-4 mr-2" />
                     {event.date}
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="flex-grow pb-6">
-                  <div className="flex items-start text-sm text-gray-600 mb-6">
-                    <MapPin className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0 text-gray-400" />
+                <CardContent className="flex-grow pb-5 md:pb-6 px-4 md:px-6">
+                  <div className="flex items-start text-sm text-gray-600 mb-4">
+                    <MapPin className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0 text-green-600" />
                     {event.location}
                   </div>
-                  <p className="text-sm text-gray-700 mb-6 line-clamp-3">
+                  <p className="text-sm text-gray-600 mb-5 line-clamp-2 md:line-clamp-3">
                     {event.description}
                   </p>
                   <Button 
                     onClick={() => openEventModal(event.id, event.name)}
-                    className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-6"
+                    className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold h-11 md:h-12 rounded-xl transition-smooth hover:shadow-lg hover:shadow-green-600/20"
                   >
                     Attend Event
                   </Button>
