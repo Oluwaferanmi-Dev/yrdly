@@ -50,54 +50,54 @@ export default function EventsPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 flex items-center justify-between px-8 py-4 border-b bg-white shadow-sm">
-        <div className="flex items-center space-x-8">
+      <nav className="sticky top-0 z-50 flex items-center justify-between px-4 md:px-8 py-3 md:py-4 border-b bg-white shadow-sm">
+        <div className="flex items-center gap-4 md:gap-8">
           <Link href="/">
             <Image
               src="/yrdly-logo.png"
               alt="YRDLY Logo"
-              width={62}
-              height={44}
-              className="hover:opacity-80 transition-opacity"
+              width={50}
+              height={36}
+              className="hover:opacity-80 transition-opacity md:w-[62px] md:h-[44px]"
             />
           </Link>
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center gap-8">
             <Link href="/" className="text-sm font-medium text-gray-600 hover:text-green-600">Home</Link>
             <Link href="/events" className="text-sm font-semibold text-green-600">Events</Link>
             <Link href="/about" className="text-sm font-medium text-gray-600 hover:text-green-600">About</Link>
           </div>
         </div>
         <Link href="/">
-          <Button variant="ghost" size="sm" className="text-gray-600 hover:text-green-600">
-            <Home className="w-4 h-4 mr-2" />
-            Back Home
+          <Button variant="ghost" size="sm" className="text-gray-600 hover:text-green-600 px-2 md:px-4">
+            <Home className="w-4 h-4 md:mr-2" />
+            <span className="hidden md:inline">Back Home</span>
           </Button>
         </Link>
       </nav>
 
       {/* Hero Section */}
-      <div className="bg-green-600 py-16 text-white text-center">
+      <div className="bg-green-600 py-10 md:py-16 text-white text-center">
         <div className="max-w-4xl mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Community Events</h1>
-          <p className="text-xl text-green-50 opacity-90 max-w-2xl mx-auto">
+          <h1 className="text-3xl md:text-5xl font-bold mb-3 md:mb-4 text-balance">Community Events</h1>
+          <p className="text-base md:text-xl text-green-50 opacity-90 max-w-2xl mx-auto text-pretty">
             Discover neighborhood gatherings, markets, and workshops happening right where you live.
           </p>
         </div>
       </div>
 
       {/* Main Content */}
-      <main className="flex-grow max-w-7xl mx-auto px-4 py-12 w-full">
+      <main className="flex-grow max-w-7xl mx-auto px-4 py-6 md:py-12 w-full">
         {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="w-10 h-10 text-green-600 animate-spin mb-4" />
-            <p className="text-gray-500 font-medium">Checking for upcoming events...</p>
+          <div className="flex flex-col items-center justify-center py-16 md:py-20">
+            <Loader2 className="w-8 h-8 md:w-10 md:h-10 text-green-600 animate-spin mb-4" />
+            <p className="text-gray-500 font-medium text-sm md:text-base">Checking for upcoming events...</p>
           </div>
         ) : events.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
             {events.map((event) => (
               <Card key={event.id} className="overflow-hidden border-none shadow-md hover:shadow-xl transition-shadow flex flex-col">
                 <Link href={`/events/${event.id}`}>
-                  <div className="relative h-48 w-full cursor-pointer">
+                  <div className="relative h-40 sm:h-48 w-full cursor-pointer">
                     <Image
                       src={event.image || '/hero-image.png'}
                       alt={event.name}
@@ -106,9 +106,9 @@ export default function EventsPage() {
                     />
                   </div>
                 </Link>
-                <CardHeader className="pb-2">
+                <CardHeader className="pb-2 px-4 md:px-6">
                   <div className="flex justify-between items-start mb-2">
-                    <span className="bg-green-100 text-green-800 text-xs font-bold px-2.5 py-0.5 rounded uppercase tracking-wider">
+                    <span className="bg-green-100 text-green-800 text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wider">
                       Upcoming
                     </span>
                     <span className="text-xs text-gray-500 flex items-center">
@@ -117,26 +117,26 @@ export default function EventsPage() {
                     </span>
                   </div>
                   <Link href={`/events/${event.id}`}>
-                    <CardTitle className="text-xl font-bold text-gray-900 leading-tight cursor-pointer hover:text-green-600 transition-colors">
+                    <CardTitle className="text-lg md:text-xl font-bold text-gray-900 leading-tight cursor-pointer hover:text-green-600 transition-colors">
                       {event.name}
                     </CardTitle>
                   </Link>
-                  <CardDescription className="flex items-center text-green-600 font-medium pt-1">
+                  <CardDescription className="flex items-center text-green-600 font-medium pt-1 text-sm">
                     <Calendar className="w-4 h-4 mr-2" />
                     {event.date}
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="flex-grow pb-6">
-                  <div className="flex items-start text-sm text-gray-600 mb-6">
+                <CardContent className="flex-grow pb-4 md:pb-6 px-4 md:px-6">
+                  <div className="flex items-start text-sm text-gray-600 mb-4 md:mb-6">
                     <MapPin className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0 text-gray-400" />
                     {event.location}
                   </div>
-                  <p className="text-sm text-gray-700 mb-6 line-clamp-3">
+                  <p className="text-sm text-gray-700 mb-4 md:mb-6 line-clamp-2 md:line-clamp-3">
                     {event.description}
                   </p>
                   <Button 
                     onClick={() => openEventModal(event.id, event.name)}
-                    className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-6"
+                    className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold h-11 md:h-12"
                   >
                     Attend Event
                   </Button>
