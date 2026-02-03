@@ -33,7 +33,8 @@ export async function POST(request: NextRequest) {
     
     if (!emailResult.success) {
       console.error('Failed to send welcome email:', emailResult.error);
-      // Don't fail the signup if email fails, just log it
+      // We still return 200 for the subscription but add a warning if it's a dev environment
+      // Or just log it clearly. For now, let's keep it consistent.
     }
 
     return NextResponse.json(

@@ -4,6 +4,7 @@ import QRCode from 'qrcode';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 import path from 'path';
+import { createHash } from 'node:crypto';
 import { sendTicketEmail } from '@/lib/brevo-email';
 
 const registrationSchema = z.object({
@@ -79,10 +80,11 @@ export async function POST(request: NextRequest) {
     const validatedData = registrationSchema.parse(body);
     const { email, eventId, eventName } = validatedData;
 
-    // Use a hash of the user-agent and IP as a simple device ID
+    // Use a SHA-256 hash of the user-agent and IP as a secure device fingerprint
     const userAgent = request.headers.get('user-agent') || 'unknown';
     const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
-    const deviceId = Buffer.from(`${ip}-${userAgent}`).toString('base64');
+    const fingerprintInput = `${ip}-${userAgent}`;
+    const deviceId = createHash('sha256').update(fingerprintInput).digest('hex');
 
     // 1. Check Rate Limit (5 per hour)
     if (!checkRateLimit(deviceId)) {
@@ -180,7 +182,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { 
           success: false, 
-          message: `Registration failed: Unable to send ticket email. ${emailResult.error}. Please try again later.` 
+          message: `Ticket generation failed: ${emailResult.error}. This usually means the email service is not configured correctly. Please ensure BREVO_API_KEY is set in your .env file.` 
         },
         { status: 500 }
       );

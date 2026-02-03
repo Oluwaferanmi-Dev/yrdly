@@ -1,10 +1,16 @@
 import * as brevo from '@getbrevo/brevo';
 
+const BREVO_API_KEY = process.env.BREVO_API_KEY;
+
+if (!BREVO_API_KEY) {
+  console.warn('WARNING: BREVO_API_KEY is not defined in environment variables.');
+}
+
 // Initialize Brevo API
 const apiInstance = new brevo.TransactionalEmailsApi();
 apiInstance.setApiKey(
   brevo.TransactionalEmailsApiApiKeys.apiKey, 
-  process.env.BREVO_API_KEY!
+  BREVO_API_KEY || 'missing-key'
 );
 
 export interface EmailData {
@@ -245,18 +251,33 @@ export async function sendContactEmail({ name, email, subject, message }: Contac
 // Send ticket email with QR code
 export async function sendTicketEmail({ email, name, eventName, ticketId, qrCodeDataUrl }: EmailData & { eventName: string, ticketId: string, qrCodeDataUrl: string }) {
   try {
-    console.log('[v0] sendTicketEmail called with:', { email, name, eventName, ticketId, hasQR: !!qrCodeDataUrl });
+    if (!BREVO_API_KEY) {
+      throw new Error('BREVO_API_KEY is not configured');
+    }
+
+    console.log('[v0] sendTicketEmail called for:', { email, eventName, ticketId });
+    
+    // Extract base64 content from Data URL (remove "data:image/png;base64," prefix)
+    const base64Content = qrCodeDataUrl.split(',')[1];
     
     const sendSmtpEmail = new brevo.SendSmtpEmail();
     
-    sendSmtpEmail.subject = `Your Ticket for ${eventName}`;
+    sendSmtpEmail.subject = `Your Ticket for ${eventName} - ${ticketId}`;
     sendSmtpEmail.sender = { 
       name: "Yrdly Team", 
       email: "noreply@yrdly.ng" 
     };
     sendSmtpEmail.to = [{ email, name: name || "Yrdly User" }];
-    console.log('[v0] Email recipient set:', sendSmtpEmail.to);
     
+    // Attach the QR code as an inline image (CID)
+    // This is much more compatible with email clients than data URIs
+    sendSmtpEmail.attachment = [
+      {
+        content: base64Content,
+        name: "qrcode.png"
+      }
+    ];
+
     sendSmtpEmail.htmlContent = `
       <!DOCTYPE html>
       <html>
@@ -265,40 +286,45 @@ export async function sendTicketEmail({ email, name, eventName, ticketId, qrCode
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>Your Ticket</title>
         </head>
-        <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f5f5f5;">
-          <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 20px;">
-            <div style="text-align: center; padding: 20px 0; border-bottom: 2px solid #16a34a;">
-              <h1 style="color: #16a34a; margin: 0; font-size: 28px;">Event Ticket</h1>
-              <p style="color: #666; margin: 10px 0 0 0;">Yrdly Events</p>
+        <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f9fafb;">
+          <div style="max-width: 600px; margin: 40px auto; background-color: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+            <div style="background-color: #16a34a; padding: 32px 20px; text-align: center;">
+              <h1 style="color: white; margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.025em;">YOUR TICKET</h1>
+              <p style="color: rgba(255, 255, 255, 0.9); margin: 8px 0 0 0; font-size: 14px;">Yrdly Community Events</p>
             </div>
             
-            <div style="padding: 30px 20px;">
-              <h2 style="color: #333; margin-bottom: 20px;">You're attending ${eventName}!</h2>
-              <p style="color: #555; line-height: 1.6; margin-bottom: 20px;">
-                Your ticket ID is: <strong>${ticketId}</strong>
-              </p>
-              
-              <div style="text-align: center; margin: 30px 0;">
-                <img src="${qrCodeDataUrl}" alt="QR Code" style="width: 250px; height: 250px;">
+            <div style="padding: 40px 32px; text-align: center;">
+              <div style="margin-bottom: 32px;">
+                <p style="color: #6b7280; font-size: 14px; margin: 0; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Event Details</p>
+                <h2 style="color: #111827; margin: 8px 0 0 0; font-size: 20px; font-weight: 700;">${eventName}</h2>
               </div>
               
-              <p style="color: #555; line-height: 1.6; margin-bottom: 20px;">
-                Please show this QR code at the event entrance for check-in.
-              </p>
+              <div style="background-color: #f3f4f6; border-radius: 8px; padding: 24px; display: inline-block; margin-bottom: 32px;">
+                <img src="cid:qrcode.png" alt="Ticket QR Code" style="width: 200px; height: 200px; display: block;">
+                <div style="margin-top: 16px; border-top: 1px dashed #d1d5db; pt-16px;">
+                   <p style="margin: 8px 0 0 0; font-family: monospace; font-size: 18px; color: #111827; font-weight: 700; letter-spacing: 0.1em;">${ticketId}</p>
+                </div>
+              </div>
+              
+              <div style="text-align: left; background-color: #fdf2f2; border-left: 4px solid #ef4444; padding: 16px; margin-bottom: 32px;">
+                <p style="color: #b91c1c; margin: 0; font-size: 14px; line-height: 1.5;">
+                  <strong>Important:</strong> Please show this QR code at the event entrance. This ticket is unique and can only be scanned once.
+                </p>
+              </div>
             </div>
             
-            <div style="border-top: 1px solid #eee; padding: 20px; text-align: center; color: #666; font-size: 12px;">
-              <p>© 2025 Yrdly. All rights reserved.</p>
+            <div style="background-color: #f9fafb; padding: 24px; text-align: center; border-top: 1px solid #e5e7eb;">
+              <p style="color: #6b7280; margin: 0; font-size: 12px;">© 2025 Yrdly. Powered by neighborhood trust.</p>
+              <div style="margin-top: 12px;">
+                <a href="https://yrdly.ng" style="color: #16a34a; text-decoration: none; font-size: 12px; font-weight: 600;">Visit our website</a>
+              </div>
             </div>
           </div>
         </body>
       </html>
     `;
     
-    console.log('[v0] About to call apiInstance.sendTransacEmail');
     const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
-    console.log('[v0] API response received:', { hasData: !!data, messageId: (data.body as any)?.messageId });
-    
     console.log('Ticket email sent:', { email, ticketId, messageId: (data.body as any).messageId });
     
     return { 
@@ -310,7 +336,7 @@ export async function sendTicketEmail({ email, name, eventName, ticketId, qrCode
     console.error('Ticket email error:', error);
     return { 
       success: false, 
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: error instanceof Error ? error.message : 'Unknown error during email delivery'
     };
   }
 }
