@@ -163,16 +163,30 @@ export async function POST(request: NextRequest) {
     updateEventTicketCount(eventId);
 
     // Send email via Brevo
+    console.log('[v0] About to send ticket email:', { email, eventName, ticketId });
+    
     const emailResult = await sendTicketEmail({
       email,
+      name: email.split('@')[0],
       eventName,
       ticketId,
       qrCodeDataUrl
     });
 
+    console.log('[v0] Email result:', emailResult);
+
     if (!emailResult.success) {
-      console.error('Failed to send ticket email:', emailResult.error);
+      console.error('[v0] Failed to send ticket email:', emailResult.error);
+      return NextResponse.json(
+        { 
+          success: false, 
+          message: `Registration failed: Unable to send ticket email. ${emailResult.error}. Please try again later.` 
+        },
+        { status: 500 }
+      );
     }
+    
+    console.log('[v0] Ticket email sent successfully');
 
     // 4. Hide ticketId in response for security
     return NextResponse.json(
