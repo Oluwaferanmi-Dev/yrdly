@@ -12,18 +12,41 @@ const registrationSchema = z.object({
   eventName: z.string(),
 });
 
-const DATA_PATH = path.join(process.cwd(), 'lib/data/tickets.json');
+const TICKETS_PATH = path.join(process.cwd(), 'lib/data/tickets.json');
+const EVENTS_PATH = path.join(process.cwd(), 'lib/data/events.json');
 
 function getTickets() {
-  if (!fs.existsSync(DATA_PATH)) return [];
-  const data = fs.readFileSync(DATA_PATH, 'utf8');
+  if (!fs.existsSync(TICKETS_PATH)) return [];
+  const data = fs.readFileSync(TICKETS_PATH, 'utf8');
+  return JSON.parse(data);
+}
+
+function getEvents() {
+  if (!fs.existsSync(EVENTS_PATH)) return [];
+  const data = fs.readFileSync(EVENTS_PATH, 'utf8');
   return JSON.parse(data);
 }
 
 function saveTicket(ticket: any) {
   const tickets = getTickets();
   tickets.push(ticket);
-  fs.writeFileSync(DATA_PATH, JSON.stringify(tickets, null, 2));
+  fs.writeFileSync(TICKETS_PATH, JSON.stringify(tickets, null, 2));
+}
+
+function updateEventTicketCount(eventId: string) {
+  const events = getEvents();
+  const tickets = getTickets();
+  
+  // Count registered tickets for this event
+  const eventTickets = tickets.filter((t: any) => t.eventId === eventId);
+  const registeredCount = eventTickets.length;
+  
+  const eventIndex = events.findIndex((e: any) => e.id === eventId);
+  if (eventIndex !== -1) {
+    events[eventIndex].registeredCount = registeredCount;
+    events[eventIndex].attendees = `${registeredCount} attending`;
+    fs.writeFileSync(EVENTS_PATH, JSON.stringify(events, null, 2));
+  }
 }
 
 const RATE_LIMIT_PATH = path.join(process.cwd(), 'lib/data/rate_limits.json');
@@ -73,8 +96,35 @@ export async function POST(request: NextRequest) {
     }
 
     const tickets = getTickets();
+    const events = getEvents();
 
-    // 2. Check for duplicate device/email for this event
+    // 2. Check ticket capacity
+    const event = events.find((e: any) => e.id === eventId);
+    if (!event) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          message: 'Event not found.' 
+        },
+        { status: 404 }
+      );
+    }
+
+    // Count existing tickets for this event
+    const eventTickets = tickets.filter((t: any) => t.eventId === eventId);
+    const currentRegistrations = eventTickets.length;
+
+    if (currentRegistrations >= event.ticketCapacity) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          message: `This event is sold out. All ${event.ticketCapacity} tickets have been taken.` 
+        },
+        { status: 400 }
+      );
+    }
+
+    // 3. Check for duplicate device/email for this event
     const existingTicket = tickets.find(
       (t: any) => (t.deviceId === deviceId || t.email === email) && t.eventId === eventId
     );
@@ -109,6 +159,9 @@ export async function POST(request: NextRequest) {
 
     saveTicket(newTicket);
 
+    // Update event ticket count
+    updateEventTicketCount(eventId);
+
     // Send email via Brevo
     const emailResult = await sendTicketEmail({
       email,
@@ -121,7 +174,7 @@ export async function POST(request: NextRequest) {
       console.error('Failed to send ticket email:', emailResult.error);
     }
 
-    // 3. Hide ticketId in response for security
+    // 4. Hide ticketId in response for security
     return NextResponse.json(
       { 
         success: true, 

@@ -13,12 +13,14 @@ import {
 } from "@/components/ui/dialog"
 import { toast } from "sonner"
 import { Loader2, Ticket } from "lucide-react"
+import { TicketConfirmationModal } from "@/components/ticket-confirmation-modal"
 
 interface EventRegistrationModalProps {
   isOpen: boolean
   onClose: () => void
   eventId: string
   eventName: string
+  isSoldOut?: boolean
 }
 
 export function EventRegistrationModal({
@@ -26,9 +28,12 @@ export function EventRegistrationModal({
   onClose,
   eventId,
   eventName,
+  isSoldOut,
 }: EventRegistrationModalProps) {
   const [email, setEmail] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [showConfirmation, setShowConfirmation] = useState(false)
+  const [confirmationEmail, setConfirmationEmail] = useState("")
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -56,8 +61,8 @@ export function EventRegistrationModal({
       const data = await response.json()
 
       if (data.success) {
-        toast.success(data.message)
-        onClose()
+        setConfirmationEmail(email)
+        setShowConfirmation(true)
         setEmail("")
       } else {
         toast.error(data.message || "Failed to register. Please try again.")
@@ -125,5 +130,15 @@ export function EventRegistrationModal({
         </form>
       </DialogContent>
     </Dialog>
+
+    <TicketConfirmationModal
+      isOpen={showConfirmation}
+      onClose={() => {
+        setShowConfirmation(false)
+        onClose()
+      }}
+      eventName={eventName}
+      email={confirmationEmail}
+    />
   )
 }

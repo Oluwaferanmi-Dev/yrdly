@@ -1,1 +1,15 @@
-[]
+[
+  {
+    "id": "kickin-it-in-the-yard",
+    "name": "Kickin' it in The Yard",
+    "date": "21st Feb",
+    "time": "1pm-7pm",
+    "location": "Frosty's Lounge Garden Bodija",
+    "description": "Music, Games, Networking and so much more...",
+    "image": "/flyers/kickin-it-in-the-yard.jpg",
+    "ticketCapacity": 105,
+    "registeredCount": 0,
+    "contact": "09166368783",
+    "attendees": "0 attending"
+  }
+]
