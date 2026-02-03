@@ -1,4 +1,4 @@
-// File: C:\Users\USER\Documents\CODE\yrdly\app\coming-soon\page.tsx
+// File: C:\Users\INSTALLER\Desktop\yrdly\app\coming-soon\page.tsx
 import * as entry from '../../../../app/coming-soon/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

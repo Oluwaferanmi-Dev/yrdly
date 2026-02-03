@@ -99,14 +99,14 @@ export async function sendWelcomeEmail({ email, name, source }: EmailData) {
     console.log('Brevo email sent successfully:', {
       email,
       source,
-      messageId: data.messageId,
+      messageId: (data.body as any).messageId,
       timestamp: new Date().toISOString()
     });
     
     return { 
       success: true, 
-      messageId: data.messageId,
-      data 
+      messageId: (data.body as any).messageId,
+      data: data.body 
     };
     
   } catch (error) {
@@ -134,13 +134,7 @@ export async function sendWelcomeSMS(phoneNumber: string, name?: string) {
     
     const data = await apiInstance.sendTransacSms(sendTransacSms);
     
-    console.log('Brevo SMS sent successfully:', {
-      phoneNumber,
-      messageId: data.messageId,
-      timestamp: new Date().toISOString()
-    });
-    
-    return { success: true, messageId: data.messageId };
+    return { success: true, messageId: (data.body as any).messageId };
     
   } catch (error) {
     console.error('Brevo SMS error:', error);
@@ -230,18 +224,103 @@ export async function sendContactEmail({ name, email, subject, message }: Contac
       to: 'support@yrdly.ng',
       name,
       subject,
-      messageId: data.messageId,
+      messageId: (data.body as any).messageId,
       timestamp: new Date().toISOString()
     });
     
     return { 
       success: true, 
-      messageId: data.messageId,
-      data 
+      messageId: (data.body as any).messageId,
+      data: data.body 
     };
     
   } catch (error) {
     console.error('Contact email error:', error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+// Send ticket email with QR code
+export async function sendTicketEmail({ email, name, eventName, ticketId, qrCodeDataUrl }: EmailData & { eventName: string, ticketId: string, qrCodeDataUrl: string }) {
+  try {
+    const sendSmtpEmail = new brevo.SendSmtpEmail();
+    
+    // Email configuration
+    sendSmtpEmail.subject = `Your Ticket for ${eventName}! 🎟️`;
+    sendSmtpEmail.sender = { 
+      name: "Yrdly Events", 
+      email: "noreply@yrdly.ng" 
+    };
+    sendSmtpEmail.to = [{ email, name: name || "Yrdly User" }];
+    
+    // HTML content
+    sendSmtpEmail.htmlContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Your Yrdly Ticket</title>
+        </head>
+        <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f5f5f5;">
+          <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 20px;">
+            <!-- Header -->
+            <div style="text-align: center; padding: 20px 0; border-bottom: 2px solid #16a34a;">
+              <h1 style="color: #16a34a; margin: 0; font-size: 28px;">Your Event Ticket</h1>
+              <p style="color: #666; margin: 10px 0 0 0;">Yrdly Neighborhood Events</p>
+            </div>
+            
+            <!-- Main Content -->
+            <div style="padding: 30px 20px; text-align: center;">
+              <h2 style="color: #333; margin-bottom: 10px;">You're going to ${eventName}! 🎉</h2>
+              <p style="color: #666; margin-bottom: 30px;">Show this QR code at the entrance for admission.</p>
+              
+              <div style="background-color: white; padding: 20px; border: 2px solid #eee; display: inline-block; border-radius: 12px; margin-bottom: 30px;">
+                <img src="${qrCodeDataUrl}" alt="Ticket QR Code" style="width: 250px; height: 250px; display: block;">
+                <p style="margin: 10px 0 0 0; font-family: monospace; font-weight: bold; color: #333;">ID: ${ticketId}</p>
+              </div>
+              
+              <div style="background-color: #f0fdf4; border-radius: 8px; padding: 20px; text-align: left; margin-bottom: 30px;">
+                <h3 style="color: #16a34a; margin-top: 0; margin-bottom: 10px;">Important Information:</h3>
+                <ul style="color: #555; line-height: 1.6; margin: 0; padding-left: 20px;">
+                  <li>This ticket is unique and can only be scanned <strong>once</strong>.</li>
+                  <li>Please arrive 15 minutes before the event starts.</li>
+                  <li>Have this email ready on your phone or printed out.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <!-- Footer -->
+            <div style="border-top: 1px solid #eee; padding: 20px; text-align: center; color: #666; font-size: 12px;">
+              <p>© 2025 Yrdly. All rights reserved.</p>
+              <p>
+                <a href="https://yrdly.com/help" style="color: #16a34a;">Help Center</a> | 
+                <a href="https://yrdly.com/privacy" style="color: #16a34a;">Privacy Policy</a>
+              </p>
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+    
+    // Send email
+    const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    
+    console.log('Ticket email sent successfully:', {
+      email,
+      ticketId,
+      messageId: (data.body as any).messageId
+    });
+    
+    return { 
+      success: true, 
+      messageId: (data.body as any).messageId 
+    };
+    
+  } catch (error) {
+    console.error('Ticket email error:', error);
     return { 
       success: false, 
       error: error instanceof Error ? error.message : 'Unknown error'

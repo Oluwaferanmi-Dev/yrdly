@@ -9,12 +9,39 @@ import Link from "next/link"
 import MobileNav from "@/components/mobile-nav"
 import { TermsModal } from "@/components/terms-modal"
 import { NewsletterSignup } from "@/components/newsletter-signup"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { EventRegistrationModal } from "@/components/event-registration-modal"
 
 export default function LandingPage() {
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false)
+  const [isEventModalOpen, setIsEventModalOpen] = useState(false)
+  const [selectedEvent, setSelectedEvent] = useState<{id: string, name: string}>({id: "", name: ""})
+
+  useEffect(() => {
+    fetchLatestEvent()
+  }, [])
+
+  const fetchLatestEvent = async () => {
+    try {
+      const response = await fetch('/api/events')
+      const data = await response.json()
+      if (Array.isArray(data) && data.length > 0) {
+        setSelectedEvent({ id: data[0].id, name: data[0].name })
+      }
+    } catch (error) {
+      console.error('Failed to fetch event:', error)
+    }
+  }
+
+  const openEventModal = (id: string, name: string) => {
+    if (!id) return;
+    setSelectedEvent({ id, name })
+    setIsEventModalOpen(true)
+  }
+
   const navLinks = [
     { href: "/", label: "Home", isActive: true },
+    { href: "/events", label: "Events" },
     { href: "/about", label: "About Us" },
     { href: "/learn-more", label: "Learn More" },
     { href: "/coming-soon", label: "Coming Soon" },
@@ -57,8 +84,6 @@ export default function LandingPage() {
     </Button>
   </Link>
 </nav>
-
-
 
       <section className="relative h-[800px] flex items-center justify-center">
         <div 
@@ -202,9 +227,22 @@ export default function LandingPage() {
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
                 Attend Local Events and Connect
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 mb-6">
                 Join events in your community and meet new people.
               </p>
+              <div className="flex flex-col items-center space-y-4">
+                {selectedEvent.id && (
+                  <Button 
+                    onClick={() => openEventModal(selectedEvent.id, selectedEvent.name)}
+                    className="bg-green-600 hover:bg-green-700 text-white w-full max-w-[200px]"
+                  >
+                    Quick Register
+                  </Button>
+                )}
+                <Link href="/events" className="text-green-600 hover:text-green-700 font-semibold flex items-center">
+                  Explore All Events <ChevronRight className="w-4 h-4 ml-1" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -336,10 +374,17 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
-      
+
       <TermsModal 
         isOpen={isTermsModalOpen} 
         onClose={() => setIsTermsModalOpen(false)} 
+      />
+
+      <EventRegistrationModal 
+        isOpen={isEventModalOpen}
+        onClose={() => setIsEventModalOpen(false)}
+        eventId={selectedEvent.id}
+        eventName={selectedEvent.name}
       />
     </div>
   )
