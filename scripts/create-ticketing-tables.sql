@@ -1,4 +1,23 @@
+-- 1. FIX EXISTING TABLES (Renaming columns if they already exist with old names)
+DO $$ 
+BEGIN 
+  -- Rename qr_code_data to qr_code
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='tickets' AND column_name='qr_code_data') THEN
+    ALTER TABLE public.tickets RENAME COLUMN qr_code_data TO qr_code;
+  END IF;
 
+  -- Rename used to scanned
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='tickets' AND column_name='used') THEN
+    ALTER TABLE public.tickets RENAME COLUMN used TO scanned;
+  END IF;
+
+  -- Rename used_at to scanned_at
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='tickets' AND column_name='used_at') THEN
+    ALTER TABLE public.tickets RENAME COLUMN used_at TO scanned_at;
+  END IF;
+END $$;
+
+-- 2. CREATE TABLES (Only if they don't exist yet)
 CREATE TABLE IF NOT EXISTS public.tickets (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   ticket_id VARCHAR(8) UNIQUE NOT NULL,
@@ -41,20 +60,21 @@ CREATE TABLE IF NOT EXISTS public.rate_limits (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 2. Create indexes
+-- 3. CREATE INDEXES
+DROP INDEX IF EXISTS idx_tickets_used; -- Remove old index if it exists
 CREATE INDEX IF NOT EXISTS idx_tickets_email ON public.tickets(email);
 CREATE INDEX IF NOT EXISTS idx_tickets_event_id ON public.tickets(event_id);
 CREATE INDEX IF NOT EXISTS idx_tickets_ticket_id ON public.tickets(ticket_id);
-CREATE INDEX IF NOT EXISTS idx_tickets_used ON public.tickets(used);
+CREATE INDEX IF NOT EXISTS idx_tickets_scanned ON public.tickets(scanned);
 CREATE INDEX IF NOT EXISTS idx_events_id ON public.events(id);
 
--- 3. Enable RLS
+-- 4. ENABLE RLS
 ALTER TABLE public.tickets ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.admin_sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.rate_limits ENABLE ROW LEVEL SECURITY;
 
--- 4. Re-create Policies (Clean slate for Each)
+-- 5. RE-CREATE POLICIES (DROP FIRST)
 DROP POLICY IF EXISTS "Enable read for all users" ON public.tickets;
 CREATE POLICY "Enable read for all users" ON public.tickets FOR SELECT USING (true);
 
@@ -78,3 +98,6 @@ CREATE POLICY "Enable insert rate limit" ON public.rate_limits FOR INSERT WITH C
 
 DROP POLICY IF EXISTS "Enable update rate limit" ON public.rate_limits;
 CREATE POLICY "Enable update rate limit" ON public.rate_limits FOR UPDATE USING (true);
+
+-- 6. REFRESH SCHEMA CACHE (Crucial for PostgREST)
+NOTIFY pgrst, 'reload schema';
