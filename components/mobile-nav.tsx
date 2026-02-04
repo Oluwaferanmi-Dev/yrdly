@@ -23,7 +23,7 @@ export default function MobileNav({ links }: { links: { href: string; label: str
         <Button 
           variant="ghost" 
           size="icon" 
-          className="md:hidden hover:bg-green-100 hover:text-green-600 transition-all duration-300 rounded-lg"
+          className="hover:bg-green-100 hover:text-green-600 transition-all duration-300 rounded-lg"
         >
           <Menu className="h-5 w-5" />
           <span className="sr-only">Toggle navigation menu</span>

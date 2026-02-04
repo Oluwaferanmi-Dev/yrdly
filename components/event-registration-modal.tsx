@@ -46,7 +46,7 @@ export function EventRegistrationModal({
     setIsLoading(true)
 
     try {
-      const response = await fetch("/api/events/register", {
+      const response = await fetch("/api/events/register-v2", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -68,7 +68,7 @@ export function EventRegistrationModal({
         toast.error(data.message || "Failed to register. Please try again.")
       }
     } catch (error) {
-      console.error("Registration error:", error)
+      console.error("[v0] Registration error:", error)
       toast.error("An error occurred. Please try again later.")
     } finally {
       setIsLoading(false)

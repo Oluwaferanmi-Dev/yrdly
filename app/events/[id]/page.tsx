@@ -292,7 +292,7 @@ export default function EventDetailPage({ params }: { params: Promise<{ id: stri
 
       {/* Footer */}
       <footer className="bg-white border-t py-8 text-center text-sm text-gray-500 mt-auto">
-        <p>© 2025 Yrdly Community Hub. All rights reserved.</p>
+        <p>© 2026 Yrdly Community Hub. All rights reserved.</p>
       </footer>
 
       <EventRegistrationModal 

@@ -164,7 +164,7 @@ export default function ContactPage() {
           
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-xs font-bold text-gray-900">
-              © 2025 Yrdly. All rights reserved.
+              © 2026 Yrdly. All rights reserved.
             </p>
             <div className="flex space-x-6">
               <Link href="/privacy-policy" className="text-sm text-gray-900 hover:text-green-600 underline">Privacy Policy</Link>

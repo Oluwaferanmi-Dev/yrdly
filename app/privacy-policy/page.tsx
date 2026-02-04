@@ -5,7 +5,7 @@ const PrivacyPolicy = () => {
     <div className="bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
         <h1 className="text-3xl font-extrabold text-gray-900 mb-6 text-center">Yrdly Privacy Policy</h1>
-        <p className="text-center text-gray-500 mb-8">Last updated: August 20, 2025</p>
+        <p className="text-center text-gray-500 mb-8">Last updated: February 4, 2026</p>
         <div className="prose prose-lg text-gray-700 mx-auto">
           <p className="mb-4">At Yrdly, your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your personal information when you use our platform.</p>
 

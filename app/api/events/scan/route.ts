@@ -8,7 +8,7 @@ const scanSchema = z.object({
   adminPassword: z.string().min(1, 'Admin password is required'),
 });
 
-const ADMIN_PASSWORD = process.env.SCANNER_ADMIN_PASSWORD || 'YRDLY-ADMIN-2025';
+const ADMIN_PASSWORD = process.env.SCANNER_ADMIN_PASSWORD || 'YRDLY-ADMIN-2026';
 
 const DATA_PATH = path.join(process.cwd(), 'lib/data/tickets.json');
 
