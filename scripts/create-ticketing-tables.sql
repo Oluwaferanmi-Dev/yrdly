@@ -1,4 +1,4 @@
--- Create tickets table
+
 CREATE TABLE IF NOT EXISTS public.tickets (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   ticket_id VARCHAR(8) UNIQUE NOT NULL,
@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS public.tickets (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create events table
 CREATE TABLE IF NOT EXISTS public.events (
   id VARCHAR(255) PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
@@ -27,7 +26,6 @@ CREATE TABLE IF NOT EXISTS public.events (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create admin sessions table
 CREATE TABLE IF NOT EXISTS public.admin_sessions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   password_hash VARCHAR(255) NOT NULL,
@@ -35,7 +33,6 @@ CREATE TABLE IF NOT EXISTS public.admin_sessions (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create rate limiting table
 CREATE TABLE IF NOT EXISTS public.registration_rate_limit (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   device_ip VARCHAR(45),
@@ -44,48 +41,40 @@ CREATE TABLE IF NOT EXISTS public.registration_rate_limit (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create indexes for performance
+-- 2. Create indexes
 CREATE INDEX IF NOT EXISTS idx_tickets_email ON public.tickets(email);
 CREATE INDEX IF NOT EXISTS idx_tickets_event_id ON public.tickets(event_id);
 CREATE INDEX IF NOT EXISTS idx_tickets_ticket_id ON public.tickets(ticket_id);
 CREATE INDEX IF NOT EXISTS idx_tickets_used ON public.tickets(used);
 CREATE INDEX IF NOT EXISTS idx_events_id ON public.events(id);
 
--- Enable Row Level Security
+-- 3. Enable RLS
 ALTER TABLE public.tickets ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.admin_sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.registration_rate_limit ENABLE ROW LEVEL SECURITY;
 
--- Create policies (for now, allow all - customize based on your auth)
+-- 4. Re-create Policies (Clean slate for Each)
 DROP POLICY IF EXISTS "Enable read for all users" ON public.tickets;
-CREATE POLICY "Enable read for all users" ON public.tickets
-  FOR SELECT USING (true);
+CREATE POLICY "Enable read for all users" ON public.tickets FOR SELECT USING (true);
 
 DROP POLICY IF EXISTS "Enable insert for registration" ON public.tickets;
-CREATE POLICY "Enable insert for registration" ON public.tickets
-  FOR INSERT WITH CHECK (true);
+CREATE POLICY "Enable insert for registration" ON public.tickets FOR INSERT WITH CHECK (true);
 
 DROP POLICY IF EXISTS "Enable update for scan verification" ON public.tickets;
-CREATE POLICY "Enable update for scan verification" ON public.tickets
-  FOR UPDATE USING (true);
+CREATE POLICY "Enable update for scan verification" ON public.tickets FOR UPDATE USING (true);
 
 DROP POLICY IF EXISTS "Enable read events for all" ON public.events;
-CREATE POLICY "Enable read events for all" ON public.events
-  FOR SELECT USING (true);
+CREATE POLICY "Enable read events for all" ON public.events FOR SELECT USING (true);
 
 DROP POLICY IF EXISTS "Enable read admin sessions" ON public.admin_sessions;
-CREATE POLICY "Enable read admin sessions" ON public.admin_sessions
-  FOR SELECT USING (true);
+CREATE POLICY "Enable read admin sessions" ON public.admin_sessions FOR SELECT USING (true);
 
 DROP POLICY IF EXISTS "Enable read rate limit" ON public.registration_rate_limit;
-CREATE POLICY "Enable read rate limit" ON public.registration_rate_limit
-  FOR SELECT USING (true);
+CREATE POLICY "Enable read rate limit" ON public.registration_rate_limit FOR SELECT USING (true);
 
 DROP POLICY IF EXISTS "Enable insert rate limit" ON public.registration_rate_limit;
-CREATE POLICY "Enable insert rate limit" ON public.registration_rate_limit
-  FOR INSERT WITH CHECK (true);
+CREATE POLICY "Enable insert rate limit" ON public.registration_rate_limit FOR INSERT WITH CHECK (true);
 
 DROP POLICY IF EXISTS "Enable update rate limit" ON public.registration_rate_limit;
-CREATE POLICY "Enable update rate limit" ON public.registration_rate_limit
-  FOR UPDATE USING (true);
+CREATE POLICY "Enable update rate limit" ON public.registration_rate_limit FOR UPDATE USING (true);
