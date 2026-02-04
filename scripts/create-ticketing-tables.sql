@@ -58,26 +58,34 @@ ALTER TABLE public.admin_sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.registration_rate_limit ENABLE ROW LEVEL SECURITY;
 
 -- Create policies (for now, allow all - customize based on your auth)
+DROP POLICY IF EXISTS "Enable read for all users" ON public.tickets;
 CREATE POLICY "Enable read for all users" ON public.tickets
   FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Enable insert for registration" ON public.tickets;
 CREATE POLICY "Enable insert for registration" ON public.tickets
   FOR INSERT WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Enable update for scan verification" ON public.tickets;
 CREATE POLICY "Enable update for scan verification" ON public.tickets
   FOR UPDATE USING (true);
 
+DROP POLICY IF EXISTS "Enable read events for all" ON public.events;
 CREATE POLICY "Enable read events for all" ON public.events
   FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Enable read admin sessions" ON public.admin_sessions;
 CREATE POLICY "Enable read admin sessions" ON public.admin_sessions
   FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Enable read rate limit" ON public.registration_rate_limit;
 CREATE POLICY "Enable read rate limit" ON public.registration_rate_limit
   FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Enable insert rate limit" ON public.registration_rate_limit;
 CREATE POLICY "Enable insert rate limit" ON public.registration_rate_limit
   FOR INSERT WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Enable update rate limit" ON public.registration_rate_limit;
 CREATE POLICY "Enable update rate limit" ON public.registration_rate_limit
   FOR UPDATE USING (true);
