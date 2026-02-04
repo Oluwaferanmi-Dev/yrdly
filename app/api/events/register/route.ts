@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 import path from 'path';
 import { createHash } from 'node:crypto';
-import { sendTicketEmail } from '@/lib/brevo-email';
+import { sendTicketEmail, addAttendeeContact } from '@/lib/brevo-email';
 
 const registrationSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -189,6 +189,15 @@ export async function POST(request: NextRequest) {
     }
     
     console.log('[v0] Ticket email sent successfully');
+
+    // Store attendee email in Brevo as a contact for future marketing
+    const contactResult = await addAttendeeContact({
+      email,
+      name: email.split('@')[0],
+      eventName
+    });
+    
+    console.log('[v0] Attendee contact result:', contactResult);
 
     // 4. Hide ticketId in response for security
     return NextResponse.json(

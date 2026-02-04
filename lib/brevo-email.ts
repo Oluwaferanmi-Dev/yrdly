@@ -314,7 +314,7 @@ export async function sendTicketEmail({ email, name, eventName, ticketId, qrCode
             </div>
             
             <div style="background-color: #f9fafb; padding: 24px; text-align: center; border-top: 1px solid #e5e7eb;">
-              <p style="color: #6b7280; margin: 0; font-size: 12px;">© 2025 Yrdly. Powered by neighborhood trust.</p>
+              <p style="color: #6b7280; margin: 0; font-size: 12px;">© 2026 Yrdly. Powered by neighborhood trust.</p>
               <div style="margin-top: 12px;">
                 <a href="https://yrdly.ng" style="color: #16a34a; text-decoration: none; font-size: 12px; font-weight: 600;">Visit our website</a>
               </div>
@@ -337,6 +337,53 @@ export async function sendTicketEmail({ email, name, eventName, ticketId, qrCode
     return { 
       success: false, 
       error: error instanceof Error ? error.message : 'Unknown error during email delivery'
+    };
+  }
+}
+
+// Store attendee email in Brevo as a contact
+export async function addAttendeeContact({ email, name, eventName }: { email: string, name?: string, eventName: string }) {
+  try {
+    if (!BREVO_API_KEY) {
+      throw new Error('BREVO_API_KEY is not configured');
+    }
+
+    const contactsApi = new brevo.ContactsApi();
+    contactsApi.setApiKey(
+      brevo.ContactsApiApiKeys.apiKey,
+      BREVO_API_KEY
+    );
+
+    // Create or update contact
+    const createContact = new brevo.CreateContact();
+    createContact.email = email;
+    createContact.firstname = name || email.split('@')[0];
+    createContact.listIds = [2]; // Add to Yrdly Attendees list (list ID 2 - adjust if needed)
+    createContact.attributes = {
+      'EVENT_NAME': eventName,
+      'REGISTRATION_DATE': new Date().toISOString()
+    };
+
+    const data = await contactsApi.createContact(createContact);
+    
+    console.log('[v0] Attendee contact stored in Brevo:', { email, eventName, contactId: (data.body as any).id });
+    
+    return { 
+      success: true, 
+      contactId: (data.body as any).id
+    };
+    
+  } catch (error) {
+    // If contact already exists, that's okay - just log it
+    if (error instanceof Error && error.message.includes('already exists')) {
+      console.log('[v0] Contact already exists in Brevo:', email);
+      return { success: true, message: 'Contact already exists' };
+    }
+    
+    console.error('[v0] Error storing attendee contact in Brevo:', error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Unknown error'
     };
   }
 }
