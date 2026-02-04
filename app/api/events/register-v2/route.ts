@@ -6,7 +6,13 @@ import { createHash } from 'node:crypto'
 import fs from 'fs'
 import path from 'path'
 import { sendTicketEmail, addAttendeeContact } from '@/lib/brevo-email'
-import { request } from 'node:http'
+import { 
+  checkRateLimit, 
+  recordRateLimit, 
+  checkEmailAlreadyRegistered, 
+  createTicket,
+  getTicketCountByEvent
+} from '@/lib/supabase-client'
 
 const registrationSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -14,22 +20,12 @@ const registrationSchema = z.object({
   eventName: z.string(),
 })
 
-// JSON Persistence paths
-const TICKETS_JSON_PATH = path.join(process.cwd(), 'lib/data/tickets.json')
+// JSON Persistence paths (for metadata only)
 const EVENTS_JSON_PATH = path.join(process.cwd(), 'lib/data/events.json')
-const RATE_LIMIT_JSON_PATH = path.join(process.cwd(), 'lib/data/rate_limits.json')
 
-// Helper to ensure directory exists
-function ensureDataDir() {
-  const dir = path.dirname(TICKETS_JSON_PATH)
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true })
-  }
-}
 
 export async function POST(request: NextRequest) {
   try {
-    ensureDataDir()
     
     const body = await request.json()
     const validatedData = registrationSchema.parse(body)
@@ -41,28 +37,17 @@ export async function POST(request: NextRequest) {
     console.log('[v0] Registration request (JSON):', { email, eventId, eventName, ip })
 
     // 1. Check Rate Limit
-    if (fs.existsSync(RATE_LIMIT_JSON_PATH)) {
-      const data = JSON.parse(fs.readFileSync(RATE_LIMIT_JSON_PATH, 'utf8'));
-      const now = Date.now();
-      const oneHourAgo = now - 60 * 60 * 1000;
-      let deviceRequests = data[ip] || [];
-      deviceRequests = deviceRequests.filter((timestamp: number) => timestamp > oneHourAgo);
-      
-      if (deviceRequests.length >= 20) {
-        console.warn('[v0] Rate limit hit for:', ip);
-        return NextResponse.json(
-          { success: false, message: 'Rate limit exceeded. Too many registrations in a short time. Please try again in an hour.' },
-          { status: 429 }
-        )
-      }
-      
-      // Update rate limits
-      deviceRequests.push(now);
-      data[ip] = deviceRequests;
-      fs.writeFileSync(RATE_LIMIT_JSON_PATH, JSON.stringify(data, null, 2));
-    } else {
-      fs.writeFileSync(RATE_LIMIT_JSON_PATH, JSON.stringify({ [ip]: [Date.now()] }, null, 2));
+    const rateLimitCount = await checkRateLimit(ip, eventId);
+    if (rateLimitCount >= 20) {
+      console.warn('[v0] Rate limit hit for:', ip);
+      return NextResponse.json(
+        { success: false, message: 'Rate limit exceeded. Too many registrations in a short time. Please try again in an hour.' },
+        { status: 429 }
+      )
     }
+    
+    // Update rate limits in Supabase
+    await recordRateLimit(ip, eventId);
 
     console.log('[v0] Rate limit check passed');
 
@@ -80,13 +65,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 2. Check if email already registered
-    let tickets = [];
-    if (fs.existsSync(TICKETS_JSON_PATH)) {
-      tickets = JSON.parse(fs.readFileSync(TICKETS_JSON_PATH, 'utf8'));
-    }
-
-    const alreadyRegistered = tickets.some((t: any) => t.email === email && t.eventId === eventId);
+    // 2. Check if email already registered via Supabase
+    const alreadyRegistered = await checkEmailAlreadyRegistered(email, eventId);
     if (alreadyRegistered) {
       return NextResponse.json(
         { success: false, message: 'This email is already registered for this event.' },
@@ -94,8 +74,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 3. Check Capacity
-    const registeredCount = tickets.filter((t: any) => t.eventId === eventId).length;
+    // 3. Check Capacity via Supabase
+    const registeredCount = await getTicketCountByEvent(eventId);
     if (registeredCount >= (event.ticketCapacity || 100)) {
       return NextResponse.json(
         { success: false, message: `This event is sold out. All ${event.ticketCapacity} tickets have been taken.` },
@@ -115,29 +95,17 @@ export async function POST(request: NextRequest) {
       width: 300,
     })
 
-    // 6. Save ticket
-    const newTicket = {
-      id: ticketId,
+    // 6. Save ticket to Supabase
+    const newTicket = await createTicket({
+      ticketId,
       email,
       eventId,
       eventName,
-      createdAt: new Date().toISOString(),
-      used: false,
-      usedAt: null,
-      qrCode // Base64 stored for direct access
-    };
+      qrCode, // Base64 stored for direct access
+      scanned: false
+    });
     
-    tickets.push(newTicket);
-    fs.writeFileSync(TICKETS_JSON_PATH, JSON.stringify(tickets, null, 2));
-
-    // 7. Update Event Count
-    const eventIndex = events.findIndex((e: any) => e.id === eventId);
-    if (eventIndex !== -1) {
-      const newCount = tickets.filter((t: any) => t.eventId === eventId).length;
-      events[eventIndex].registeredCount = newCount;
-      events[eventIndex].attendees = `${newCount} attending`;
-      fs.writeFileSync(EVENTS_JSON_PATH, JSON.stringify(events, null, 2));
-    }
+    console.log('[v0] Ticket saved to Supabase:', ticketId);
 
     // 8. Send ticket email
     console.log('[v0] Attempting to send email to:', email);

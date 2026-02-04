@@ -110,7 +110,7 @@ export default function LandingPage() {
               </p>
             </div>
             <Link href="/events">
-              <Button variant="outline" className="h-14 px-8 rounded-2xl border-white/10 hover:bg-white hover:text-gray-900 transition-all font-bold group">
+              <Button variant="outline" className="h-14 px-8 rounded-2xl border-white/10 hover:bg-white hover:text-gray-900 transition-all font-bold group bg-transparent">
                 Browse All Events
                 <ChevronRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
               </Button>

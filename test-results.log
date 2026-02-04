@@ -1,0 +1,6 @@
+🚀 Starting Supabase Migration Logic Verification...
+
+--- Test 1: Rate Limiting ---
+💡 TIP: Run with environment variables: $env:NEXT_PUBLIC_SUPABASE_URL="..."; $env:SUPABASE_SERVICE_ROLE_KEY="..."; node scripts/test-migration.mjs
+
+❌ Test failed: Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your environment.

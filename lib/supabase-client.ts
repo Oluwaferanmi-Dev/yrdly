@@ -105,6 +105,21 @@ export async function checkEmailAlreadyRegistered(email: string, eventId: string
   return ticket !== null
 }
 
+export async function getTicketCountByEvent(eventId: string) {
+  ensureSupabase()
+  const { count, error } = await supabase!
+    .from('tickets')
+    .select('*', { count: 'exact', head: true })
+    .eq('event_id', eventId)
+
+  if (error) {
+    console.error('[v0] Error getting ticket count:', error)
+    throw error
+  }
+
+  return count || 0
+}
+
 // Rate limiting
 export async function checkRateLimit(ip: string, eventId: string) {
   ensureSupabase()

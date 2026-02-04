@@ -3,12 +3,12 @@ import { z } from 'zod'
 import QRCode from 'qrcode'
 import fs from 'fs'
 import path from 'path'
+import { getTicketById, markTicketScanned } from '@/lib/supabase-client'
 
 const scanSchema = z.object({
   ticketId: z.string().min(1, 'Ticket ID is required'),
 })
 
-const TICKETS_JSON_PATH = path.join(process.cwd(), 'lib/data/tickets.json')
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,15 +18,11 @@ export async function POST(request: NextRequest) {
 
     console.log('[v0] Scan request (Pure JSON):', { ticketId })
 
-    // 1. Look up ticket by ID
-    let ticket: any = null
-    if (fs.existsSync(TICKETS_JSON_PATH)) {
-      const tickets = JSON.parse(fs.readFileSync(TICKETS_JSON_PATH, 'utf8'))
-      ticket = tickets.find((t: any) => t.id === ticketId || t.ticketId === ticketId)
-    }
+    // 1. Look up ticket by ID via Supabase
+    const ticket = await getTicketById(ticketId);
 
     if (!ticket) {
-      console.log('[v0] Ticket not found:', ticketId)
+      console.log('[v0] Ticket not found in Supabase:', ticketId)
       return NextResponse.json(
         { success: false, message: 'Ticket not found. Please check the ticket ID.', scanned: false },
         { status: 404 }
@@ -34,51 +30,43 @@ export async function POST(request: NextRequest) {
     }
 
     // 2. Check if already scanned
-    if (ticket.used) {
+    if (ticket.scanned) {
       console.log('[v0] Ticket already scanned:', ticketId)
       
       return NextResponse.json(
         {
           success: false,
-          message: `This ticket was already scanned at ${new Date(ticket.usedAt).toLocaleString()}`,
+          message: `This ticket was already scanned at ${new Date(ticket.scanned_at).toLocaleString()}`,
           scanned: true,
           attendee: {
             email: ticket.email,
-            eventName: ticket.eventName,
-            scannedAt: ticket.usedAt,
-            qrCode: ticket.qrCode,
+            eventName: ticket.event_name,
+            scannedAt: ticket.scanned_at,
+            qrCode: ticket.qr_code,
           },
         },
         { status: 400 }
       )
     }
 
-    // 3. Mark ticket as scanned
-    const currentTickets = JSON.parse(fs.readFileSync(TICKETS_JSON_PATH, 'utf8'))
-    const index = currentTickets.findIndex((t: any) => t.id === ticketId || t.ticketId === ticketId)
+    // 3. Mark ticket as scanned in Supabase
+    const updatedTicket = await markTicketScanned(ticketId);
     
-    if (index !== -1) {
-      currentTickets[index].used = true
-      currentTickets[index].usedAt = new Date().toISOString()
-      fs.writeFileSync(TICKETS_JSON_PATH, JSON.stringify(currentTickets, null, 2))
-      
-      const updatedTicket = currentTickets[index]
-      console.log('[v0] Ticket marked as scanned in JSON:', ticketId)
+    console.log('[v0] Ticket marked as scanned in Supabase:', ticketId)
 
-      return NextResponse.json(
-        {
-          success: true,
-          message: 'Ticket verified successfully!',
-          scanned: true,
-          attendee: {
-            email: updatedTicket.email,
-            eventName: updatedTicket.eventName,
-            scannedAt: updatedTicket.usedAt,
-          },
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Ticket verified successfully!',
+        scanned: true,
+        attendee: {
+          email: updatedTicket.email,
+          eventName: updatedTicket.event_name,
+          scannedAt: updatedTicket.scanned_at,
         },
-        { status: 200 }
-      )
-    }
+      },
+      { status: 200 }
+    )
 
     return NextResponse.json(
       { success: false, message: 'Failed to update ticket status.' },
