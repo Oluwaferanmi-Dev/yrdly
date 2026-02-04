@@ -7,6 +7,7 @@ import { Home, Search, Radio, List, Music, Smile, ChevronDown, ChevronRight } fr
 import Image from "next/image"
 import Link from "next/link"
 import Header from "@/components/header"
+import Footer from "@/components/footer"
 import { TermsModal } from "@/components/terms-modal"
 import { NewsletterSignup } from "@/components/newsletter-signup"
 import { useState, useEffect } from "react"
@@ -43,115 +44,129 @@ export default function LandingPage() {
     <div className="min-h-screen bg-white">
       <Header currentPage="home" />
 
-      <section className="relative min-h-[90vh] md:min-h-[85vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[95vh] md:min-h-[90vh] flex items-center justify-center overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-[20s] hover:scale-110"
           style={{
             backgroundImage: "url('/hero-image.png')"
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-gray-900" />
         
         {/* Decorative elements */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-green-500/10 rounded-full blur-3xl animate-pulse-soft" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-green-400/10 rounded-full blur-3xl animate-pulse-soft delay-500" />
+        <div className="absolute top-20 left-[5%] w-72 h-72 bg-green-500/20 rounded-full blur-[120px] animate-pulse-soft pointer-events-none" />
+        <div className="absolute bottom-20 right-[5%] w-96 h-96 bg-green-400/10 rounded-full blur-[140px] animate-pulse-soft delay-500 pointer-events-none" />
         
-        <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4 py-12">
-          <div className="animate-fade-in">
-            <span className="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-6 border border-white/20">
-              Welcome to Your Community Hub
+        <div className="relative z-10 text-center text-white max-w-5xl mx-auto px-4 py-20">
+          <div className="animate-fade-in mb-8">
+            <span className="inline-flex items-center gap-2 px-5 py-2 bg-white/10 backdrop-blur-xl rounded-full text-sm font-bold border border-white/20 shadow-xl">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              Empowering Local Communities
             </span>
           </div>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight animate-fade-in-up text-balance">
-            Your Neighborhood,
-            <br />
-            <span className="text-green-400">Connected</span> with Yrdly
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 leading-[1.1] animate-fade-in-up text-balance tracking-tighter">
+            Your Neighborhood,<br />
+            <span className="text-gradient drop-shadow-sm">Connected</span>
           </h1>
-          <p className="text-base sm:text-lg md:text-xl mb-10 max-w-2xl mx-auto text-white/90 animate-fade-in-up delay-200 text-pretty leading-relaxed">
-            Yrdly is more than a marketplace — it's your community hub. Discover local listings, connect with neighbors, attend nearby events, and stay updated on what's happening around you.
+          <p className="text-lg sm:text-xl md:text-2xl mb-12 max-w-3xl mx-auto text-white/80 animate-fade-in-up delay-200 text-pretty leading-relaxed font-medium">
+            Discover local listings, secure your entry to exclusive events, and stay in the loop with what's happening just steps away from you.
           </p>
 
-          <div className="animate-fade-in-up delay-300">
+          <div className="animate-fade-in-up delay-300 max-w-xl mx-auto">
             <NewsletterSignup 
-              placeholder="Enter your email to join our community"
-              buttonText="Get Started"
+              placeholder="Join 1,000+ neighbors..."
+              buttonText="Join Community"
               source="hero-newsletter"
+              className="shadow-2xl"
             />
           </div>
           
           {/* Scroll indicator */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-float hidden md:block">
-            <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center pt-2">
-              <div className="w-1 h-2 bg-white/60 rounded-full animate-pulse" />
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-float hidden md:flex flex-col items-center gap-3">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Explore More</span>
+            <div className="w-6 h-10 border-2 border-white/20 rounded-full flex justify-center pt-2 backdrop-blur-sm">
+              <div className="w-1 h-2 bg-green-500 rounded-full animate-bounce" />
             </div>
           </div>
         </div>
       </section>
 
 
-      <section className="py-16 md:py-24 bg-gray-900 text-white relative overflow-hidden">
+      <section className="py-24 md:py-32 bg-gray-900 text-white relative overflow-hidden">
         {/* Background text */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-          <h2 className="text-[15vw] md:text-[12vw] font-bold tracking-wider opacity-[0.03] whitespace-nowrap">
-            DISCOVER
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+          <h2 className="text-[18vw] font-black tracking-tighter opacity-[0.02] whitespace-nowrap uppercase">
+            Discovery Hub
           </h2>
         </div>
         
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-transparent to-gray-900 pointer-events-none" />
-        
-        <div className="relative z-10 max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12 md:mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Discover What's Around You</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto text-base md:text-lg">
-              Explore local events, connect with neighbors, and find hidden gems in your community
-            </p>
+        <div className="relative z-10 max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
+            <div className="max-w-2xl">
+              <span className="text-green-500 font-black uppercase tracking-[0.3em] text-xs mb-4 block">Neighborhood Pulse</span>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 tracking-tight">Discover What's <br className="hidden md:block" /> Around You</h2>
+              <p className="text-gray-400 text-lg md:text-xl leading-relaxed">
+                Connect with neighbors, find local gems, and attend curated events that matter to your community.
+              </p>
+            </div>
+            <Link href="/events">
+              <Button variant="outline" className="h-14 px-8 rounded-2xl border-white/10 hover:bg-white hover:text-gray-900 transition-all font-bold group">
+                Browse All Events
+                <ChevronRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </Link>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-end">
-            <div className="group hover-lift rounded-2xl overflow-hidden bg-gray-800/50 p-4">
-              <div className="relative overflow-hidden rounded-xl mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start">
+            <div className="group card-glow rounded-[2.5rem] overflow-hidden bg-gray-800/30 p-6 border border-white/5">
+              <div className="relative overflow-hidden rounded-[2rem] mb-6 aspect-[3/4]">
                 <Image
                   src="/discover1.png"
                   alt="Discover Local Events"
-                  width={400}
-                  height={600}
-                  className="rounded-xl transition-transform duration-500 group-hover:scale-105 w-full"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
-              <h3 className="text-lg md:text-xl font-semibold mb-2 text-balance">
-                Discover Local Events Happening Right in Your Community
+              <h3 className="text-xl md:text-2xl font-black mb-3 tracking-tight">
+                Community Events
               </h3>
+              <p className="text-gray-400 text-sm leading-relaxed">Find games, networking meetups, and local yard parties happening today.</p>
             </div>
 
-            <div className="group hover-lift rounded-2xl overflow-hidden bg-gray-800/50 p-4 md:-translate-y-8">
-              <div className="relative overflow-hidden rounded-xl mb-4">
+            <div className="group card-glow rounded-[2.5rem] overflow-hidden bg-gray-800/30 p-6 border border-white/5 md:-translate-y-12">
+              <div className="relative overflow-hidden rounded-[2rem] mb-6 aspect-[3/4]">
                 <Image
                   src="/discover2.png"
                   alt="Main Feature"
-                  width={521}
-                  height={772}
-                  className="rounded-xl transition-transform duration-500 group-hover:scale-105 w-full"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
-              <p className="text-center text-gray-300">
-                Post your items and events effortlessly, connecting with your local audience
-              </p>
+              <h3 className="text-xl md:text-2xl font-black mb-3 tracking-tight">
+                Local Hustle
+              </h3>
+              <p className="text-gray-400 text-sm leading-relaxed">Support local vendors or post your own items to reach your neighborhood audience.</p>
             </div>
 
-            <div className="group hover-lift rounded-2xl overflow-hidden bg-gray-800/50 p-4">
-              <div className="relative overflow-hidden rounded-xl mb-4">
+            <div className="group card-glow rounded-[2.5rem] overflow-hidden bg-gray-800/30 p-6 border border-white/5">
+              <div className="relative overflow-hidden rounded-[2rem] mb-6 aspect-[3/4]">
                 <Image
                   src="/discover3.png"
                   alt="Community Connection"
-                  width={400}
-                  height={600}
-                  className="rounded-xl transition-transform duration-500 group-hover:scale-105 w-full"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
-              <Link href="/learn-more" className="flex items-center justify-between group/link transition-smooth hover:text-green-400">
-                <span className="font-medium">Learn More</span>
-                <ChevronRight className="w-5 h-5 transition-transform group-hover/link:translate-x-1" />
+              <h3 className="text-xl md:text-2xl font-black mb-3 tracking-tight">
+                Secure Connections
+              </h3>
+              <p className="text-gray-400 text-sm leading-relaxed mb-6">Safe, verified interactions powered by neighborhood trust and digital ease.</p>
+              <Link href="/learn-more" className="flex items-center justify-between group/link transition-smooth text-green-500 font-bold uppercase tracking-widest text-[10px]">
+                <span>Deep Dive</span>
+                <ChevronRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
               </Link>
             </div>
           </div>
@@ -159,94 +174,94 @@ export default function LandingPage() {
       </section>
 
 
-      <section className="py-16 md:py-24 bg-gradient-to-b from-white via-green-50/30 to-white relative overflow-hidden">
-        {/* Decorative blobs */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-green-100/50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 bg-green-100/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+      <section className="py-24 md:py-32 bg-white relative overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-green-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-green-50/30 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto px-4 relative">
-          <div className="text-center mb-12 md:mb-16">
-            <span className="inline-block px-4 py-1.5 bg-green-100 text-green-700 rounded-full text-sm font-medium mb-4">
-              How It Works
+        <div className="max-w-7xl mx-auto px-6 relative">
+          <div className="text-center mb-20 md:mb-24">
+            <span className="inline-block px-5 py-2 bg-green-100 text-green-700 rounded-full text-xs font-black uppercase tracking-[0.2em] mb-6 shadow-sm shadow-green-600/5">
+              Experience Yrdly
             </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 text-balance">
-              Your Guide to Buying and Selling Locally
+            <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-gray-900 mb-8 tracking-tighter leading-tight">
+              Simplified for You,<br className="hidden md:block" /> Built for Community
             </h2>
-            <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto text-pretty">
-              Creating a listing is simple and intuitive. Browse through a variety of items and events happening in your area with just a few clicks.
+            <p className="text-lg md:text-2xl text-gray-500 max-w-3xl mx-auto leading-relaxed">
+              We've stripped away the noise to give you the most intuitive way to buy, sell, and connect locally.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
-            <div className="group text-center hover-lift bg-white rounded-2xl p-6 md:p-8 shadow-soft">
-              <div className="relative mb-6 mx-auto w-fit">
-                <div className="absolute inset-0 bg-green-200/50 rounded-2xl blur-xl scale-75 group-hover:scale-100 transition-transform duration-500" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            <div className="group text-center hover-lift bg-white rounded-[2.5rem] p-8 md:p-10 shadow-premium border border-gray-100/50">
+              <div className="relative mb-10 mx-auto w-fit">
+                <div className="absolute inset-0 bg-green-200/40 rounded-[2.5rem] blur-2xl scale-75 group-hover:scale-110 transition-transform duration-700" />
                 <Image
                   src="/listing.png"
                   alt="Create Listing"
-                  width={180}
-                  height={180}
-                  className="relative rounded-2xl transition-transform duration-500 group-hover:scale-105"
+                  width={220}
+                  height={220}
+                  className="relative rounded-[2rem] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-2 rotate-0"
                 />
               </div>
-              <span className="inline-flex items-center justify-center w-8 h-8 bg-green-600 text-white rounded-full text-sm font-bold mb-4">1</span>
-              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
-                Creating Your Listing Made Easy
+              <div className="inline-flex items-center justify-center w-10 h-10 bg-green-600 text-white rounded-2xl text-xs font-black mb-6 shadow-lg shadow-green-600/20">01</div>
+              <h3 className="text-2xl font-black text-gray-900 mb-4 tracking-tight">
+                Swift Listings
               </h3>
-              <p className="text-gray-600 text-sm md:text-base">
-                Upload images, videos, and documents to showcase your items.
+              <p className="text-gray-500 text-base leading-relaxed">
+                Post in seconds. Upload your media and reach your local circle instantly.
               </p>
             </div>
 
-            <div className="group text-center hover-lift bg-white rounded-2xl p-6 md:p-8 shadow-soft md:-translate-y-4">
-              <div className="relative mb-6 mx-auto w-fit">
-                <div className="absolute inset-0 bg-green-200/50 rounded-2xl blur-xl scale-75 group-hover:scale-100 transition-transform duration-500" />
+            <div className="group text-center hover-lift bg-white rounded-[2.5rem] p-8 md:p-10 shadow-premium border border-gray-100/50 md:-translate-y-6">
+              <div className="relative mb-10 mx-auto w-fit">
+                <div className="absolute inset-0 bg-green-200/40 rounded-[2.5rem] blur-2xl scale-75 group-hover:scale-110 transition-transform duration-700" />
                 <Image
                   src="/browse.png"
                   alt="Browse and Filter"
-                  width={180}
-                  height={180}
-                  className="relative rounded-2xl transition-transform duration-500 group-hover:scale-105"
+                  width={220}
+                  height={220}
+                  className="relative rounded-[2rem] transition-transform duration-700 group-hover:scale-110 group-hover:rotate-2 rotate-0"
                 />
               </div>
-              <span className="inline-flex items-center justify-center w-8 h-8 bg-green-600 text-white rounded-full text-sm font-bold mb-4">2</span>
-              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
-                Browse and Filter Listings Effortlessly
+              <div className="inline-flex items-center justify-center w-10 h-10 bg-green-600 text-white rounded-2xl text-xs font-black mb-6 shadow-lg shadow-green-600/20">02</div>
+              <h3 className="text-2xl font-black text-gray-900 mb-4 tracking-tight">
+                Effortless Discovery
               </h3>
-              <p className="text-gray-600 text-sm md:text-base">
-                Use our search feature to find exactly what you need.
+              <p className="text-gray-500 text-base leading-relaxed">
+                Powerful filters to find exactly what you need without the endless scrolling.
               </p>
             </div>
 
-            <div className="group text-center hover-lift bg-white rounded-2xl p-6 md:p-8 shadow-soft">
-              <div className="relative mb-6 mx-auto w-fit">
-                <div className="absolute inset-0 bg-green-200/50 rounded-2xl blur-xl scale-75 group-hover:scale-100 transition-transform duration-500" />
+            <div className="group text-center hover-lift bg-white rounded-[2.5rem] p-8 md:p-10 shadow-premium border border-gray-100/50">
+              <div className="relative mb-10 mx-auto w-fit">
+                <div className="absolute inset-0 bg-green-200/40 rounded-[2.5rem] blur-2xl scale-75 group-hover:scale-110 transition-transform duration-700" />
                 <Image
                   src="/Local.png"
                   alt="Local Events"
-                  width={180}
-                  height={180}
-                  className="relative rounded-2xl transition-transform duration-500 group-hover:scale-105"
+                  width={220}
+                  height={220}
+                  className="relative rounded-[2rem] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-2 rotate-0"
                 />
               </div>
-              <span className="inline-flex items-center justify-center w-8 h-8 bg-green-600 text-white rounded-full text-sm font-bold mb-4">3</span>
-              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
-                Attend Local Events and Connect
+              <div className="inline-flex items-center justify-center w-10 h-10 bg-green-600 text-white rounded-2xl text-xs font-black mb-6 shadow-lg shadow-green-600/20">03</div>
+              <h3 className="text-2xl font-black text-gray-900 mb-4 tracking-tight">
+                Neighborhood Events
               </h3>
-              <p className="text-gray-600 mb-6 text-sm md:text-base">
-                Join events in your community and meet new people.
+              <p className="text-gray-500 mb-8 text-base leading-relaxed">
+                Connect in person. Secure your spot at games, parties, and networking meetups.
               </p>
-              <div className="flex flex-col items-center gap-3">
+              <div className="flex flex-col items-center gap-4">
                 {selectedEvent.id && (
                   <Button 
                     onClick={() => openEventModal(selectedEvent.id, selectedEvent.name)}
-                    className="bg-green-600 hover:bg-green-700 text-white w-full max-w-[200px] rounded-full transition-smooth hover:shadow-lg hover:shadow-green-600/20"
+                    className="bg-green-600 hover:bg-gray-900 text-white w-full max-w-[220px] h-12 rounded-2xl transition-all font-black uppercase tracking-widest text-[10px] shadow-xl hover:shadow-green-600/20"
                   >
-                    Quick Register
+                    Quick Join Now
                   </Button>
                 )}
-                <Link href="/events" className="text-green-600 hover:text-green-700 font-semibold flex items-center group/link transition-smooth">
-                  Explore All Events <ChevronRight className="w-4 h-4 ml-1 transition-transform group-hover/link:translate-x-1" />
+                <Link href="/events" className="text-green-600 hover:text-gray-900 font-black text-[10px] uppercase tracking-widest flex items-center group/link transition-all">
+                  Browse Event Hub <ChevronRight className="w-3.5 h-3.5 ml-1 transition-transform group-hover/link:translate-x-1" />
                 </Link>
               </div>
             </div>
@@ -256,66 +271,79 @@ export default function LandingPage() {
 
 
       <section 
-        className="py-16 md:py-24 text-white relative overflow-hidden"
+        className="py-24 md:py-32 text-white relative overflow-hidden group/newsletter"
         style={{
           backgroundImage: `url('/newsletter-bg.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundRepeat: 'repeat',
+          backgroundRepeat: 'no-repeat',
         }}
       >
-        {/* Gradient overlays for depth */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent pointer-events-none" />
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400" />
-        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400" />
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-900/95 via-gray-900/40 to-transparent pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-green-500 via-yellow-400 to-green-500" />
+        <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-gradient-to-r from-green-500 via-yellow-400 to-green-500" />
         
-        <div className="max-w-4xl mx-auto px-4 relative">
-          <div className="max-w-2xl">
-            <span className="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-6 border border-white/20">
-              Stay Connected
+        <div className="max-w-7xl mx-auto px-6 relative flex flex-col md:flex-row items-center gap-16">
+          <div className="flex-1 max-w-xl text-center md:text-left">
+            <span className="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-8 border border-white/20">
+              Community Pulse
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-balance leading-tight">
-              Stay Updated with Our Newsletter
+            <h2 className="text-4xl md:text-5xl lg:text-7xl font-black mb-8 leading-[1.1] tracking-tighter">
+              The Best of Your <br className="hidden lg:block" /><span className="text-green-400">Neighborhood</span>
             </h2>
-            <p className="text-lg md:text-xl mb-8 text-white/90 leading-relaxed">
-              Sign up to receive the latest listings and local events directly to your inbox.
+            <p className="text-xl md:text-2xl mb-10 text-white/80 leading-relaxed font-medium">
+              Join our newsletter to receive the latest listings and local events directly to your inbox.
             </p>
 
             <NewsletterSignup 
-              placeholder="Enter your email"
-              buttonText="Sign Up"
+              placeholder="Your primary email..."
+              buttonText="Sign Me Up"
               source="newsletter-section"
-              className="mb-4"
+              className="mb-6 shadow-2xl"
             />
 
-            <p className="text-sm text-white/70">
-              By clicking Sign Up, you agree to our{' '}
+            <p className="text-xs text-white/40 font-bold uppercase tracking-widest">
+              No spam. Just neighborhood trust. By signing up, you agree to our{' '}
               <button 
                 onClick={() => setIsTermsModalOpen(true)}
-                className="underline hover:text-yellow-300 cursor-pointer transition-colors"
+                className="text-white hover:text-green-400 underline decoration-green-400/30 underline-offset-4 cursor-pointer transition-colors"
               >
-                Terms and Conditions
+                Terms
               </button>
             </p>
+          </div>
+          
+          <div className="hidden lg:block flex-1 relative h-[500px] w-full max-w-md animate-float">
+             <div className="absolute inset-0 bg-green-500/20 rounded-[3rem] blur-[100px] opacity-50" />
+             <div className="relative h-full w-full glass-dark rounded-[3rem] p-10 flex flex-col justify-center border-white/10">
+                <div className="space-y-6">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="h-20 bg-white/5 rounded-2xl border border-white/10 flex items-center px-6 gap-4 animate-pulse-soft" style={{ animationDelay: `${i * 200}ms` }}>
+                      <div className="w-10 h-10 rounded-full bg-green-500/20" />
+                      <div className="flex-1 space-y-2">
+                        <div className="h-2 w-1/2 bg-white/20 rounded" />
+                        <div className="h-2 w-full bg-white/10 rounded" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+             </div>
           </div>
         </div>
       </section>
 
 
-
-      <section className="py-16 md:py-24 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center mb-12 md:mb-16">
-            <span className="inline-block px-4 py-1.5 bg-green-100 text-green-700 rounded-full text-sm font-medium mb-4">
-              Got Questions?
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
-            <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
-              Find answers to your questions about listings, purchases, and events right here.
+      <section className="py-24 md:py-32 bg-gray-50 relative overflow-hidden">
+        <div className="max-w-4xl mx-auto px-6 relative">
+          <div className="text-center mb-20">
+            <span className="text-green-600 font-black uppercase tracking-[0.3em] text-[10px] mb-4 block">Knowledge Hub</span>
+            <h2 className="text-4xl md:text-6xl font-black text-gray-900 mb-6 tracking-tighter">Frequently Asked</h2>
+            <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
+              Everything you need to know about the Yrdly ecosystem.
             </p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-6">
             {[ 
               {
                 question: "How to create listings?",
@@ -339,14 +367,14 @@ export default function LandingPage() {
               }
             ].map((faq, index) => (
               <div key={index} className="group">
-                <div className="bg-white rounded-xl p-6 shadow-soft hover-lift transition-all duration-300">
-                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3 flex items-start gap-3">
-                    <span className="inline-flex items-center justify-center w-7 h-7 bg-green-100 text-green-600 rounded-full text-sm font-bold flex-shrink-0 mt-0.5">
+                <div className="bg-white rounded-[2rem] p-8 shadow-soft card-glow border border-transparent hover:border-green-100 transition-all duration-500">
+                  <h3 className="text-xl md:text-2xl font-black text-gray-900 mb-6 flex items-start gap-5">
+                    <span className="inline-flex items-center justify-center w-10 h-10 bg-green-50 text-green-600 rounded-2xl text-xs font-black flex-shrink-0">
                       {index + 1}
                     </span>
                     {faq.question}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed pl-10 text-sm md:text-base">
+                  <p className="text-gray-500 leading-relaxed pl-14 text-sm md:text-base font-medium">
                     {faq.answer}
                   </p>
                 </div>
@@ -354,16 +382,17 @@ export default function LandingPage() {
             ))}
           </div>
 
-          <div className="text-center mt-12 md:mt-16 bg-white rounded-2xl p-8 md:p-12 shadow-soft">
-            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
-              Still have questions?
+          <div className="text-center mt-20 bg-gray-900 rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />
+            <h3 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight relative z-10">
+              Still Have Questions?
             </h3>
-            <p className="text-gray-600 mb-6">
-              We're here to help you!
+            <p className="text-gray-400 mb-10 text-lg relative z-10">
+              Our community support team is always ready to help you navigate Yrdly.
             </p>
-            <Link href="/contact">
-              <Button className="bg-green-600 hover:bg-green-700 text-white px-8 rounded-full transition-smooth hover:shadow-lg hover:shadow-green-600/20">
-                Contact Us
+            <Link href="/contact" className="relative z-10">
+              <Button className="bg-green-600 hover:bg-white hover:text-gray-900 text-white px-10 h-14 rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-xl shadow-green-600/10">
+                Talk to Us
               </Button>
             </Link>
           </div>
@@ -371,40 +400,7 @@ export default function LandingPage() {
       </section>
 
 
-      <footer className="bg-white border-t py-12 md:py-16">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex flex-col items-center mb-10">
-            <Link href="/" className="mb-6">
-              <Image
-                src="/yrdly-logo.png"
-                alt="YRDLY Logo"
-                width={80}
-                height={58}
-                style={{ width: "auto", height: "auto" }}
-              />
-            </Link>
-            <div className="flex flex-wrap justify-center gap-6 md:gap-10">
-              <Link href="/about" className="text-sm font-medium text-gray-600 hover:text-green-600 transition-smooth">About Us</Link>
-              <Link href="/contact" className="text-sm font-medium text-gray-600 hover:text-green-600 transition-smooth">Contact Us</Link>
-              <Link href="/events" className="text-sm font-medium text-gray-600 hover:text-green-600 transition-smooth">Events</Link>
-              <Link href="/learn-more" className="text-sm font-medium text-gray-600 hover:text-green-600 transition-smooth">Learn More</Link>
-            </div>
-          </div>
-          
-          <Separator className="mb-8" />
-          
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-gray-500 order-2 md:order-1">
-              © 2026 Yrdly. All rights reserved.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 md:gap-6 order-1 md:order-2">
-              <Link href="/privacy-policy" className="text-sm text-gray-500 hover:text-green-600 transition-smooth">Privacy Policy</Link>
-              <Link href="/terms" className="text-sm text-gray-500 hover:text-green-600 transition-smooth">Terms of Service</Link>
-              <Link href="#" className="text-sm text-gray-500 hover:text-green-600 transition-smooth">Cookies</Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
       <TermsModal 
         isOpen={isTermsModalOpen} 

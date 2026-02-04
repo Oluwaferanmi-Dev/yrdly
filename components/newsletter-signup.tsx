@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useNewsletter } from '@/hooks/use-newsletter';
-import { CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { CheckCircle, AlertCircle, Loader2, ArrowRight } from 'lucide-react';
 
 interface NewsletterSignupProps {
   placeholder?: string;
@@ -14,8 +14,8 @@ interface NewsletterSignupProps {
 }
 
 export function NewsletterSignup({ 
-  placeholder = "Enter your email to sign up for our Newsletter",
-  buttonText = "Sign Up",
+  placeholder = "Join our neighborhood circle",
+  buttonText = "Subscribe",
   className = "",
   source = "newsletter-signup"
 }: NewsletterSignupProps) {
@@ -24,67 +24,61 @@ export function NewsletterSignup({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!email.trim()) {
-      return;
-    }
-
+    if (!email.trim()) return;
     await subscribe(email.trim(), source);
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-    // Reset state when user starts typing
-    if (isSuccess || error) {
-      reset();
-    }
+    if (isSuccess || error) reset();
   };
 
   return (
-    <div className={className}>
-      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
-        <Input 
-          type="email"
-          placeholder={placeholder}
-          value={email}
-          onChange={handleEmailChange}
-          disabled={isLoading}
-          className={`flex-1 h-14 bg-white text-gray-900 placeholder:text-gray-500 ${
-            error ? 'border-red-500 focus:border-red-500' : ''
-          } ${isSuccess ? 'border-green-500 focus:border-green-500' : ''}`}
-          required
-        />
-        <Button 
-          type="submit"
-          disabled={isLoading || !email.trim()}
-          className="bg-green-600 hover:bg-green-700 h-14 px-8 disabled:opacity-50"
-        >
-          {isLoading ? (
-            <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Signing Up...
-            </>
-          ) : (
-            buttonText
+    <div className={`${className} animate-fade-in`}>
+      <form onSubmit={handleSubmit} className="relative max-w-xl mx-auto">
+        <div className="flex items-center bg-white rounded-xl shadow-premium border border-gray-100 p-1.5 focus-within:border-green-200 transition-all">
+          <Input 
+            type="email"
+            placeholder={placeholder}
+            value={email}
+            onChange={handleEmailChange}
+            disabled={isLoading}
+            className="flex-1 h-12 bg-transparent border-none focus-visible:ring-0 text-gray-900 placeholder:text-gray-400 font-medium px-4 text-sm"
+            required
+          />
+          <Button 
+            type="submit"
+            disabled={isLoading || !email.trim()}
+            className="bg-green-600 hover:bg-green-700 text-white h-12 px-6 rounded-lg font-black uppercase tracking-widest text-[10px] shadow-sm transition-all active:scale-95 disabled:opacity-50 flex items-center gap-2 group whitespace-nowrap"
+          >
+            {isLoading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <>
+                {buttonText}
+                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+              </>
+            )}
+          </Button>
+        </div>
+
+        {/* Status Messages */}
+        <div className="absolute -bottom-12 left-0 right-0 overflow-hidden">
+          {isSuccess && message && (
+            <div className="flex items-center justify-center gap-2 text-green-600 animate-slide-up">
+              <CheckCircle className="w-4 h-4" />
+              <p className="text-xs font-black uppercase tracking-widest leading-none">{message}</p>
+            </div>
           )}
-        </Button>
+
+          {error && (
+            <div className="flex items-center justify-center gap-2 text-red-500 animate-slide-up">
+              <AlertCircle className="w-4 h-4" />
+              <p className="text-xs font-black uppercase tracking-widest leading-none">{error}</p>
+            </div>
+          )}
+        </div>
       </form>
-
-      {/* Success Message */}
-      {isSuccess && message && (
-        <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3 max-w-2xl mx-auto">
-          <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-          <p className="text-green-800 text-sm">{message}</p>
-        </div>
-      )}
-
-      {/* Error Message */}
-      {error && (
-        <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3 max-w-2xl mx-auto">
-          <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
-          <p className="text-red-800 text-sm">{error}</p>
-        </div>
-      )}
     </div>
   );
 }

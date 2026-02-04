@@ -3,11 +3,16 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error('Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY')
-}
+// Initialize client only if variables are present
+export const supabase = (supabaseUrl && supabaseKey) 
+  ? createClient(supabaseUrl, supabaseKey)
+  : null
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+function ensureSupabase() {
+  if (!supabase) {
+    throw new Error('Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your environment.')
+  }
+}
 
 // Ticket operations
 export async function createTicket(data: {
@@ -18,7 +23,8 @@ export async function createTicket(data: {
   qrCode: string
   scanned: boolean
 }) {
-  const { data: ticket, error } = await supabase
+  ensureSupabase()
+  const { data: ticket, error } = await supabase!
     .from('tickets')
     .insert([data])
     .select()
@@ -33,7 +39,8 @@ export async function createTicket(data: {
 }
 
 export async function getTicketByIdAndEmail(ticketId: string, email: string) {
-  const { data: ticket, error } = await supabase
+  ensureSupabase()
+  const { data: ticket, error } = await supabase!
     .from('tickets')
     .select('*')
     .eq('ticket_id', ticketId)
@@ -49,7 +56,8 @@ export async function getTicketByIdAndEmail(ticketId: string, email: string) {
 }
 
 export async function getTicketById(ticketId: string) {
-  const { data: ticket, error } = await supabase
+  ensureSupabase()
+  const { data: ticket, error } = await supabase!
     .from('tickets')
     .select('*')
     .eq('ticket_id', ticketId)
@@ -64,7 +72,8 @@ export async function getTicketById(ticketId: string) {
 }
 
 export async function markTicketScanned(ticketId: string) {
-  const { data: ticket, error } = await supabase
+  ensureSupabase()
+  const { data: ticket, error } = await supabase!
     .from('tickets')
     .update({ scanned: true, scanned_at: new Date().toISOString() })
     .eq('ticket_id', ticketId)
@@ -80,7 +89,8 @@ export async function markTicketScanned(ticketId: string) {
 }
 
 export async function checkEmailAlreadyRegistered(email: string, eventId: string) {
-  const { data: ticket, error } = await supabase
+  ensureSupabase()
+  const { data: ticket, error } = await supabase!
     .from('tickets')
     .select('*')
     .eq('email', email)
@@ -97,9 +107,10 @@ export async function checkEmailAlreadyRegistered(email: string, eventId: string
 
 // Rate limiting
 export async function checkRateLimit(ip: string, eventId: string) {
+  ensureSupabase()
   const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString()
 
-  const { count, error } = await supabase
+  const { count, error } = await supabase!
     .from('rate_limits')
     .select('*', { count: 'exact', head: true })
     .eq('ip_address', ip)
@@ -115,7 +126,8 @@ export async function checkRateLimit(ip: string, eventId: string) {
 }
 
 export async function recordRateLimit(ip: string, eventId: string) {
-  const { error } = await supabase
+  ensureSupabase()
+  const { error } = await supabase!
     .from('rate_limits')
     .insert([{ ip_address: ip, event_id: eventId }])
 
@@ -127,9 +139,10 @@ export async function recordRateLimit(ip: string, eventId: string) {
 
 // Admin session
 export async function createAdminSession(password: string, ipAddress: string) {
+  ensureSupabase()
   const sessionToken = Buffer.from(`${Date.now()}-${Math.random()}`).toString('base64')
   
-  const { data: session, error } = await supabase
+  const { data: session, error } = await supabase!
     .from('admin_sessions')
     .insert([{
       session_token: sessionToken,
@@ -148,7 +161,8 @@ export async function createAdminSession(password: string, ipAddress: string) {
 }
 
 export async function validateAdminSession(sessionToken: string, ipAddress: string) {
-  const { data: session, error } = await supabase
+  ensureSupabase()
+  const { data: session, error } = await supabase!
     .from('admin_sessions')
     .select('*')
     .eq('session_token', sessionToken)

@@ -8,10 +8,16 @@ if (!BREVO_API_KEY) {
 
 // Initialize Brevo API
 const apiInstance = new brevo.TransactionalEmailsApi();
-apiInstance.setApiKey(
-  brevo.TransactionalEmailsApiApiKeys.apiKey, 
-  BREVO_API_KEY || 'missing-key'
-);
+
+if (BREVO_API_KEY) {
+  console.log('[Brevo] Initializing with API key');
+  apiInstance.setApiKey(
+    brevo.TransactionalEmailsApiApiKeys.apiKey, 
+    BREVO_API_KEY
+  );
+} else {
+  console.error('[Brevo] ERROR: BREVO_API_KEY is missing');
+}
 
 export interface EmailData {
   email: string;
@@ -249,8 +255,26 @@ export async function sendContactEmail({ name, email, subject, message }: Contac
   }
 }
 // Send ticket email with QR code
-export async function sendTicketEmail({ email, name, eventName, ticketId, qrCodeDataUrl }: EmailData & { eventName: string, ticketId: string, qrCodeDataUrl: string }) {
+export async function sendTicketEmail({ 
+  email, 
+  name, 
+  eventName, 
+  ticketId, 
+  qrCodeDataUrl,
+  qrCode // Handle the parameter name used in register-v2
+}: EmailData & { 
+  eventName: string, 
+  ticketId: string, 
+  qrCodeDataUrl?: string,
+  qrCode?: string 
+}) {
   try {
+    const finalQrCode = qrCode || qrCodeDataUrl;
+
+    if (!finalQrCode) {
+      throw new Error('QR code data is missing');
+    }
+
     if (!BREVO_API_KEY) {
       throw new Error('BREVO_API_KEY is not configured');
     }
@@ -258,7 +282,7 @@ export async function sendTicketEmail({ email, name, eventName, ticketId, qrCode
     console.log('[v0] sendTicketEmail called for:', { email, eventName, ticketId });
     
     // Extract base64 content from Data URL (remove "data:image/png;base64," prefix)
-    const base64Content = qrCodeDataUrl.split(',')[1];
+    const base64Content = finalQrCode.split(',')[1];
     
     const sendSmtpEmail = new brevo.SendSmtpEmail();
     
@@ -268,15 +292,6 @@ export async function sendTicketEmail({ email, name, eventName, ticketId, qrCode
       email: "noreply@yrdly.ng" 
     };
     sendSmtpEmail.to = [{ email, name: name || "Yrdly User" }];
-    
-    // Attach the QR code as an inline image (CID)
-    // This is much more compatible with email clients than data URIs
-    sendSmtpEmail.attachment = [
-      {
-        content: base64Content,
-        name: "qrcode.png"
-      }
-    ];
 
     sendSmtpEmail.htmlContent = `
       <!DOCTYPE html>
@@ -300,7 +315,7 @@ export async function sendTicketEmail({ email, name, eventName, ticketId, qrCode
               </div>
               
               <div style="background-color: #f3f4f6; border-radius: 8px; padding: 24px; display: inline-block; margin-bottom: 32px;">
-                <img src="cid:qrcode.png" alt="Ticket QR Code" style="width: 200px; height: 200px; display: block;">
+                <img src="${finalQrCode}" alt="Ticket QR Code" style="width: 200px; height: 200px; display: block;">
                 <div style="margin-top: 16px; border-top: 1px dashed #d1d5db; pt-16px;">
                    <p style="margin: 8px 0 0 0; font-family: monospace; font-size: 18px; color: #111827; font-weight: 700; letter-spacing: 0.1em;">${ticketId}</p>
                 </div>
@@ -332,11 +347,21 @@ export async function sendTicketEmail({ email, name, eventName, ticketId, qrCode
       messageId: (data.body as any).messageId
     };
     
-  } catch (error) {
-    console.error('Ticket email error:', error);
+  } catch (error: any) {
+    console.error('Ticket email error details:', {
+      message: error.message,
+      body: error.response?.body,
+      statusCode: error.response?.statusCode
+    });
+    
+    let errorMessage = error.message;
+    if (error.response?.body?.message) {
+      errorMessage = error.response.body.message;
+    }
+    
     return { 
       success: false, 
-      error: error instanceof Error ? error.message : 'Unknown error during email delivery'
+      error: errorMessage || 'Unknown error during email delivery'
     };
   }
 }
@@ -357,12 +382,12 @@ export async function addAttendeeContact({ email, name, eventName }: { email: st
     // Create or update contact
     const createContact = new brevo.CreateContact();
     createContact.email = email;
-    createContact.firstname = name || email.split('@')[0];
-    createContact.listIds = [2]; // Add to Yrdly Attendees list (list ID 2 - adjust if needed)
     createContact.attributes = {
+      'FIRSTNAME': name || email.split('@')[0],
       'EVENT_NAME': eventName,
       'REGISTRATION_DATE': new Date().toISOString()
     };
+    createContact.listIds = [2]; // Add to Yrdly Attendees list (list ID 2 - adjust if needed)
 
     const data = await contactsApi.createContact(createContact);
     
@@ -373,17 +398,22 @@ export async function addAttendeeContact({ email, name, eventName }: { email: st
       contactId: (data.body as any).id
     };
     
-  } catch (error) {
+  } catch (error: any) {
     // If contact already exists, that's okay - just log it
-    if (error instanceof Error && error.message.includes('already exists')) {
+    if (error.response?.body?.code === 'duplicate_parameter') {
       console.log('[v0] Contact already exists in Brevo:', email);
       return { success: true, message: 'Contact already exists' };
     }
     
-    console.error('[v0] Error storing attendee contact in Brevo:', error);
+    console.error('[v0] Error storing attendee contact in Brevo:', {
+      message: error.message,
+      body: error.response?.body,
+      statusCode: error.response?.statusCode
+    });
+    
     return { 
       success: false, 
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: error.response?.body?.message || error.message || 'Unknown error'
     };
   }
 }

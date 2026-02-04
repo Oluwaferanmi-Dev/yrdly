@@ -1,71 +1,52 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import {
-  getTicketById,
-  markTicketScanned,
-  validateAdminSession,
-} from '@/lib/supabase-client'
+import QRCode from 'qrcode'
+import fs from 'fs'
+import path from 'path'
 
 const scanSchema = z.object({
   ticketId: z.string().min(1, 'Ticket ID is required'),
-  sessionToken: z.string().optional(),
 })
+
+const TICKETS_JSON_PATH = path.join(process.cwd(), 'lib/data/tickets.json')
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const validatedData = scanSchema.parse(body)
-    const { ticketId, sessionToken } = validatedData
+    const { ticketId } = validatedData
 
-    console.log('[v0] Scan request:', { ticketId })
-
-    // Get client IP for session validation
-    const clientIp = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
-
-    // If sessionToken provided, validate it
-    if (sessionToken) {
-      const session = await validateAdminSession(sessionToken, clientIp)
-      if (!session) {
-        console.log('[v0] Invalid or expired session')
-        return NextResponse.json(
-          {
-            success: false,
-            message: 'Session expired. Please log in again.',
-          },
-          { status: 401 }
-        )
-      }
-    }
+    console.log('[v0] Scan request (Pure JSON):', { ticketId })
 
     // 1. Look up ticket by ID
-    const ticket = await getTicketById(ticketId)
+    let ticket: any = null
+    if (fs.existsSync(TICKETS_JSON_PATH)) {
+      const tickets = JSON.parse(fs.readFileSync(TICKETS_JSON_PATH, 'utf8'))
+      ticket = tickets.find((t: any) => t.id === ticketId || t.ticketId === ticketId)
+    }
 
     if (!ticket) {
       console.log('[v0] Ticket not found:', ticketId)
       return NextResponse.json(
-        {
-          success: false,
-          message: 'Ticket not found. Please check the ticket ID.',
-          scanned: false,
-        },
+        { success: false, message: 'Ticket not found. Please check the ticket ID.', scanned: false },
         { status: 404 }
       )
     }
 
-    console.log('[v0] Ticket found:', { ticketId, email: ticket.email, scanned: ticket.scanned })
-
     // 2. Check if already scanned
-    if (ticket.scanned) {
+    if (ticket.used) {
       console.log('[v0] Ticket already scanned:', ticketId)
+      
       return NextResponse.json(
         {
           success: false,
-          message: `This ticket was already scanned at ${new Date(ticket.scanned_at).toLocaleString()}`,
+          message: `This ticket was already scanned at ${new Date(ticket.usedAt).toLocaleString()}`,
           scanned: true,
           attendee: {
             email: ticket.email,
-            eventName: ticket.event_name,
-            scannedAt: ticket.scanned_at,
+            eventName: ticket.eventName,
+            scannedAt: ticket.usedAt,
+            qrCode: ticket.qrCode,
           },
         },
         { status: 400 }
@@ -73,37 +54,39 @@ export async function POST(request: NextRequest) {
     }
 
     // 3. Mark ticket as scanned
-    const updatedTicket = await markTicketScanned(ticketId)
+    const currentTickets = JSON.parse(fs.readFileSync(TICKETS_JSON_PATH, 'utf8'))
+    const index = currentTickets.findIndex((t: any) => t.id === ticketId || t.ticketId === ticketId)
+    
+    if (index !== -1) {
+      currentTickets[index].used = true
+      currentTickets[index].usedAt = new Date().toISOString()
+      fs.writeFileSync(TICKETS_JSON_PATH, JSON.stringify(currentTickets, null, 2))
+      
+      const updatedTicket = currentTickets[index]
+      console.log('[v0] Ticket marked as scanned in JSON:', ticketId)
 
-    console.log('[v0] Ticket marked as scanned:', ticketId)
-
-    return NextResponse.json(
-      {
-        success: true,
-        message: 'Ticket verified successfully!',
-        scanned: true,
-        attendee: {
-          email: updatedTicket.email,
-          eventName: updatedTicket.event_name,
-          scannedAt: updatedTicket.scanned_at,
-        },
-      },
-      { status: 200 }
-    )
-  } catch (error) {
-    console.error('[v0] Scan error:', error)
-
-    if (error instanceof z.ZodError) {
       return NextResponse.json(
         {
-          success: false,
-          message: 'Invalid request. Please provide a valid ticket ID.',
-          errors: error.errors,
+          success: true,
+          message: 'Ticket verified successfully!',
+          scanned: true,
+          attendee: {
+            email: updatedTicket.email,
+            eventName: updatedTicket.eventName,
+            scannedAt: updatedTicket.usedAt,
+          },
         },
-        { status: 400 }
+        { status: 200 }
       )
     }
 
+    return NextResponse.json(
+      { success: false, message: 'Failed to update ticket status.' },
+      { status: 500 }
+    )
+
+  } catch (error) {
+    console.error('[v0] Scan error:', error)
     return NextResponse.json(
       {
         success: false,

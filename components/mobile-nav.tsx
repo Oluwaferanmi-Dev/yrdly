@@ -1,20 +1,19 @@
 "use client"
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, Home, Calendar, Info, BookOpen, Clock, Mail, ChevronRight } from 'lucide-react'; 
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu, X, ShoppingBag as Bag, Users, Zap, Mail, ArrowRight, Instagram, Twitter, MessageCircle } from 'lucide-react';
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
-const navIcons: Record<string, React.ReactNode> = {
-  "Home": <Home className="w-5 h-5" />,
-  "Events": <Calendar className="w-5 h-5" />,
-  "About Us": <Info className="w-5 h-5" />,
-  "Learn More": <BookOpen className="w-5 h-5" />,
-  "Coming Soon": <Clock className="w-5 h-5" />,
-  "Contact Us": <Mail className="w-5 h-5" />,
-};
+const menuItems = [
+  { label: "Home", path: "/" },
+  { label: "Events", path: "/events" },
+  { label: "About Us", path: "/about" },
+  { label: "Contact Us", path: "/contact" },
+];
 
-export default function MobileNav({ links }: { links: { href: string; label: string; isActive?: boolean }[] }) {
+export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -23,67 +22,83 @@ export default function MobileNav({ links }: { links: { href: string; label: str
         <Button 
           variant="ghost" 
           size="icon" 
-          className="hover:bg-green-100 hover:text-green-600 transition-all duration-300 rounded-lg"
+          className="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:border-green-200 transition-all active:scale-95"
         >
-          <Menu className="h-5 w-5" />
-          <span className="sr-only">Toggle navigation menu</span>
+          <Menu className="h-6 w-6 text-gray-900" />
+          <span className="sr-only">Open menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-full sm:w-96 p-0 overflow-hidden">
-        <div className="flex flex-col h-full bg-gradient-to-b from-white via-green-50/30 to-white">
-          {/* Header with close button */}
-          <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
-            <div>
-              <h2 className="text-lg font-bold text-gray-900">Menu</h2>
-              <p className="text-xs text-gray-500 mt-1">Navigate Yrdly</p>
-            </div>
+      <SheetContent side="right" className="w-[280px] p-0 border-l border-gray-100 bg-white text-gray-900 overflow-hidden">
+        <VisuallyHidden.Root>
+          <SheetTitle>Navigation Menu</SheetTitle>
+        </VisuallyHidden.Root>
+
+        <div className="flex flex-col h-full">
+          {/* Top Bar */}
+          <div className="flex items-center justify-between px-8 py-8">
+            <Link href="/" onClick={() => setIsOpen(false)} className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center overflow-hidden">
+                <img src="/favicon.ico" alt="Yrdly Logo" className="w-5 h-5 object-contain" />
+              </div>
+              <span className="font-black text-xl tracking-tighter">yrdly.</span>
+            </Link>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setIsOpen(false)}
-              className="hover:bg-gray-100"
+              className="w-12 h-12 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-900 border border-gray-100"
             >
-              <X className="h-5 w-5 text-gray-600" />
+              <X className="h-6 w-6" />
             </Button>
           </div>
 
-          {/* Navigation Links */}
-          <nav className="flex-1 overflow-y-auto py-4 px-3">
-            <div className="space-y-2">
-              {links.map((link) => (
+          {/* Nav Items */}
+          <nav className="flex-1 px-8 py-4 space-y-6 overflow-y-auto">
+            <div className="space-y-4">
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 ml-4">Main Menu</span>
+              {menuItems.map((item) => (
                 <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-200 group ${
-                    link.isActive 
-                      ? 'bg-green-600 text-white shadow-lg shadow-green-600/30' 
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
+                  key={item.path}
+                  href={item.path}
                   onClick={() => setIsOpen(false)}
+                  className="group flex items-center justify-between p-4 rounded-2xl hover:bg-gray-50 transition-all"
                 >
-                  <span className={link.isActive ? 'text-white' : 'text-gray-500 group-hover:text-green-600'}>
-                    {navIcons[link.label]}
-                  </span>
-                  <span className="flex-1 font-medium text-sm">{link.label}</span>
-                  {link.isActive ? (
-                    <div className="w-2 h-2 bg-white rounded-full" />
-                  ) : (
-                    <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-green-600 transition-colors" />
-                  )}
+                  <h3 className="text-xl font-black tracking-tighter text-gray-900 group-hover:text-green-600 transition-colors">{item.label}</h3>
+                  <ArrowRight className="w-5 h-5 text-gray-200 group-hover:text-green-500 group-hover:translate-x-1 transition-all" />
                 </Link>
               ))}
             </div>
+
+            {/* Socials */}
+            <div className="pt-8 space-y-4">
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 ml-4">Connect</span>
+              <div className="flex gap-4 px-2">
+                {[
+                  { icon: <Instagram className="w-5 h-5" />, href: "https://instagram.com/yrdly.ng" },
+                  { icon: <Twitter className="w-5 h-5" />, href: "#" },
+                  { icon: <MessageCircle className="w-5 h-5" />, href: "#" },
+                ].map((social, i) => (
+                  <Link 
+                    key={i} 
+                    href={social.href} 
+                    className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 hover:bg-green-600 hover:text-white transition-all border border-gray-100"
+                  >
+                    {social.icon}
+                  </Link>
+                ))}
+              </div>
+            </div>
           </nav>
 
-          {/* Footer CTA */}
-          <div className="px-6 py-5 border-t border-gray-100 bg-gradient-to-t from-green-50 to-transparent">
-            <Link href="/coming-soon" onClick={() => setIsOpen(false)} className="w-full">
-              <Button className="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl font-medium transition-all duration-300 hover:shadow-lg hover:shadow-green-600/30">
-                Join Yrdly
+          {/* Bottom Bar */}
+          <div className="p-8 bg-gray-50 border-t border-gray-100">
+            <Link href="/market" onClick={() => setIsOpen(false)}>
+              <Button className="w-full h-16 bg-gray-900 hover:bg-green-600 text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] shadow-xl shadow-gray-900/10 transition-all active:scale-95">
+                Visit Market Place
               </Button>
             </Link>
-            <p className="text-xs text-gray-500 text-center mt-3">
-              Be part of your neighborhood
+            <p className="text-center text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-6">
+              © 2026 Yrdly Technologies
             </p>
           </div>
         </div>
