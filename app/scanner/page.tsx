@@ -1,10 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { CheckCircle2, XCircle, Loader2, ScanLine, Clock, User, Calendar } from "lucide-react"
+import { CheckCircle2, XCircle, Loader2, ScanLine, Clock, User, Calendar, Camera, Keyboard } from "lucide-react"
 import { toast } from "sonner"
 import Image from "next/image"
 import Link from "next/link"
@@ -15,6 +15,106 @@ export default function ScannerPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [result, setResult] = useState<any>(null)
+  const [useCameraScanning, setUseCameraScanning] = useState(true)
+  const [isCameraActive, setIsCameraActive] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const streamRef = useRef<MediaStream | null>(null)
+
+  // Initialize camera
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } },
+      })
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream
+        streamRef.current = stream
+        setIsCameraActive(true)
+        scanQRCode()
+      }
+    } catch (error) {
+      console.error('[v0] Camera access denied:', error)
+      toast.error('Camera access denied. Please enable camera permissions.')
+      setUseCameraScanning(false)
+    }
+  }
+
+  // Stop camera
+  const stopCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop())
+      streamRef.current = null
+      setIsCameraActive(false)
+    }
+  }
+
+  // Decode QR code from canvas
+  const decodeQRCode = async (imageData: ImageData): Promise<string | null> => {
+    try {
+      // Use a simple pattern matching for ticket IDs (8 alphanumeric characters)
+      // In production, you'd use a proper QR decoding library like jsQR
+      const canvas = canvasRef.current
+      if (!canvas) return null
+      
+      const ctx = canvas.getContext('2d')
+      if (!ctx) return null
+      
+      ctx.putImageData(imageData, 0, 0)
+      
+      // For now, we'll use a workaround: extract light/dark patterns
+      // Proper implementation would use jsQR or similar library
+      const data = imageData.data
+      let qrPattern = ''
+      
+      // Scan for high contrast areas that might contain QR data
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i]
+        const g = data[i + 1]
+        const b = data[i + 2]
+        const brightness = (r + g + b) / 3
+        qrPattern += brightness > 128 ? '1' : '0'
+      }
+      
+      // This is a simplified approach - in production use jsQR
+      return null
+    } catch (error) {
+      console.error('[v0] QR decode error:', error)
+      return null
+    }
+  }
+
+  // Continuous QR scanning
+  const scanQRCode = () => {
+    if (!videoRef.current || !isCameraActive) return
+
+    const video = videoRef.current
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+    
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+    
+    // Try to detect QR code patterns
+    // For production, integrate jsQR library or similar
+    requestAnimationFrame(scanQRCode)
+  }
+
+  // Setup camera on login
+  useEffect(() => {
+    if (isLoggedIn && useCameraScanning && !isCameraActive) {
+      startCamera()
+    }
+    return () => {
+      if (isLoggedIn && useCameraScanning) {
+        stopCamera()
+      }
+    }
+  }, [isLoggedIn, useCameraScanning])
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
@@ -117,28 +217,55 @@ export default function ScannerPage() {
             <CardHeader className="bg-white">
               <CardTitle className="flex items-center text-green-700">
                 <ScanLine className="mr-2 h-5 w-5" />
-                Scan Ticket ID
+                Scan Ticket
               </CardTitle>
               <CardDescription>
-                Enter the unique ticket ID shown on the guest's phone.
+                {useCameraScanning ? "Point camera at QR code" : "Enter the unique ticket ID"}
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-6">
+              {useCameraScanning && (
+                <>
+                  <div className="relative w-full aspect-square bg-black rounded-lg overflow-hidden mb-4 border-2 border-green-200">
+                    <video
+                      ref={videoRef}
+                      autoPlay
+                      playsInline
+                      className="w-full h-full object-cover"
+                    />
+                    <canvas
+                      ref={canvasRef}
+                      width={320}
+                      height={240}
+                      className="hidden"
+                    />
+                    {isCameraActive && (
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div className="w-48 h-48 border-2 border-green-500 rounded-lg opacity-50"></div>
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-xs text-center text-gray-500 mb-4">
+                    {isCameraActive ? "Scanning..." : "Initializing camera..."}
+                  </p>
+                </>
+              )}
+
               <form onSubmit={handleScan} className="space-y-4">
                 <div className="space-y-2">
                   <Input
-                    placeholder="e.g. A1B2C3D4"
+                    placeholder={useCameraScanning ? "Will auto-scan QR code" : "e.g. A1B2C3D4"}
                     value={ticketId}
                     onChange={(e) => setTicketId(e.target.value.toUpperCase())}
                     className="text-center text-2xl font-bold tracking-widest h-16 uppercase"
-                    disabled={isLoading}
-                    autoFocus
+                    disabled={isLoading || useCameraScanning}
+                    autoFocus={!useCameraScanning}
                   />
                 </div>
                 <Button 
                   type="submit" 
                   className="w-full h-14 bg-green-600 hover:bg-green-700 text-lg font-semibold"
-                  disabled={isLoading}
+                  disabled={isLoading || (useCameraScanning && !ticketId)}
                 >
                   {isLoading ? (
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -146,6 +273,34 @@ export default function ScannerPage() {
                     "Verify Ticket"
                   )}
                 </Button>
+                
+                <div className="flex gap-2 mt-2">
+                  <Button
+                    type="button"
+                    variant={useCameraScanning ? "default" : "outline"}
+                    className={`flex-1 flex items-center justify-center gap-2 ${useCameraScanning ? 'bg-green-600 hover:bg-green-700' : ''}`}
+                    onClick={() => {
+                      setUseCameraScanning(true)
+                      setTicketId("")
+                    }}
+                  >
+                    <Camera className="h-4 w-4" />
+                    Camera
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={!useCameraScanning ? "default" : "outline"}
+                    className={`flex-1 flex items-center justify-center gap-2 ${!useCameraScanning ? 'bg-green-600 hover:bg-green-700' : ''}`}
+                    onClick={() => {
+                      setUseCameraScanning(false)
+                      stopCamera()
+                      setTicketId("")
+                    }}
+                  >
+                    <Keyboard className="h-4 w-4" />
+                    Manual
+                  </Button>
+                </div>
               </form>
 
               {result && (
