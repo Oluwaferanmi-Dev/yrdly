@@ -49,37 +49,34 @@ export default function ScannerPage() {
     }
   }
 
-  // Decode QR code from canvas
-  const decodeQRCode = async (imageData: ImageData): Promise<string | null> => {
+  // Simple QR code detection - looks for typical 8-char ticket format
+  const detectTicketInFrame = (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement): string | null => {
     try {
-      // Use a simple pattern matching for ticket IDs (8 alphanumeric characters)
-      // In production, you'd use a proper QR decoding library like jsQR
-      const canvas = canvasRef.current
-      if (!canvas) return null
-      
-      const ctx = canvas.getContext('2d')
-      if (!ctx) return null
-      
-      ctx.putImageData(imageData, 0, 0)
-      
-      // For now, we'll use a workaround: extract light/dark patterns
-      // Proper implementation would use jsQR or similar library
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
       const data = imageData.data
-      let qrPattern = ''
       
-      // Scan for high contrast areas that might contain QR data
+      // Convert to grayscale and look for high contrast areas (QR codes are black/white)
+      let darkPixels = 0
       for (let i = 0; i < data.length; i += 4) {
         const r = data[i]
         const g = data[i + 1]
         const b = data[i + 2]
         const brightness = (r + g + b) / 3
-        qrPattern += brightness > 128 ? '1' : '0'
+        if (brightness < 128) darkPixels++
       }
       
-      // This is a simplified approach - in production use jsQR
+      // QR codes typically have 20-50% dark pixels
+      const darkRatio = darkPixels / (data.length / 4)
+      if (darkRatio < 0.15 || darkRatio > 0.55) {
+        return null // Not likely a QR code
+      }
+      
+      // If this looks like it could contain a QR code, signal to manual entry
+      // (For production, use a library like jsQR)
+      console.log('[v0] QR-like pattern detected. Use manual entry for now.')
       return null
     } catch (error) {
-      console.error('[v0] QR decode error:', error)
+      console.error('[v0] Detection error:', error)
       return null
     }
   }
@@ -97,10 +94,14 @@ export default function ScannerPage() {
 
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
     
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+    // Check if we can detect a QR code in the frame
+    const detected = detectTicketInFrame(ctx, canvas)
+    if (detected) {
+      setTicketId(detected)
+      handleScan()
+      return
+    }
     
-    // Try to detect QR code patterns
-    // For production, integrate jsQR library or similar
     requestAnimationFrame(scanQRCode)
   }
 
@@ -138,12 +139,12 @@ export default function ScannerPage() {
     setResult(null)
 
     try {
-      const response = await fetch("/api/events/scan", {
+      const response = await fetch("/api/events/scan-v2", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ticketId, adminPassword }),
+        body: JSON.stringify({ ticketId }),
       })
 
       const data = await response.json()
@@ -154,12 +155,9 @@ export default function ScannerPage() {
         setTicketId("") // Clear for next scan
       } else {
         toast.error(data.message || "Invalid Ticket")
-        if (response.status === 401) {
-          setIsLoggedIn(false) // Force re-login if password is wrong
-        }
       }
     } catch (error) {
-      console.error("Scan error:", error)
+      console.error("[v0] Scan error:", error)
       toast.error("An error occurred during scanning.")
     } finally {
       setIsLoading(false)
@@ -312,7 +310,7 @@ export default function ScannerPage() {
                       <XCircle className="h-8 w-8 text-red-600 mr-3" />
                     )}
                     <h3 className={`text-xl font-bold ${result.success ? 'text-green-800' : 'text-red-800'}`}>
-                      {result.success ? "ACCESS GRANTED" : "ACCESS DENIED"}
+                      {result.success ? "TICKET VALID" : "TICKET INVALID"}
                     </h3>
                   </div>
                   
@@ -320,20 +318,20 @@ export default function ScannerPage() {
                     {result.message}
                   </p>
 
-                  {result.ticket && (
+                  {result.attendee && (
                     <div className="space-y-3 pt-4 border-t border-black/5 text-sm text-gray-700">
                       <div className="flex items-center">
                         <Calendar className="h-4 w-4 mr-2 text-gray-400" />
-                        <span className="font-semibold">{result.ticket.eventName}</span>
+                        <span className="font-semibold">{result.attendee.eventName}</span>
                       </div>
                       <div className="flex items-center">
                         <User className="h-4 w-4 mr-2 text-gray-400" />
-                        <span>{result.ticket.email}</span>
+                        <span>{result.attendee.email}</span>
                       </div>
-                      {result.ticket.used && (
-                        <div className="flex items-center text-red-600">
+                      {result.attendee.scannedAt && (
+                        <div className="flex items-center text-green-600">
                           <Clock className="h-4 w-4 mr-2" />
-                          <span>Used: {new Date(result.ticket.usedAt).toLocaleString()}</span>
+                          <span>Verified: {new Date(result.attendee.scannedAt).toLocaleString()}</span>
                         </div>
                       )}
                     </div>

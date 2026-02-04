@@ -1,0 +1,165 @@
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('Missing Supabase environment variables: NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY')
+}
+
+export const supabase = createClient(supabaseUrl, supabaseKey)
+
+// Ticket operations
+export async function createTicket(data: {
+  ticketId: string
+  email: string
+  eventId: string
+  eventName: string
+  qrCode: string
+  scanned: boolean
+}) {
+  const { data: ticket, error } = await supabase
+    .from('tickets')
+    .insert([data])
+    .select()
+    .single()
+
+  if (error) {
+    console.error('[v0] Error creating ticket in Supabase:', error)
+    throw error
+  }
+
+  return ticket
+}
+
+export async function getTicketByIdAndEmail(ticketId: string, email: string) {
+  const { data: ticket, error } = await supabase
+    .from('tickets')
+    .select('*')
+    .eq('ticket_id', ticketId)
+    .eq('email', email)
+    .single()
+
+  if (error && error.code !== 'PGRST116') {
+    console.error('[v0] Error fetching ticket:', error)
+    throw error
+  }
+
+  return ticket || null
+}
+
+export async function getTicketById(ticketId: string) {
+  const { data: ticket, error } = await supabase
+    .from('tickets')
+    .select('*')
+    .eq('ticket_id', ticketId)
+    .single()
+
+  if (error && error.code !== 'PGRST116') {
+    console.error('[v0] Error fetching ticket by ID:', error)
+    throw error
+  }
+
+  return ticket || null
+}
+
+export async function markTicketScanned(ticketId: string) {
+  const { data: ticket, error } = await supabase
+    .from('tickets')
+    .update({ scanned: true, scanned_at: new Date().toISOString() })
+    .eq('ticket_id', ticketId)
+    .select()
+    .single()
+
+  if (error) {
+    console.error('[v0] Error marking ticket as scanned:', error)
+    throw error
+  }
+
+  return ticket
+}
+
+export async function checkEmailAlreadyRegistered(email: string, eventId: string) {
+  const { data: ticket, error } = await supabase
+    .from('tickets')
+    .select('*')
+    .eq('email', email)
+    .eq('event_id', eventId)
+    .single()
+
+  if (error && error.code !== 'PGRST116') {
+    console.error('[v0] Error checking duplicate registration:', error)
+    throw error
+  }
+
+  return ticket !== null
+}
+
+// Rate limiting
+export async function checkRateLimit(ip: string, eventId: string) {
+  const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString()
+
+  const { count, error } = await supabase
+    .from('rate_limits')
+    .select('*', { count: 'exact', head: true })
+    .eq('ip_address', ip)
+    .eq('event_id', eventId)
+    .gt('created_at', oneHourAgo)
+
+  if (error) {
+    console.error('[v0] Error checking rate limit:', error)
+    throw error
+  }
+
+  return count || 0
+}
+
+export async function recordRateLimit(ip: string, eventId: string) {
+  const { error } = await supabase
+    .from('rate_limits')
+    .insert([{ ip_address: ip, event_id: eventId }])
+
+  if (error) {
+    console.error('[v0] Error recording rate limit:', error)
+    throw error
+  }
+}
+
+// Admin session
+export async function createAdminSession(password: string, ipAddress: string) {
+  const sessionToken = Buffer.from(`${Date.now()}-${Math.random()}`).toString('base64')
+  
+  const { data: session, error } = await supabase
+    .from('admin_sessions')
+    .insert([{
+      session_token: sessionToken,
+      ip_address: ipAddress,
+      expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+    }])
+    .select()
+    .single()
+
+  if (error) {
+    console.error('[v0] Error creating admin session:', error)
+    throw error
+  }
+
+  return session
+}
+
+export async function validateAdminSession(sessionToken: string, ipAddress: string) {
+  const { data: session, error } = await supabase
+    .from('admin_sessions')
+    .select('*')
+    .eq('session_token', sessionToken)
+    .eq('ip_address', ipAddress)
+    .gt('expires_at', new Date().toISOString())
+    .single()
+
+  if (error && error.code !== 'PGRST116') {
+    console.error('[v0] Error validating session:', error)
+    throw error
+  }
+
+  return session || null
+}
