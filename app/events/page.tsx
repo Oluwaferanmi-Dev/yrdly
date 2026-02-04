@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Calendar, MapPin, Users, ChevronRight, Home, Loader2, CalendarX } from "lucide-react"
+import { Calendar, MapPin, Users, ChevronRight, Loader2, CalendarX } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import Header from "@/components/header"
 import { EventRegistrationModal } from "@/components/event-registration-modal"
 
 interface Event {
@@ -49,31 +50,7 @@ export default function EventsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 flex items-center justify-between px-4 md:px-8 py-3 md:py-4 border-b bg-white shadow-sm">
-        <div className="flex items-center gap-4 md:gap-8">
-          <Link href="/">
-            <Image
-              src="/yrdly-logo.png"
-              alt="YRDLY Logo"
-              width={50}
-              height={36}
-              className="hover:opacity-80 transition-opacity md:w-[62px] md:h-[44px]"
-            />
-          </Link>
-          <div className="hidden md:flex items-center gap-8">
-            <Link href="/" className="text-sm font-medium text-gray-600 hover:text-green-600">Home</Link>
-            <Link href="/events" className="text-sm font-semibold text-green-600">Events</Link>
-            <Link href="/about" className="text-sm font-medium text-gray-600 hover:text-green-600">About</Link>
-          </div>
-        </div>
-        <Link href="/">
-          <Button variant="ghost" size="sm" className="text-gray-600 hover:text-green-600 px-2 md:px-4">
-            <Home className="w-4 h-4 md:mr-2" />
-            <span className="hidden md:inline">Back Home</span>
-          </Button>
-        </Link>
-      </nav>
+      <Header currentPage="events" showBackHome={true} />
 
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-green-600 via-green-600 to-green-700 py-12 md:py-20 text-white text-center relative overflow-hidden">
@@ -167,18 +144,7 @@ export default function EventsPage() {
           </div>
         )}
 
-        {/* Post Event Call to Action */}
-        {events.length > 0 && (
-          <div className="mt-16 text-center py-12 bg-white rounded-2xl border-2 border-dashed border-gray-200">
-            <p className="text-gray-500 font-medium">Have an event to share with the neighborhood?</p>
-            <Link href="/coming-soon">
-              <Button variant="link" className="text-green-600 mt-2 font-bold flex items-center mx-auto">
-                Post your own event
-                <ChevronRight className="w-4 h-4 ml-1" />
-              </Button>
-            </Link>
-          </div>
-        )}
+
       </main>
 
       <EventRegistrationModal 
@@ -189,7 +155,7 @@ export default function EventsPage() {
       />
 
       <footer className="bg-white border-t py-8 text-center text-sm text-gray-500 mt-auto">
-        <p>© 2025 Yrdly Community Hub. All rights reserved.</p>
+        <p>© 2026 Yrdly Community Hub. All rights reserved.</p>
       </footer>
     </div>
   )

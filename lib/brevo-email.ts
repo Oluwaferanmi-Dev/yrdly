@@ -88,7 +88,7 @@ export async function sendWelcomeEmail({ email, name, source }: EmailData) {
             
             <!-- Footer -->
             <div style="border-top: 1px solid #eee; padding: 20px; text-align: center; color: #666; font-size: 12px;">
-              <p>© 2025 Yrdly. All rights reserved.</p>
+              <p>© 2026 Yrdly. All rights reserved.</p>
               <p>
                 <a href="https://yrdly.com/unsubscribe" style="color: #16a34a;">Unsubscribe</a> | 
                 <a href="https://yrdly.com/privacy" style="color: #16a34a;">Privacy Policy</a>
@@ -214,7 +214,7 @@ export async function sendContactEmail({ name, email, subject, message }: Contac
             
             <!-- Footer -->
             <div style="border-top: 1px solid #eee; padding: 20px; text-align: center; color: #666; font-size: 12px;">
-              <p>© 2025 Yrdly. All rights reserved.</p>
+              <p>© 2026 Yrdly. All rights reserved.</p>
               <p>This message was sent via the Yrdly contact form by ${name} (${email})</p>
             </div>
           </div>

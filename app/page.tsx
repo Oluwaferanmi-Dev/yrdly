@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator"
 import { Home, Search, Radio, List, Music, Smile, ChevronDown, ChevronRight } from 'lucide-react'
 import Image from "next/image"
 import Link from "next/link"
-import MobileNav from "@/components/mobile-nav"
+import Header from "@/components/header"
 import { TermsModal } from "@/components/terms-modal"
 import { NewsletterSignup } from "@/components/newsletter-signup"
 import { useState, useEffect } from "react"
@@ -39,60 +39,9 @@ export default function LandingPage() {
     setIsEventModalOpen(true)
   }
 
-  const navLinks = [
-    { href: "/", label: "Home", isActive: true },
-    { href: "/events", label: "Events" },
-    { href: "/about", label: "About Us" },
-    { href: "/learn-more", label: "Learn More" },
-    { href: "/coming-soon", label: "Coming Soon" },
-    { href: "/contact", label: "Contact Us" },
-  ];
-
   return (
     <div className="min-h-screen bg-white">
-
-<nav className="sticky top-0 z-50 flex items-center justify-between px-4 md:px-8 py-3 glass border-b border-gray-100">
-  <Link href="/" className="transition-smooth hover:opacity-80">
-    <Image
-      src="/yrdly-logo.png"
-      alt="YRDLY Logo"
-      width={56}
-      height={40}
-      className="md:w-[62px] md:h-[44px]"
-      style={{ width: "auto", height: "auto" }}
-    />
-  </Link>
-
-  <div className="hidden md:flex items-center gap-8">
-    {navLinks.map((link) => (
-      <Link
-        key={link.href}
-        href={link.href}
-        className={`text-sm transition-smooth relative py-1 ${
-          link.isActive 
-            ? 'font-semibold text-green-600' 
-            : 'text-gray-600 hover:text-green-600'
-        }`}
-      >
-        {link.label}
-        {link.isActive && (
-          <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-green-600 rounded-full" />
-        )}
-      </Link>
-    ))}
-  </div>
-
-  <div className="flex items-center gap-3 md:gap-4">
-    <Link href="/coming-soon" className="hidden md:block">
-      <Button className="bg-green-600 hover:bg-green-700 text-white px-5 md:px-6 h-10 rounded-full transition-smooth hover:shadow-lg hover:shadow-green-600/20">
-        Join
-      </Button>
-    </Link>
-    <div className="md:hidden">
-      <MobileNav links={navLinks} />
-    </div>
-  </div>
-</nav>
+      <Header currentPage="home" />
 
       <section className="relative min-h-[90vh] md:min-h-[85vh] flex items-center justify-center overflow-hidden">
         <div 
@@ -446,7 +395,7 @@ export default function LandingPage() {
           
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-gray-500 order-2 md:order-1">
-              © 2025 Yrdly. All rights reserved.
+              © 2026 Yrdly. All rights reserved.
             </p>
             <div className="flex flex-wrap justify-center gap-4 md:gap-6 order-1 md:order-2">
               <Link href="/privacy-policy" className="text-sm text-gray-500 hover:text-green-600 transition-smooth">Privacy Policy</Link>
