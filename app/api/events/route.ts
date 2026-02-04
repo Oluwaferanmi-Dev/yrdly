@@ -1,39 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-
-const EVENTS_PATH = path.join(process.cwd(), 'lib/data/events.json');
-const TICKETS_PATH = path.join(process.cwd(), 'lib/data/tickets.json');
+import eventsData from '@/lib/data/events.json';
+import { getTicketCountByEvent } from '@/lib/supabase-client';
 
 export async function GET() {
   try {
-    if (!fs.existsSync(EVENTS_PATH)) {
-      return NextResponse.json([]);
-    }
+    const events = eventsData;
     
-    const eventsData = fs.readFileSync(EVENTS_PATH, 'utf8');
-    const events = JSON.parse(eventsData);
-    
-    // Load tickets to calculate real attendance
-    let tickets = [];
-    if (fs.existsSync(TICKETS_PATH)) {
+    // Fetch live counts from Supabase for each event
+    const enrichedEvents = await Promise.all(events.map(async (event: any) => {
       try {
-        const ticketsData = fs.readFileSync(TICKETS_PATH, 'utf8');
-        tickets = JSON.parse(ticketsData);
+        const liveCount = await getTicketCountByEvent(event.id);
+        return {
+          ...event,
+          registeredCount: liveCount,
+          attendees: liveCount === 0 ? "No one yet" : `${liveCount} attending`
+        };
       } catch (e) {
-        console.error('Error parsing tickets.json:', e);
+        console.error(`Error fetching count for event ${event.id}:`, e);
+        return event; // Fallback to original event data
       }
-    }
-    
-    // Merge live attendance counts
-    const enrichedEvents = events.map((event: any) => {
-      const liveCount = tickets.filter((t: any) => t.eventId === event.id).length;
-      return {
-        ...event,
-        registeredCount: liveCount,
-        attendees: liveCount === 0 ? "No one yet" : `${liveCount} attending`
-      };
-    });
+    }));
 
     return NextResponse.json(enrichedEvents);
   } catch (error) {

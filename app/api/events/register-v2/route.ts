@@ -2,17 +2,16 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import QRCode from 'qrcode'
 import { v4 as uuidv4 } from 'uuid'
-import { createHash } from 'node:crypto'
-import fs from 'fs'
-import path from 'path'
 import { sendTicketEmail, addAttendeeContact } from '@/lib/brevo-email'
 import { 
   checkRateLimit, 
   recordRateLimit, 
   checkEmailAlreadyRegistered, 
   createTicket,
-  getTicketCountByEvent
+  getTicketCountByEvent,
+  supabase
 } from '@/lib/supabase-client'
+import eventsData from '@/lib/data/events.json'
 
 const registrationSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -20,8 +19,8 @@ const registrationSchema = z.object({
   eventName: z.string(),
 })
 
-// JSON Persistence paths (for metadata only)
-const EVENTS_JSON_PATH = path.join(process.cwd(), 'lib/data/events.json')
+// Environment check
+const BREVO_API_KEY = process.env.BREVO_API_KEY;
 
 
 export async function POST(request: NextRequest) {
@@ -35,6 +34,19 @@ export async function POST(request: NextRequest) {
     const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
 
     console.log('[v0] Registration request (JSON):', { email, eventId, eventName, ip })
+
+    // 0. Verify Configuration
+    if (!supabase) {
+      console.error('[v0] Supabase client not initialized. Check environment variables.');
+      return NextResponse.json(
+        { success: false, message: 'Server configuration error: Database not connected.' },
+        { status: 500 }
+      )
+    }
+
+    if (!BREVO_API_KEY) {
+      console.warn('[v0] BREVO_API_KEY is missing. Email will fail but registration will continue.');
+    }
 
     // 1. Check Rate Limit
     const rateLimitCount = await checkRateLimit(ip, eventId);
@@ -52,11 +64,7 @@ export async function POST(request: NextRequest) {
     console.log('[v0] Rate limit check passed');
 
     // 2. Check Capacity & Event Existence
-    let events = [];
-    if (fs.existsSync(EVENTS_JSON_PATH)) {
-      events = JSON.parse(fs.readFileSync(EVENTS_JSON_PATH, 'utf8'));
-    }
-    
+    const events = eventsData;
     const event = events.find((e: any) => e.id === eventId);
     if (!event) {
       return NextResponse.json(
