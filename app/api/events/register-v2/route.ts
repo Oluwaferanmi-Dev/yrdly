@@ -30,8 +30,9 @@ export async function POST(request: NextRequest) {
     const validatedData = registrationSchema.parse(body)
     const { email, eventId, eventName } = validatedData
 
-    // Get IP for rate limiting
-    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
+    // Get IP for rate limiting - take only the first IP if it's a list (Vercel)
+    const forwardedFor = request.headers.get('x-forwarded-for')
+    const ip = (forwardedFor ? forwardedFor.split(',')[0].trim() : request.headers.get('x-real-ip') || 'unknown').substring(0, 45)
 
     console.log('[v0] Registration request (JSON):', { email, eventId, eventName, ip })
 

@@ -387,7 +387,8 @@ export async function addAttendeeContact({ email, name, eventName }: { email: st
       'EVENT_NAME': eventName,
       'REGISTRATION_DATE': new Date().toISOString()
     };
-    createContact.listIds = [2]; // Add to Yrdly Attendees list (list ID 2 - adjust if needed)
+    // Add to default list (usually ID 1 or 2) - allow failure if list doesn't exist
+    createContact.listIds = [1]; 
 
     const data = await contactsApi.createContact(createContact);
     

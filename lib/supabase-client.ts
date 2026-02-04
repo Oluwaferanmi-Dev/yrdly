@@ -24,9 +24,19 @@ export async function createTicket(data: {
   scanned: boolean
 }) {
   ensureSupabase()
+  // Map to snake_case columns
+  const dbData = {
+    ticket_id: data.ticketId,
+    email: data.email,
+    event_id: data.eventId,
+    event_name: data.eventName,
+    qr_code: data.qrCode,
+    scanned: data.scanned
+  }
+
   const { data: ticket, error } = await supabase!
     .from('tickets')
-    .insert([data])
+    .insert([dbData])
     .select()
     .single()
 

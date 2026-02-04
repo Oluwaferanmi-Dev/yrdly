@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import QRCode from 'qrcode'
-import fs from 'fs'
-import path from 'path'
 import { getTicketById, markTicketScanned } from '@/lib/supabase-client'
 
 const scanSchema = z.object({
