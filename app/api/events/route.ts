@@ -13,10 +13,14 @@ export async function GET() {
     const enrichedEvents = await Promise.all(events.map(async (event: any) => {
       try {
         const liveCount = await getTicketCountByEvent(event.id);
+        const capacity = event.ticketCapacity || 100;
+        const remaining = Math.max(0, capacity - liveCount);
+        
         return {
           ...event,
           registeredCount: liveCount,
-          attendees: liveCount === 0 ? "No one yet" : `${liveCount} attending`
+          remainingCount: remaining,
+          attendees: remaining === 0 ? "Sold Out" : `${remaining} tickets left`
         };
       } catch (e) {
         console.error(`Error fetching count for event ${event.id}:`, e);
