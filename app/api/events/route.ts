@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import eventsData from '@/lib/data/events.json';
 import { getTicketCountByEvent } from '@/lib/supabase-client';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET() {
   try {
     const events = eventsData;

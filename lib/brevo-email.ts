@@ -293,6 +293,12 @@ export async function sendTicketEmail({
     };
     sendSmtpEmail.to = [{ email, name: name || "Yrdly User" }];
 
+    // Add QR Code as an inline attachment
+    sendSmtpEmail.attachment = [{
+      content: base64Content,
+      name: 'ticket-qr.png'
+    }];
+
     sendSmtpEmail.htmlContent = `
       <!DOCTYPE html>
       <html>
@@ -315,7 +321,8 @@ export async function sendTicketEmail({
               </div>
               
               <div style="background-color: #f3f4f6; border-radius: 8px; padding: 24px; display: inline-block; margin-bottom: 32px;">
-                <img src="${finalQrCode}" alt="Ticket QR Code" style="width: 200px; height: 200px; display: block;">
+                <!-- Use CID for better email client compatibility -->
+                <img src="cid:ticket-qr.png" alt="Ticket QR Code" style="width: 200px; height: 200px; display: block;">
                 <div style="margin-top: 16px; border-top: 1px dashed #d1d5db; pt-16px;">
                    <p style="margin: 8px 0 0 0; font-family: monospace; font-size: 18px; color: #111827; font-weight: 700; letter-spacing: 0.1em;">${ticketId}</p>
                 </div>

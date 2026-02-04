@@ -151,6 +151,13 @@ export default function EventsPage() {
                       </div>
                       {event.location}
                     </div>
+
+                    <div className="flex items-center text-xs text-gray-500 font-bold tracking-tight">
+                      <div className="w-8 h-8 rounded-xl bg-gray-50 flex items-center justify-center mr-3 flex-shrink-0 group-hover:bg-green-50 transition-colors">
+                        <Users className="w-4 h-4 text-green-600" />
+                      </div>
+                      {event.attendees}
+                    </div>
                   </div>
                   
                   <p className="text-gray-400 text-xs leading-relaxed mb-6 line-clamp-2 font-medium">

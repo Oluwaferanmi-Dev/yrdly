@@ -16,7 +16,7 @@ import { EventRegistrationModal } from "@/components/event-registration-modal"
 export default function LandingPage() {
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false)
   const [isEventModalOpen, setIsEventModalOpen] = useState(false)
-  const [selectedEvent, setSelectedEvent] = useState<{id: string, name: string}>({id: "", name: ""})
+  const [selectedEvent, setSelectedEvent] = useState<{id: string, name: string, attendees: string}>({id: "", name: "", attendees: ""})
 
   useEffect(() => {
     fetchLatestEvent()
@@ -27,7 +27,11 @@ export default function LandingPage() {
       const response = await fetch('/api/events')
       const data = await response.json()
       if (Array.isArray(data) && data.length > 0) {
-        setSelectedEvent({ id: data[0].id, name: data[0].name })
+        setSelectedEvent({ 
+          id: data[0].id, 
+          name: data[0].name,
+          attendees: data[0].attendees || ""
+        })
       }
     } catch (error) {
       console.error('Failed to fetch event:', error)
@@ -36,7 +40,7 @@ export default function LandingPage() {
 
   const openEventModal = (id: string, name: string) => {
     if (!id) return;
-    setSelectedEvent({ id, name })
+    setSelectedEvent(prev => ({ ...prev, id, name }))
     setIsEventModalOpen(true)
   }
 
@@ -253,12 +257,19 @@ export default function LandingPage() {
               </p>
               <div className="flex flex-col items-center gap-4">
                 {selectedEvent.id && (
-                  <Button 
-                    onClick={() => openEventModal(selectedEvent.id, selectedEvent.name)}
-                    className="bg-green-600 hover:bg-gray-900 text-white w-full max-w-[220px] h-12 rounded-2xl transition-all font-black uppercase tracking-widest text-[10px] shadow-xl hover:shadow-green-600/20"
-                  >
-                    Quick Join Now
-                  </Button>
+                  <div className="w-full max-w-[220px] space-y-3">
+                    <Button 
+                      onClick={() => openEventModal(selectedEvent.id, selectedEvent.name)}
+                      className="bg-green-600 hover:bg-gray-900 text-white w-full h-12 rounded-2xl transition-all font-black uppercase tracking-widest text-[10px] shadow-xl hover:shadow-green-600/20"
+                    >
+                      Quick Join Now
+                    </Button>
+                    {selectedEvent.attendees && (
+                      <p className="text-[10px] font-black text-green-600 uppercase tracking-[0.2em] text-center animate-pulse">
+                        {selectedEvent.attendees}
+                      </p>
+                    )}
+                  </div>
                 )}
                 <Link href="/events" className="text-green-600 hover:text-gray-900 font-black text-[10px] uppercase tracking-widest flex items-center group/link transition-all">
                   Browse Event Hub <ChevronRight className="w-3.5 h-3.5 ml-1 transition-transform group-hover/link:translate-x-1" />
