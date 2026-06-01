@@ -29,7 +29,7 @@ export default function AboutPage() {
             About <span className="text-green-500">Us</span>
           </h1>
           <p className="text-lg md:text-xl text-white/60 font-medium max-w-xl mx-auto tracking-tight">
-            Built for Nigeria, by Nigeria. Fostering trust in every neighborhood.
+            Built for Nigerians, by Nigerians. Fostering trust on every street and in every estate.
           </p>
         </div>
       </section>
@@ -47,7 +47,7 @@ export default function AboutPage() {
               <div className="relative rounded-[3rem] overflow-hidden shadow-premium border-8 border-white">
                 <Image
                   src="/about.png"
-                  alt="Neighborhood connection"
+                  alt="Nigerian estate community"
                   width={600}
                   height={800}
                   className="object-cover w-full aspect-[4/5] transition-transform duration-700 hover:scale-105"
@@ -71,14 +71,14 @@ export default function AboutPage() {
               
               <div className="space-y-8 text-gray-500 text-lg md:text-xl font-medium leading-relaxed">
                 <p>
-                  Yrdly is built for Nigerians by Nigerians. We understand campus life, we understand the hustle, and the unique pulse of our neighborhoods.
+                  Yrdly is built for Nigerians by Nigerians. We understand the hustle, the owambe weekends, and the unique pulse of our estates and streets.
                 </p>
                 <p>
-                  From ordering essentials to secure payments and connecting with exclusive local events, Yrdly brings convenience right to your fingertips. We're your digital companion for a smoother life.
+                  From buying from the vendor next door to securing your spot at the estate meeting, Yrdly brings your immediate community right to your fingertips.
                 </p>
                 <div className="pt-6 border-l-4 border-green-600 pl-8 space-y-4">
                   <p className="italic text-gray-900 font-black text-2xl tracking-tight">
-                    "Our goal is to empower people with tools that make life smoother, faster, and more connected."
+                    "Our goal is to bring back the age-old Nigerian spirit of community — where neighbours actually know, trust, and support each other."
                   </p>
                 </div>
               </div>
@@ -108,26 +108,25 @@ export default function AboutPage() {
           <div className="space-y-0">
             {[
               {
-                question: "How to create listings?",
-                answer: "To create a listing, navigate to the 'Create Listing' section from your dashboard. Fill in the required details such as title, description, price, and category, then upload images if necessary. Once you submit, your listing will be visible to the community."
+                question: "How to sell on the Neighbourhood Market?",
+                answer: "To sell an item, go to the Marketplace and tap 'Post Hustle'. Add photos, set your price in Naira, and wait for verified neighbours to contact you. It's safe, local, and quick."
               },
               {
-                question: "How to purchase items?",
-                answer: "To purchase an item, browse available listings and click on the one you’re interested in. Tap the 'Buy Now' or 'Contact Seller' button to proceed. Payments can be made securely through our supported payment gateways, and you will receive a confirmation once the purchase is complete."
+                question: "How to buy from neighbours?",
+                answer: "Browse the Marketplace for items in your estate or city. You can chat with the seller directly in the app or pay securely via Paystack escrow to ensure you get exactly what you paid for."
               },
               {
-                question: "How to attend events?",
-                answer: "To attend an event, go to the 'Events' section of the app. Select the event you’re interested in, check the details, and click 'Join' or 'Get Ticket'. If it’s a paid event, you’ll need to complete the payment process before your spot is confirmed."
+                question: "How do I attend local events?",
+                answer: "Head to the Events tab to see owambes, estate meetings, and parties near you. Tap 'Get Ticket' to secure your spot. For paid events, checkout is seamless and your ticket is stored in the app."
               },
               {
-                question: "Can I save listings?",
-                answer: "Yes, you can save listings to view later. Simply tap the 'Save' or 'Bookmark' button on any listing. Your saved listings will be available under your profile in the 'Saved Items' section."
+                question: "Can I save items from vendors?",
+                answer: "Yes! Spot a good deal but not ready to buy? Tap the save icon. You can find all your saved items later in your profile under 'Saved Items'."
               },
               {
-                question: "What if I have a question?",
-                answer: "If you have a question, you can visit our Help Center or contact support directly from the app. Go to 'Settings' → 'Support' to chat with our team or send us an email. You can also check our community forums for quick answers."
-}
-
+                question: "How do I contact support?",
+                answer: "Having issues? Our Nigerian support team is always ready to help. Go to 'Settings' → 'Support' in the app to chat with us, or send an email to yrdly@gmail.com."
+              }
             ].map((faq, index) => (
               <div key={index}>
                 <div className="py-8">

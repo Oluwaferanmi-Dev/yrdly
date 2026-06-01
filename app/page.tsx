@@ -68,15 +68,15 @@ export default function LandingPage() {
             <div className="animate-fade-in mb-8">
               <span className="inline-flex items-center gap-2 px-5 py-2 bg-white/10 backdrop-blur-xl rounded-full text-sm font-bold border border-white/20 shadow-xl">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                Empowering Local Communities
+                Your Estate & Street, Connected
               </span>
             </div>
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 leading-[1.1] animate-fade-in-up text-balance tracking-tighter">
-              Your Neighborhood,<br />
+              Your Neighbourhood,<br />
               <span className="text-gradient drop-shadow-sm">Connected</span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl mb-12 max-w-2xl mx-auto lg:mx-0 text-white/80 animate-fade-in-up delay-200 text-pretty leading-relaxed font-medium">
-              Discover local listings, secure your entry to exclusive events, and stay in the loop with what's happening just steps away from you.
+              Stay in the loop with your neighbours, buy and sell safely on your street, and discover local owambe and events just steps away.
             </p>
           </div>
 
@@ -107,10 +107,10 @@ export default function LandingPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
             <div className="max-w-2xl">
-              <span className="text-green-500 font-black uppercase tracking-[0.3em] text-xs mb-4 block">Neighborhood Pulse</span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 tracking-tight">Discover What's <br className="hidden md:block" /> Around You</h2>
+              <span className="text-green-500 font-black uppercase tracking-[0.3em] text-xs mb-4 block">Community Feed</span>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 tracking-tight">See What's Happening <br className="hidden md:block" /> In Your Estate</h2>
               <p className="text-gray-400 text-lg md:text-xl leading-relaxed">
-                Connect with neighbors, find local gems, and attend curated events that matter to your community.
+                Connect with verified neighbours, support local businesses, and attend curated events that matter to your community.
               </p>
             </div>
             <Link href="/events">
@@ -133,9 +133,9 @@ export default function LandingPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
               <h3 className="text-xl md:text-2xl font-black mb-3 tracking-tight">
-                Community Events
+                Local Owambe & Events
               </h3>
-              <p className="text-gray-400 text-sm leading-relaxed">Find games, networking meetups, and local yard parties happening today.</p>
+              <p className="text-gray-400 text-sm leading-relaxed">Find estate meetings, networking meetups, and local parties happening today.</p>
             </div>
 
             <div className="group card-glow rounded-[2.5rem] overflow-hidden bg-gray-800/30 p-6 border border-white/5 md:-translate-y-12">
@@ -149,9 +149,9 @@ export default function LandingPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
               <h3 className="text-xl md:text-2xl font-black mb-3 tracking-tight">
-                Local Hustle
+                Neighbourhood Market
               </h3>
-              <p className="text-gray-400 text-sm leading-relaxed">Support local vendors or post your own items to reach your neighborhood audience.</p>
+              <p className="text-gray-400 text-sm leading-relaxed">Support your local vendors or post your own hustle to reach neighbours you trust.</p>
             </div>
 
             <div className="group card-glow rounded-[2.5rem] overflow-hidden bg-gray-800/30 p-6 border border-white/5">
@@ -165,9 +165,9 @@ export default function LandingPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
               <h3 className="text-xl md:text-2xl font-black mb-3 tracking-tight">
-                Secure Connections
+                Verified Neighbours Only
               </h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-6">Safe, verified interactions powered by neighborhood trust and digital ease.</p>
+              <p className="text-gray-400 text-sm leading-relaxed mb-6">Safe interactions powered by local verification. Connect with real people on your street.</p>
               <Link href="/learn-more" className="flex items-center justify-between group/link transition-smooth text-green-500 font-bold uppercase tracking-widest text-[10px]">
                 <span>Deep Dive</span>
                 <ChevronRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
@@ -189,10 +189,10 @@ export default function LandingPage() {
               Experience Yrdly
             </span>
             <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-gray-900 mb-8 tracking-tighter leading-tight">
-              Simplified for You,<br className="hidden md:block" /> Built for Community
+              Your Estate,<br className="hidden md:block" /> In Your Pocket
             </h2>
             <p className="text-lg md:text-2xl text-gray-500 max-w-3xl mx-auto leading-relaxed">
-              We've stripped away the noise to give you the most intuitive way to buy, sell, and connect locally.
+              We've stripped away the noise to give you the most intuitive way to buy, sell, and connect with your immediate community.
             </p>
           </div>
 
@@ -250,10 +250,10 @@ export default function LandingPage() {
               </div>
               <div className="inline-flex items-center justify-center w-10 h-10 bg-green-600 text-white rounded-2xl text-xs font-black mb-6 shadow-lg shadow-green-600/20">03</div>
               <h3 className="text-2xl font-black text-gray-900 mb-4 tracking-tight">
-                Neighborhood Events
+                Estate & Local Events
               </h3>
               <p className="text-gray-500 mb-8 text-base leading-relaxed">
-                Connect in person. Secure your spot at games, parties, and networking meetups.
+                Connect in person. Secure your spot at estate meetings, street parties, and local events.
               </p>
               <div className="flex flex-col items-center gap-4">
                 {selectedEvent.id && (
@@ -300,10 +300,10 @@ export default function LandingPage() {
               Community Pulse
             </span>
             <h2 className="text-4xl md:text-5xl lg:text-7xl font-black mb-8 leading-[1.1] tracking-tighter">
-              The Best of Your <br className="hidden lg:block" /><span className="text-green-400">Neighborhood</span>
+              The Best of Your <br className="hidden lg:block" /><span className="text-green-400">Estate & City</span>
             </h2>
             <p className="text-xl md:text-2xl mb-10 text-white/80 leading-relaxed font-medium">
-              Join our newsletter to receive the latest listings and local events directly to your inbox.
+              Join our newsletter to get updates on estate news, local hustles, and events directly to your inbox.
             </p>
 
             <NewsletterSignup 
@@ -314,7 +314,7 @@ export default function LandingPage() {
             />
 
             <p className="text-xs text-white/40 font-bold uppercase tracking-widest">
-              No spam. Just neighborhood trust. By signing up, you agree to our{' '}
+              No spam. Just community trust. By signing up, you agree to our{' '}
               <button 
                 onClick={() => setIsTermsModalOpen(true)}
                 className="text-white hover:text-green-400 underline decoration-green-400/30 underline-offset-4 cursor-pointer transition-colors"

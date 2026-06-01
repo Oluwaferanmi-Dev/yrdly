@@ -60,11 +60,11 @@ export default function EventsPage() {
             </div>
 
             <h1 className="text-5xl md:text-8xl font-black text-gray-900 mb-8 tracking-tighter animate-fade-in-up leading-none">
-              Neighborhood <br /><span className="text-green-600">Gatherings</span>
+              Estate & Street <br /><span className="text-green-600">Owambes</span>
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-500 max-w-2xl mx-auto mb-12 font-medium leading-relaxed tracking-tight animate-fade-in-up delay-100">
-              Discover unique workshops, local markets, and community meetups happening right in your backyard.
+              Discover street parties, estate meetings, local markets, and community meetups happening right in your backyard.
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-6 animate-fade-in-up delay-200">
@@ -96,7 +96,7 @@ export default function EventsPage() {
                 </div>
               </div>
             </div>
-            <p className="mt-8 text-gray-400 font-bold uppercase tracking-[0.2em] text-[10px]">Curating neighborhood highlights...</p>
+            <p className="mt-8 text-gray-400 font-bold uppercase tracking-[0.2em] text-[10px]">Curating estate highlights...</p>
           </div>
         ) : events.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12">
