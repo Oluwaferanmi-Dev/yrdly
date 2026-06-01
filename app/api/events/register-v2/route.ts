@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import QRCode from 'qrcode'
 import { v4 as uuidv4 } from 'uuid'
-import { sendTicketEmail, addAttendeeContact } from '@/lib/brevo-email'
+import { sendTicketEmail, addAttendeeContact } from '@/lib/resend-email'
 import { 
   checkRateLimit, 
   recordRateLimit, 
@@ -20,8 +20,7 @@ const registrationSchema = z.object({
 })
 
 // Environment check
-const BREVO_API_KEY = process.env.BREVO_API_KEY;
-
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
 export async function POST(request: NextRequest) {
   try {
@@ -45,8 +44,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!BREVO_API_KEY) {
-      console.warn('[v0] BREVO_API_KEY is missing. Email will fail but registration will continue.');
+    if (!RESEND_API_KEY) {
+      console.warn('[v0] RESEND_API_KEY is missing. Email will fail but registration will continue.');
     }
 
     // 1. Check Rate Limit
@@ -133,15 +132,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: true,
-          message: `Registration successful, but email delivery failed: ${emailResult.error}. Please ensure BREVO_API_KEY is configured correctly.`,
+          message: `Registration successful, but email delivery failed: ${emailResult.error}. Please ensure RESEND_API_KEY is configured correctly.`,
           ticket: { ticketId, email, eventName, qrCode },
         },
         { status: 200 }
       )
     }
 
-    // 9. Store attendee in Brevo contacts
-    console.log('[v0] Storing contact in Brevo...');
+    // 9. Store attendee in Resend contacts
+    console.log('[v0] Storing contact in Resend...');
     try {
       await addAttendeeContact({
         email,

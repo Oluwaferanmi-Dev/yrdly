@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 import path from 'path';
 import { createHash } from 'node:crypto';
-import { sendTicketEmail, addAttendeeContact } from '@/lib/brevo-email';
+import { sendTicketEmail, addAttendeeContact } from '@/lib/resend-email';
 
 const registrationSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -164,7 +164,7 @@ export async function POST(request: NextRequest) {
     // Update event ticket count
     updateEventTicketCount(eventId);
 
-    // Send email via Brevo
+    // Send email via Resend
     console.log('[v0] About to send ticket email:', { email, eventName, ticketId });
     
     const emailResult = await sendTicketEmail({
@@ -182,7 +182,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { 
           success: false, 
-          message: `Ticket generation failed: ${emailResult.error}. This usually means the email service is not configured correctly. Please ensure BREVO_API_KEY is set in your .env file.` 
+          message: `Ticket generation failed: ${emailResult.error}. This usually means the email service is not configured correctly. Please ensure RESEND_API_KEY is set in your .env file.` 
         },
         { status: 500 }
       );
@@ -190,7 +190,7 @@ export async function POST(request: NextRequest) {
     
     console.log('[v0] Ticket email sent successfully');
 
-    // Store attendee email in Brevo as a contact for future marketing
+    // Store attendee email in Resend as a contact for future marketing
     const contactResult = await addAttendeeContact({
       email,
       name: email.split('@')[0],

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { sendWelcomeEmail } from '@/lib/brevo-email';
+import { sendWelcomeEmail } from '@/lib/resend-email';
 
 // Validation schema for newsletter signup
 const newsletterSchema = z.object({
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     // Log the signup
     console.log('Newsletter signup:', { email, source, timestamp: new Date().toISOString() });
     
-    // Send welcome email via Brevo
+    // Send welcome email via Resend
     const emailResult = await sendWelcomeEmail({
       email,
       source,

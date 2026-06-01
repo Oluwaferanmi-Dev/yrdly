@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { sendContactEmail } from '@/lib/brevo-email';
+import { sendContactEmail } from '@/lib/resend-email';
 
 // Validation schema for contact form
 const contactSchema = z.object({
