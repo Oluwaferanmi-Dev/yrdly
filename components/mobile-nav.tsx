@@ -10,6 +10,7 @@ const menuItems = [
   { label: "Home", path: "/" },
   { label: "Events", path: "/events" },
   { label: "About Us", path: "/about" },
+  { label: "Learn More", path: "/learn-more" },
   { label: "Contact Us", path: "/contact" },
 ];
 

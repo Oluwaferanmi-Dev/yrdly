@@ -1,14 +1,15 @@
 "use client"
 
 import Link from "next/link"
-import { Github, Twitter, Instagram, Mail, ArrowUpRight } from 'lucide-react'
+import { Twitter, Instagram, Mail, ArrowUpRight } from 'lucide-react'
 
 const footerLinks = [
   {
     title: "Product",
     links: [
       { label: "Market Place", href: `${process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'}/marketplace` },
-      { label: "Community", href: "/events" },
+      { label: "Events", href: "/events" },
+      { label: "Learn More", href: "/learn-more" },
     ],
   },
   {
@@ -43,18 +44,18 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-xl text-gray-500 font-medium max-w-sm leading-relaxed tracking-tight">
-              Building the future of neighborhood commerce and community engagement.
+              Your neighborhood, connected. Yrdly brings Nigerians closer to their local community, market, and events.
             </p>
             <div className="flex gap-4">
               {[
-                { icon: <Twitter className="w-5 h-5" />, href: "https://x.com/yrdlyapp" },
-                { icon: <Instagram className="w-5 h-5" />, href: "https://www.instagram.com/yardly.ng" },
-                { icon: <Github className="w-5 h-5" />, href: "https://github.com/yrdly" },
-                { icon: <Mail className="w-5 h-5" />, href: "mailto:yrdly@gmail.com" },
+                { icon: <Twitter className="w-5 h-5" />, href: "https://x.com/yrdlyapp", label: "X (Twitter)" },
+                { icon: <Instagram className="w-5 h-5" />, href: "https://www.instagram.com/yardly.ng", label: "Instagram" },
+                { icon: <Mail className="w-5 h-5" />, href: "mailto:yrdly@gmail.com", label: "Email" },
               ].map((social, i) => (
                 <Link 
                   key={i} 
                   href={social.href}
+                  aria-label={social.label}
                   className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 hover:bg-green-600 hover:text-white hover:scale-110 transition-all border border-gray-100"
                 >
                   {social.icon}
@@ -96,10 +97,10 @@ export default function Footer() {
           </p>
           <div className="flex gap-8">
             <Link href="/privacy-policy" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-green-600 transition-colors">
-              Privacy Settings
+              Privacy Policy
             </Link>
             <Link href="/terms" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-green-600 transition-colors">
-              Security
+              Terms of Service
             </Link>
           </div>
         </div>

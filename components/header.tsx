@@ -28,7 +28,8 @@ export default function Header({ currentPage }: HeaderProps) {
               { label: "Home", path: "/", id: "home" },
               { label: "Events", path: "/events", id: "events" },
               { label: "About Us", path: "/about", id: "about" },
-              { label: "Contact Us", path: "/contact", id: "contact" },
+              { label: "Learn More", path: "/learn-more", id: "learn-more" },
+              { label: "Contact", path: "/contact", id: "contact" },
             ].map((item) => (
               <Link
                 key={item.id}
@@ -45,9 +46,9 @@ export default function Header({ currentPage }: HeaderProps) {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <Link href="/market" className="hidden lg:block">
+            <Link href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'}/marketplace`} target="_blank" rel="noopener noreferrer" className="hidden lg:block">
               <Button className="h-10 px-6 bg-gray-900 hover:bg-green-600 text-white font-black text-[10px] uppercase tracking-widest rounded-xl shadow-lg shadow-gray-900/10 transition-all active:scale-95">
-                Visit Market
+                Open App
               </Button>
             </Link>
             <div className="md:hidden">

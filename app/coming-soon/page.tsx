@@ -1,367 +1,141 @@
-"use client"
-
+import Header from "@/components/header"
+import Footer from "@/components/footer"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { 
-  Clock, 
-  Smartphone, 
-  Globe, 
-  Bell, 
-  Users, 
-  ShoppingCart, 
-  Calendar, 
-  MessageCircle,
-  Shield,
-  CheckCircle,
-  ArrowRight,
-  Mail,
-  Star
-} from 'lucide-react'
-import Image from "next/image"
 import Link from "next/link"
-import MobileNav from "@/components/mobile-nav"
-import { NewsletterSignup } from "@/components/newsletter-signup"
-import { useState } from "react"
+import { ArrowRight, MapPin, ShoppingBag, Calendar, MessageCircle, CheckCircle } from "lucide-react"
+
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'
 
 export default function ComingSoonPage() {
-  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false)
-  const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About Us" },
-    { href: "/learn-more", label: "Learn More" },
-    { href: "/contact", label: "Contact Us" },
-    { href: "/coming-soon", label: "Coming Soon", isActive: true },
-  ];
-
-  const features = [
-    {
-      icon: Users,
-      title: "Community Hub",
-      description: "Connect with your neighbors and build stronger communities"
-    },
-    {
-      icon: ShoppingCart,
-      title: "Local Marketplace",
-      description: "Buy and sell items within your neighborhood safely"
-    },
-    {
-      icon: Calendar,
-      title: "Local Events",
-      description: "Discover and create events happening in your area"
-    },
-    {
-      icon: MessageCircle,
-      title: "Neighbor Chat",
-      description: "Communicate directly with your neighbors"
-    },
-    {
-      icon: Shield,
-      title: "Secure & Trusted",
-      description: "Verified users and secure transactions"
-    },
-    {
-      icon: Smartphone,
-      title: "Mobile & Web",
-      description: "Access from any device, anywhere"
-    }
-  ]
-
-  const timeline = [
-    {
-      phase: "Phase 1",
-      title: "Core Development",
-      status: "In Progress",
-      description: "Building the foundation with user authentication, profiles, and basic marketplace features"
-    },
-    {
-      phase: "Phase 2", 
-      title: "Community Features",
-      status: "Upcoming",
-      description: "Adding neighborhood feeds, event management, and messaging capabilities"
-    },
-    {
-      phase: "Phase 3",
-      title: "Advanced Features",
-      status: "Planned",
-      description: "Implementing advanced security, analytics, and premium features"
-    },
-    {
-      phase: "Phase 4",
-      title: "Launch",
-      status: "Coming Soon",
-      description: "Public release with full feature set and community onboarding"
-    }
-  ]
-
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 flex items-center justify-between px-8 py-3 border-b bg-white">
-        <div className="flex items-center space-x-12">
-          <div className="flex items-center space-x-4">
-            <Image
-              src="/yrdly-logo.png"
-              alt="YRDLY Logo"
-              width={62}
-              height={44}
-              style={{ width: "auto", height: "auto" }}
-            />
-          </div>
-          <div className="hidden md:flex items-center space-x-12">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`text-sm text-gray-900 hover:text-green-600 ${link.isActive ? 'font-semibold text-green-600' : ''}`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-          <div className="md:hidden">
-            <MobileNav links={navLinks} />
-          </div>
-        </div>
+      <Header />
 
-        <Button className="bg-green-600 hover:bg-green-700 text-white px-6" disabled>
-          <Clock className="w-4 h-4 mr-2" />
-          Coming Soon
-        </Button>
-      </nav>
+      {/* Hero */}
+      <section className="pt-40 pb-24 bg-gray-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(34,197,94,0.12),transparent_60%)] pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-green-500/5 rounded-full blur-[120px] pointer-events-none" />
 
-      {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-b from-green-50 to-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium mb-6">
-              <Clock className="w-4 h-4 mr-2" />
-              Coming Soon
-            </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              Yrdly App is Coming Soon
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              We're building something amazing for your neighborhood. Get early access and be the first to experience the future of community connection.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <NewsletterSignup 
-                placeholder="Enter your email for early access"
-                buttonText="Get Early Access"
-                source="coming-soon-hero"
-                className="max-w-md"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+        <div className="max-w-5xl mx-auto px-6 text-center relative">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-600/20 border border-green-500/30 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-green-400 mb-8">
+            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+            Now Live — Join Your Neighbourhood
+          </span>
 
-      {/* App Preview Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              What We're Building
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Yrdly will be your neighborhood's digital hub, bringing together everything you need to connect with your community.
-            </p>
+          <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter leading-none mb-8">
+            Yrdly is <span className="text-green-400">Live</span><br />in Nigeria 🇳🇬
+          </h1>
+
+          <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-14 font-medium">
+            Buy, sell, attend local events, and connect with the people in your neighbourhood — all in one place.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20">
+            <Link href={APP_URL} target="_blank" rel="noopener noreferrer">
+              <Button className="h-16 px-12 bg-green-600 hover:bg-green-500 text-white rounded-2xl font-black uppercase tracking-widest text-sm shadow-2xl shadow-green-600/30 transition-all active:scale-95">
+                Open Yrdly App <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
+            <Link href="/events">
+              <Button variant="outline" className="h-16 px-12 rounded-2xl font-black uppercase tracking-widest text-sm border-white/20 text-white hover:bg-white hover:text-gray-900 bg-transparent transition-all">
+                Browse Local Events
+              </Button>
+            </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => {
-              const IconComponent = feature.icon
+          {/* Feature grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { icon: ShoppingBag, label: "Local Marketplace" },
+              { icon: Calendar, label: "Neighbourhood Events" },
+              { icon: MessageCircle, label: "Direct Messaging" },
+              { icon: MapPin, label: "Hyperlocal Discovery" },
+            ].map((item, i) => {
+              const Icon = item.icon
               return (
-                <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
-                  <CardHeader>
-                    <div className="flex items-center space-x-3 mb-4">
-                      <div className="p-3 bg-green-100 rounded-lg">
-                        <IconComponent className="w-6 h-6 text-green-600" />
-                      </div>
-                      <CardTitle className="text-xl">{feature.title}</CardTitle>
-                    </div>
-                    <CardDescription className="text-base">
-                      {feature.description}
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
+                <div key={i} className="bg-white/5 border border-white/10 rounded-2xl px-4 py-5 flex flex-col items-center gap-3">
+                  <Icon className="w-6 h-6 text-green-400" />
+                  <span className="text-xs font-black uppercase tracking-widest text-gray-400 text-center">{item.label}</span>
+                </div>
               )
             })}
           </div>
         </div>
       </section>
 
-      {/* Development Timeline */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4">
+      {/* What's waiting for you */}
+      <section className="py-24 bg-white">
+        <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Development Timeline
+            <span className="text-green-600 font-black uppercase tracking-[0.3em] text-[10px] mb-4 block">On The Platform</span>
+            <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tighter mb-6">
+              Everything Your <span className="text-green-600">Neighbourhood</span> Needs
             </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Follow our progress as we build the future of neighborhood connectivity.
-            </p>
           </div>
 
-          <div className="space-y-8">
-            {timeline.map((item, index) => (
-              <div key={index} className="flex items-start space-x-6">
-                <div className="flex-shrink-0">
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                    item.status === "In Progress" ? "bg-green-100 text-green-600" :
-                    item.status === "Upcoming" ? "bg-blue-100 text-blue-600" :
-                    item.status === "Planned" ? "bg-gray-100 text-gray-600" :
-                    "bg-yellow-100 text-yellow-600"
-                  }`}>
-                    {item.status === "In Progress" ? <CheckCircle className="w-6 h-6" /> :
-                     item.status === "Upcoming" ? <Clock className="w-6 h-6" /> :
-                     item.status === "Planned" ? <Clock className="w-6 h-6" /> :
-                     <Star className="w-6 h-6" />}
-                  </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            {[
+              {
+                title: "Neighbourhood Marketplace",
+                desc: "Buy and sell locally. From electronics to food items — find it all within your estate or city.",
+                cta: "Browse Market",
+                href: `${APP_URL}/marketplace`,
+              },
+              {
+                title: "Community Events",
+                desc: "Discover owambe parties, networking sessions, sports events, and more happening near you.",
+                cta: "See Events",
+                href: "/events",
+              },
+              {
+                title: "Trust & Verification",
+                desc: "Every neighbour is verified. Every payment is secured. Yrdly keeps your transactions safe.",
+                cta: "Learn More",
+                href: "/learn-more",
+              },
+              {
+                title: "Neighbourhood Feed",
+                desc: "Stay in the loop with local announcements, lost & found, and community news in real time.",
+                cta: "Join Now",
+                href: APP_URL,
+              },
+            ].map((card, i) => (
+              <div key={i} className="bg-gray-50 rounded-[2.5rem] p-8 border border-gray-100 hover:border-green-100 hover:shadow-xl transition-all group">
+                <div className="flex items-center gap-2 mb-4">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <h3 className="text-xl font-black text-gray-900 tracking-tight">{card.title}</h3>
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center space-x-4 mb-2">
-                    <h3 className="text-xl font-semibold text-gray-900">{item.title}</h3>
-                    <Badge variant={
-                      item.status === "In Progress" ? "default" :
-                      item.status === "Upcoming" ? "secondary" :
-                      item.status === "Planned" ? "outline" :
-                      "default"
-                    }>
-                      {item.status}
-                    </Badge>
-                  </div>
-                  <p className="text-gray-600 mb-2">{item.description}</p>
-                  <p className="text-sm text-gray-500">{item.phase}</p>
-                </div>
+                <p className="text-gray-500 leading-relaxed mb-8">{card.desc}</p>
+                <Link href={card.href} target={card.href.startsWith('http') ? '_blank' : undefined} rel={card.href.startsWith('http') ? 'noopener noreferrer' : undefined}>
+                  <Button className="h-12 px-8 bg-gray-900 hover:bg-green-600 text-white rounded-xl font-black uppercase tracking-widest text-[10px] transition-all">
+                    {card.cta} <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Early Access Benefits */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Why Join Early?
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Early access members get exclusive benefits and help shape the future of Yrdly.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="p-6 bg-green-50 rounded-lg">
-                <div className="w-16 h-16 bg-green-600 text-white rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Users className="w-8 h-8" />
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                  Be First to Connect
-                </h3>
-                <p className="text-gray-600">
-                  Get early access to connect with your neighbors before the public launch.
-                </p>
-              </div>
-            </div>
-
-            <div className="text-center">
-              <div className="p-6 bg-green-50 rounded-lg">
-                <div className="w-16 h-16 bg-green-600 text-white rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Star className="w-8 h-8" />
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                  Shape the Product
-                </h3>
-                <p className="text-gray-600">
-                  Your feedback will directly influence features and improvements.
-                </p>
-              </div>
-            </div>
-
-            <div className="text-center">
-              <div className="p-6 bg-green-50 rounded-lg">
-                <div className="w-16 h-16 bg-green-600 text-white rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Bell className="w-8 h-8" />
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                  Exclusive Updates
-                </h3>
-                <p className="text-gray-600">
-                  Get insider updates on development progress and new features.
-                </p>
-              </div>
-            </div>
-          </div>
+      {/* Final CTA */}
+      <section className="py-24 bg-green-600 text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }} />
+        <div className="max-w-3xl mx-auto px-6 text-center relative">
+          <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-6">
+            Your Street is Waiting 🏘️
+          </h2>
+          <p className="text-xl text-white/80 mb-12 leading-relaxed">
+            Join thousands of Nigerians already using Yrdly to shop local, attend community events, and connect with their neighbours.
+          </p>
+          <Link href={APP_URL} target="_blank" rel="noopener noreferrer">
+            <Button className="h-16 px-14 bg-white text-green-600 hover:bg-gray-900 hover:text-white rounded-2xl font-black uppercase tracking-widest text-sm shadow-2xl transition-all active:scale-95">
+              Get Started — It's Free
+            </Button>
+          </Link>
         </div>
       </section>
 
-      {/* Newsletter Signup Section */}
-      <section 
-        className="py-20 text-white relative border-y-4 border-yellow-300"
-        style={{
-          backgroundImage: `url('/newsletter-bg.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'repeat',
-        }}
-      >
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="max-w-2xl">
-            <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-              Get Early Access to <br /> Yrdly
-            </h2>
-            <p className="text-xl mb-8">
-              Be the first to experience the future of neighborhood connectivity. <span className="text-purple-300">✦</span>
-            </p>
-
-            <NewsletterSignup 
-              placeholder="Enter your email for early access"
-              buttonText="Join Waitlist"
-              source="coming-soon-newsletter"
-              className="mb-4"
-            />
-
-            <p className="text-sm text-white/80">
-              By joining the waitlist, you agree to our <button 
-                onClick={() => setIsTermsModalOpen(true)}
-                className="underline hover:text-yellow-200 cursor-pointer"
-              >
-                Terms and Conditions
-              </button>
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-white border-t py-16">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-12 mb-12">
-            <Link href="/about" className="text-sm font-bold text-gray-900 hover:text-green-600">About Us</Link>
-            <Link href="/contact" className="text-sm font-bold text-gray-900 hover:text-green-600">Contact Us</Link>
-            <Link href="/learn-more" className="text-sm font-bold text-gray-900 hover:text-green-600">Learn More</Link>
-            <Link href="/coming-soon" className="text-sm font-bold text-gray-900 hover:text-green-600">Coming Soon</Link>
-          </div>
-          
-          <Separator className="mb-8" />
-          
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-xs font-bold text-gray-900">
-              © 2026 Yrdly. All rights reserved.
-            </p>
-            <div className="flex space-x-6">
-              <Link href="/privacy-policy" className="text-sm text-gray-900 hover:text-green-600 underline">Privacy Policy</Link>
-              <Link href="/terms" className="text-sm text-gray-900 hover:text-green-600 underline">Terms of Service</Link>
-              <Link href="/privacy-policy" className="text-sm text-gray-900 hover:text-green-600 underline">Cookies Settings</Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }
