@@ -80,8 +80,8 @@ export default function ContactPage() {
                  <p className="text-white/50 mb-8 font-medium relative z-10 leading-relaxed">
                    Follow us on Instagram for the latest neighborhood highlights and exclusive events.
                  </p>
-                 <Link href="https://instagram.com/yrdly.ng" className="inline-flex items-center gap-2 text-green-500 font-black uppercase tracking-widest text-xs group-hover:gap-4 transition-all">
-                   @yrdly.ng <ChevronRight className="w-4 h-4" />
+                 <Link href="https://www.instagram.com/yardly.ng" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-green-500 font-black uppercase tracking-widest text-xs group-hover:gap-4 transition-all">
+                   @yardly.ng <ChevronRight className="w-4 h-4" />
                  </Link>
               </div>
             </div>

@@ -47,8 +47,8 @@ export default function Footer() {
             </p>
             <div className="flex gap-4">
               {[
-                { icon: <Twitter className="w-5 h-5" />, href: "https://x.com" },
-                { icon: <Instagram className="w-5 h-5" />, href: "https://instagram.com/yrdly.ng" },
+                { icon: <Twitter className="w-5 h-5" />, href: "https://x.com/yrdlyapp" },
+                { icon: <Instagram className="w-5 h-5" />, href: "https://www.instagram.com/yardly.ng" },
                 { icon: <Github className="w-5 h-5" />, href: "https://github.com/yrdly" },
                 { icon: <Mail className="w-5 h-5" />, href: "mailto:yrdly@gmail.com" },
               ].map((social, i) => (

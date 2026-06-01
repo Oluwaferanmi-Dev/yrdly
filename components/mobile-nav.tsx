@@ -74,9 +74,9 @@ export default function MobileNav() {
               <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300 ml-4">Connect</span>
               <div className="flex gap-4 px-2">
                 {[
-                  { icon: <Instagram className="w-5 h-5" />, href: "https://instagram.com/yrdly.ng" },
-                  { icon: <Twitter className="w-5 h-5" />, href: "#" },
-                  { icon: <MessageCircle className="w-5 h-5" />, href: "#" },
+                  { icon: <Instagram className="w-5 h-5" />, href: "https://www.instagram.com/yardly.ng" },
+                  { icon: <Twitter className="w-5 h-5" />, href: "https://x.com/yrdlyapp" },
+                  { icon: <MessageCircle className="w-5 h-5" />, href: "mailto:yrdly@gmail.com" },
                 ].map((social, i) => (
                   <Link 
                     key={i} 
@@ -92,7 +92,7 @@ export default function MobileNav() {
 
           {/* Bottom Bar */}
           <div className="p-8 bg-gray-50 border-t border-gray-100">
-            <Link href="/market" onClick={() => setIsOpen(false)}>
+            <Link href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'}/marketplace`} target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)}>
               <Button className="w-full h-16 bg-gray-900 hover:bg-green-600 text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] shadow-xl shadow-gray-900/10 transition-all active:scale-95">
                 Visit Market Place
               </Button>
