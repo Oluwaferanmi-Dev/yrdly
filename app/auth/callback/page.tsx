@@ -7,7 +7,6 @@ import { Loader2, CheckCircle2, AlertTriangle } from 'lucide-react';
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng';
 
-// Inner component that uses useSearchParams — must be inside <Suspense>
 function CallbackHandler() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -15,63 +14,76 @@ function CallbackHandler() {
   const [message, setMessage] = useState('Completing sign in...');
 
   useEffect(() => {
-    const handleCallback = async () => {
-      if (!supabaseAuthClient) {
-        setStatus('error');
-        setMessage('Authentication is not configured.');
-        return;
-      }
+    if (!supabaseAuthClient) {
+      setStatus('error');
+      setMessage('Authentication is not configured.');
+      return;
+    }
 
-      const code = searchParams.get('code');
-      const errorParam = searchParams.get('error');
-      const errorDescription = searchParams.get('error_description');
+    // Check for OAuth errors in query params OR hash fragment
+    const errorParam = searchParams.get('error');
+    const errorDescription = searchParams.get('error_description');
+    const hash = typeof window !== 'undefined' ? window.location.hash : '';
+    const hashParams = new URLSearchParams(hash.replace('#', ''));
+    const hashError = hashParams.get('error');
 
-      if (errorParam) {
-        setStatus('error');
-        setMessage(errorDescription || 'Authentication was denied.');
-        return;
-      }
+    if (errorParam || hashError) {
+      setStatus('error');
+      setMessage(
+        errorDescription ||
+        hashParams.get('error_description') ||
+        'Authentication was cancelled or denied.'
+      );
+      return;
+    }
 
-      if (!code) {
-        setStatus('error');
-        setMessage('No authentication code found. Please try again.');
-        return;
-      }
-
-      try {
-        // Exchange code → session. The shared cookie storage adapter in
-        // supabaseAuthClient persists the session on .yrdly.ng automatically.
-        const { data, error } = await supabaseAuthClient.auth.exchangeCodeForSession(code);
-
-        if (error) {
-          setStatus('error');
-          setMessage(error.message || 'Failed to complete sign in.');
-          return;
-        }
-
-        if (data.session) {
+    // Listen for auth state change — this fires for BOTH:
+    // • PKCE flow   (?code=xxx  → client calls exchangeCodeForSession internally)
+    // • Implicit flow (#access_token=xxx → client parses hash internally)
+    // because detectSessionInUrl:true is set in the Supabase client config.
+    const { data: { subscription } } = supabaseAuthClient.auth.onAuthStateChange(
+      (event, session) => {
+        if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session) {
           setStatus('success');
-          setMessage('Sign in successful! Redirecting...');
+          setMessage('Signed in! Redirecting…');
           setTimeout(() => {
             window.location.href = `${APP_URL}/home`;
           }, 1000);
-        } else {
-          setStatus('error');
-          setMessage('Session could not be established. Please try again.');
+          subscription.unsubscribe();
         }
-      } catch {
-        setStatus('error');
-        setMessage('An unexpected error occurred. Please try again.');
       }
-    };
+    );
 
-    handleCallback();
+    // PKCE explicit fallback: if ?code= is in the URL, exchange it manually.
+    // (detectSessionInUrl handles this automatically but we keep this as a belt-and-braces.)
+    const code = searchParams.get('code');
+    if (code) {
+      supabaseAuthClient.auth.exchangeCodeForSession(code).then(({ error }) => {
+        if (error) {
+          setStatus('error');
+          setMessage(error.message || 'Failed to complete sign in.');
+          subscription.unsubscribe();
+        }
+        // On success, onAuthStateChange fires SIGNED_IN above.
+      });
+    }
+
+    // Timeout: if nothing happens in 12 s, show an error
+    const timeout = setTimeout(() => {
+      setStatus('error');
+      setMessage('Sign in timed out. Please try again.');
+      subscription.unsubscribe();
+    }, 12000);
+
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timeout);
+    };
   }, [searchParams]);
 
   return (
     <div className="min-h-screen bg-[#fafaf9] flex items-center justify-center px-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl border border-gray-100 p-8 text-center">
-        {/* Logo */}
         <div className="w-14 h-14 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-600/20">
           <img src="/favicon.ico" alt="Yrdly" className="w-8 h-8 object-contain" />
         </div>
@@ -110,7 +122,6 @@ function CallbackHandler() {
   );
 }
 
-// Loading skeleton shown while CallbackHandler is being streamed
 function CallbackSkeleton() {
   return (
     <div className="min-h-screen bg-[#fafaf9] flex items-center justify-center px-4">
