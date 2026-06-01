@@ -7,7 +7,7 @@ const footerLinks = [
   {
     title: "Product",
     links: [
-      { label: "Market Place", href: "/market" },
+      { label: "Market Place", href: `${process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'}/marketplace` },
       { label: "Community", href: "/events" },
     ],
   },
