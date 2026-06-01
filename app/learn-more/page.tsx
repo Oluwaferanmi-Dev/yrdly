@@ -524,7 +524,7 @@ export default function LearnMorePage() {
             <Link href="/about" className="text-sm font-bold text-gray-900 hover:text-green-600">About Us</Link>
             <Link href="/contact" className="text-sm font-bold text-gray-900 hover:text-green-600">Contact Us</Link>
             <Link href="/learn-more" className="text-sm font-bold text-gray-900 hover:text-green-600">Learn More</Link>
-            <Link href="#" className="text-sm font-bold text-gray-900 hover:text-green-600">Help Center</Link>
+            <Link href="mailto:yrdly@gmail.com" className="text-sm font-bold text-gray-900 hover:text-green-600">Help Center</Link>
           </div>
           
           <Separator className="mb-8" />
@@ -536,7 +536,7 @@ export default function LearnMorePage() {
             <div className="flex space-x-6">
               <Link href="/privacy-policy" className="text-sm text-gray-900 hover:text-green-600 underline">Privacy Policy</Link>
               <Link href="/terms" className="text-sm text-gray-900 hover:text-green-600 underline">Terms of Service</Link>
-              <Link href="#" className="text-sm text-gray-900 hover:text-green-600 underline">Cookies Settings</Link>
+              <Link href="/privacy-policy" className="text-sm text-gray-900 hover:text-green-600 underline">Cookies Settings</Link>
             </div>
           </div>
         </div>

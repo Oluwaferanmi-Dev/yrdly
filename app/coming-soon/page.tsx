@@ -357,7 +357,7 @@ export default function ComingSoonPage() {
             <div className="flex space-x-6">
               <Link href="/privacy-policy" className="text-sm text-gray-900 hover:text-green-600 underline">Privacy Policy</Link>
               <Link href="/terms" className="text-sm text-gray-900 hover:text-green-600 underline">Terms of Service</Link>
-              <Link href="#" className="text-sm text-gray-900 hover:text-green-600 underline">Cookies Settings</Link>
+              <Link href="/privacy-policy" className="text-sm text-gray-900 hover:text-green-600 underline">Cookies Settings</Link>
             </div>
           </div>
         </div>

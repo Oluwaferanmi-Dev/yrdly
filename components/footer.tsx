@@ -47,9 +47,9 @@ export default function Footer() {
             </p>
             <div className="flex gap-4">
               {[
-                { icon: <Twitter className="w-5 h-5" />, href: "#" },
+                { icon: <Twitter className="w-5 h-5" />, href: "https://x.com" },
                 { icon: <Instagram className="w-5 h-5" />, href: "https://instagram.com/yrdly.ng" },
-                { icon: <Github className="w-5 h-5" />, href: "#" },
+                { icon: <Github className="w-5 h-5" />, href: "https://github.com/yrdly" },
                 { icon: <Mail className="w-5 h-5" />, href: "mailto:yrdly@gmail.com" },
               ].map((social, i) => (
                 <Link 
@@ -95,10 +95,10 @@ export default function Footer() {
             © 2026 YRDLY TECHNOLOGIES. ALL RIGHTS RESERVED.
           </p>
           <div className="flex gap-8">
-            <Link href="#" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-green-600 transition-colors">
+            <Link href="/privacy-policy" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-green-600 transition-colors">
               Privacy Settings
             </Link>
-            <Link href="#" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-green-600 transition-colors">
+            <Link href="/terms" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-green-600 transition-colors">
               Security
             </Link>
           </div>
