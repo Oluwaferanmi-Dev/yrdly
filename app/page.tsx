@@ -10,6 +10,7 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { TermsModal } from "@/components/terms-modal"
 import { NewsletterSignup } from "@/components/newsletter-signup"
+import { HeroLoginForm } from "@/components/auth/HeroLoginForm"
 import { useState, useEffect } from "react"
 import { EventRegistrationModal } from "@/components/event-registration-modal"
 
@@ -61,28 +62,27 @@ export default function LandingPage() {
         <div className="absolute top-20 left-[5%] w-72 h-72 bg-green-500/20 rounded-full blur-[120px] animate-pulse-soft pointer-events-none" />
         <div className="absolute bottom-20 right-[5%] w-96 h-96 bg-green-400/10 rounded-full blur-[140px] animate-pulse-soft delay-500 pointer-events-none" />
         
-        <div className="relative z-10 text-center text-white max-w-5xl mx-auto px-4 py-20">
-          <div className="animate-fade-in mb-8">
-            <span className="inline-flex items-center gap-2 px-5 py-2 bg-white/10 backdrop-blur-xl rounded-full text-sm font-bold border border-white/20 shadow-xl">
-              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              Empowering Local Communities
-            </span>
+        <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 lg:py-32 flex flex-col lg:flex-row items-center justify-between gap-12 w-full">
+          {/* Left Side text */}
+          <div className="flex-1 text-white text-center lg:text-left">
+            <div className="animate-fade-in mb-8">
+              <span className="inline-flex items-center gap-2 px-5 py-2 bg-white/10 backdrop-blur-xl rounded-full text-sm font-bold border border-white/20 shadow-xl">
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                Empowering Local Communities
+              </span>
+            </div>
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 leading-[1.1] animate-fade-in-up text-balance tracking-tighter">
+              Your Neighborhood,<br />
+              <span className="text-gradient drop-shadow-sm">Connected</span>
+            </h1>
+            <p className="text-lg sm:text-xl md:text-2xl mb-12 max-w-2xl mx-auto lg:mx-0 text-white/80 animate-fade-in-up delay-200 text-pretty leading-relaxed font-medium">
+              Discover local listings, secure your entry to exclusive events, and stay in the loop with what's happening just steps away from you.
+            </p>
           </div>
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 leading-[1.1] animate-fade-in-up text-balance tracking-tighter">
-            Your Neighborhood,<br />
-            <span className="text-gradient drop-shadow-sm">Connected</span>
-          </h1>
-          <p className="text-lg sm:text-xl md:text-2xl mb-12 max-w-3xl mx-auto text-white/80 animate-fade-in-up delay-200 text-pretty leading-relaxed font-medium">
-            Discover local listings, secure your entry to exclusive events, and stay in the loop with what's happening just steps away from you.
-          </p>
 
-          <div className="animate-fade-in-up delay-300 max-w-xl mx-auto">
-            <NewsletterSignup 
-              placeholder="Join 1,000+ neighbors..."
-              buttonText="Join Community"
-              source="hero-newsletter"
-              className="shadow-2xl"
-            />
+          {/* Right Side Form */}
+          <div className="w-full lg:w-[420px] animate-fade-in-up delay-300">
+            <HeroLoginForm />
           </div>
           
           {/* Scroll indicator */}
