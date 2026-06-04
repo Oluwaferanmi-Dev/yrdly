@@ -1,62 +1,88 @@
 "use client"
 
 import Link from "next/link"
-import { Twitter, Instagram, Mail, ArrowUpRight } from 'lucide-react'
+import { Twitter, Instagram, Mail } from 'lucide-react'
 
 const footerLinks = [
   {
-    title: "Product",
+    title: "Features",
     links: [
-      { label: "Market Place", href: `${process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'}/marketplace` },
+      { label: "SafePay", href: "#" },
+      { label: "Marketplace", href: `${process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'}/marketplace` },
       { label: "Events", href: "/events" },
-      { label: "Learn More", href: "/learn-more" },
     ],
   },
   {
-    title: "Company",
+    title: "Menu",
     links: [
       { label: "About Us", href: "/about" },
-      { label: "Contact", href: "/contact" },
+      { label: "Learn More", href: "/learn-more" },
+      { label: "Blog", href: "#" },
     ],
   },
   {
-    title: "Support",
+    title: "Contact",
     links: [
+      { label: "Contact Us", href: "/contact" },
       { label: "Privacy Policy", href: "/privacy-policy" },
-      { label: "Terms", href: "/terms" },
+      { label: "Terms of Service", href: "/terms" },
     ],
   },
 ]
 
+const MARQUEE_TEXT = "Make Sales. Make Space."
+
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-100 overflow-hidden">
-      {/* Top Section - Brand & Newsletter */}
-      <div className="max-w-7xl mx-auto px-6 py-24 md:py-32">
-        <div className="grid lg:grid-cols-2 gap-24 items-start">
-          <div className="space-y-10">
+    <footer className="bg-[var(--color-bg-dark)] text-white overflow-hidden">
+      {/* Main Footer Content */}
+      <div className="max-w-[1280px] mx-auto px-6 pt-20 pb-10">
+        <div className="grid lg:grid-cols-2 gap-16 items-start mb-16">
+          {/* Brand + Newsletter */}
+          <div className="space-y-8">
             <Link href="/" className="flex items-center space-x-3 group transition-smooth">
-              <div className="w-12 h-12 bg-green-600 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-3 shadow-lg shadow-green-600/20 overflow-hidden">
-                <img src="/favicon.ico" alt="Yrdly Logo" className="w-7 h-7 object-contain" />
+              <div className="w-10 h-10 bg-brand rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-3 shadow-lg shadow-brand/20 overflow-hidden">
+                <img src="/favicon.ico" alt="Yrdly Logo" className="w-6 h-6 object-contain" />
               </div>
-              <span className="font-black text-3xl tracking-tighter text-gray-900">
-                yrdly<span className="text-green-600">.</span>
+              <span className="font-display font-extrabold text-3xl tracking-tight text-white">
+                yrdly<span className="text-brand">.</span>
               </span>
             </Link>
-            <p className="text-xl text-gray-500 font-medium max-w-sm leading-relaxed tracking-tight">
-              Your neighborhood, connected. Yrdly brings Nigerians closer to their local community, market, and events.
+
+            <p className="text-gray-400 leading-relaxed max-w-sm">
+              Just like your local market, but safer. A community-driven commerce platform built for trust.
             </p>
-            <div className="flex gap-4">
+
+            {/* Newsletter */}
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-3">Stay in the loop</p>
+              <form className="flex gap-2">
+                <input
+                  type="email"
+                  placeholder="your@email.com"
+                  className="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-2.5 text-sm text-white placeholder:text-gray-600 focus:outline-none focus:border-brand/50 transition-colors"
+                />
+                <button
+                  type="submit"
+                  className="btn-primary py-2.5 px-5 text-sm whitespace-nowrap"
+                >
+                  Subscribe
+                </button>
+              </form>
+            </div>
+
+            {/* Social Icons */}
+            <div className="flex gap-3">
               {[
-                { icon: <Twitter className="w-5 h-5" />, href: "https://x.com/yrdlyapp", label: "X (Twitter)" },
-                { icon: <Instagram className="w-5 h-5" />, href: "https://www.instagram.com/yardly.ng", label: "Instagram" },
-                { icon: <Mail className="w-5 h-5" />, href: "mailto:yrdly@gmail.com", label: "Email" },
+                { icon: <Twitter className="w-4 h-4" />, href: "https://x.com/yrdlyapp", label: "X (Twitter)" },
+                { icon: <Instagram className="w-4 h-4" />, href: "https://www.instagram.com/yardly.ng", label: "Instagram" },
+                { icon: <Mail className="w-4 h-4" />, href: "mailto:yrdly@gmail.com", label: "Email" },
               ].map((social, i) => (
-                <Link 
-                  key={i} 
+                <Link
+                  key={i}
                   href={social.href}
                   aria-label={social.label}
-                  className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 hover:bg-green-600 hover:text-white hover:scale-110 transition-all border border-gray-100"
+                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-brand hover:text-white hover:border-brand transition-all"
                 >
                   {social.icon}
                 </Link>
@@ -64,21 +90,21 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-12 lg:gap-8">
+          {/* Links */}
+          <div className="grid grid-cols-3 gap-8">
             {footerLinks.map((section) => (
-              <div key={section.title} className="space-y-6">
-                <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">
+              <div key={section.title} className="space-y-5">
+                <h4 className="text-xs font-bold uppercase tracking-widest text-gray-500">
                   {section.title}
                 </h4>
-                <ul className="space-y-4">
+                <ul className="space-y-3">
                   {section.links.map((link) => (
                     <li key={link.label}>
-                      <Link 
+                      <Link
                         href={link.href}
-                        className="text-[13px] font-black text-gray-900 hover:text-green-600 hover:ml-1 transition-all flex items-center gap-1 group"
+                        className="text-sm text-gray-400 hover:text-white transition-colors"
                       >
                         {link.label}
-                        <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </Link>
                     </li>
                   ))}
@@ -87,19 +113,35 @@ export default function Footer() {
             ))}
           </div>
         </div>
+
+        <div className="border-t border-white/5" />
       </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-gray-100 bg-gray-50/50">
-        <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
-            © 2026 YRDLY TECHNOLOGIES. ALL RIGHTS RESERVED.
+      {/* Scrolling Marquee Strip */}
+      <div className="py-6 border-t border-white/5 overflow-hidden">
+        <div className="marquee-track">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <span
+              key={i}
+              className="text-4xl md:text-6xl font-display font-extrabold tracking-tight text-white/10 whitespace-nowrap px-8"
+            >
+              {i % 2 === 0 ? "Make Sales." : "Make Space."}&nbsp;
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Copyright Bar */}
+      <div className="border-t border-white/5 px-6 py-6">
+        <div className="max-w-[1280px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-gray-600 font-medium">
+            © 2026 Yrdly Technologies. All rights reserved.
           </p>
-          <div className="flex gap-8">
-            <Link href="/privacy-policy" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-green-600 transition-colors">
+          <div className="flex gap-6">
+            <Link href="/privacy-policy" className="text-xs text-gray-600 hover:text-white transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-green-600 transition-colors">
+            <Link href="/terms" className="text-xs text-gray-600 hover:text-white transition-colors">
               Terms of Service
             </Link>
           </div>

@@ -1,429 +1,341 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Separator } from "@/components/ui/separator"
-import { Home, Search, Radio, List, Music, Smile, ChevronDown, ChevronRight } from 'lucide-react'
+import { Heart, Lock, ShoppingBag, ArrowRight, ShieldCheck, Tag, Zap, Camera, Plus, MapPin, UserCheck, MessageSquare, ChevronDown } from 'lucide-react'
 import Image from "next/image"
 import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import { TermsModal } from "@/components/terms-modal"
-import { NewsletterSignup } from "@/components/newsletter-signup"
-import { HeroLoginForm } from "@/components/auth/HeroLoginForm"
-import { useState, useEffect } from "react"
-import { EventRegistrationModal } from "@/components/event-registration-modal"
+import { useState } from "react"
+
+const CATEGORIES = [
+  "Wigs", "Footwear", "Electronics", "Machinery", "Accessories", 
+  "Watches", "Handbags", "Clothes", "Jewelry", "Gadgets"
+]
 
 export default function LandingPage() {
-  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false)
-  const [isEventModalOpen, setIsEventModalOpen] = useState(false)
-  const [selectedEvent, setSelectedEvent] = useState<{id: string, name: string, attendees: string}>({id: "", name: "", attendees: ""})
+  const [howItWorksTab, setHowItWorksTab] = useState<'buying' | 'selling'>('buying')
+  const [faqTab, setFaqTab] = useState<'buying' | 'selling'>('buying')
+  const [openFaq, setOpenFaq] = useState<number | null>(0)
 
-  useEffect(() => {
-    fetchLatestEvent()
-  }, [])
-
-  const fetchLatestEvent = async () => {
-    try {
-      const response = await fetch('/api/events')
-      const data = await response.json()
-      if (Array.isArray(data) && data.length > 0) {
-        setSelectedEvent({ 
-          id: data[0].id, 
-          name: data[0].name,
-          attendees: data[0].attendees || ""
-        })
-      }
-    } catch (error) {
-      console.error('Failed to fetch event:', error)
-    }
-  }
-
-  const openEventModal = (id: string, name: string) => {
-    if (!id) return;
-    setSelectedEvent(prev => ({ ...prev, id, name }))
-    setIsEventModalOpen(true)
+  const faqs = {
+    buying: [
+      { q: "Is it safe to buy on Yrdly?", a: "Absolutely. With SafePay, your money is held securely until you receive and approve the item." },
+      { q: "How do I make an offer?", a: "Click the 'Make Offer' button on any listing to negotiate a price directly with the seller." },
+      { q: "What if the item is not as described?", a: "You can open a dispute through SafePay, and our support team will mediate to ensure a fair resolution." }
+    ],
+    selling: [
+      { q: "How much does it cost to list?", a: "Listing items on Yrdly is completely free. We only take a small success fee when your item sells." },
+      { q: "When do I get paid?", a: "You get paid immediately after the buyer confirms they have received the item in good condition." },
+      { q: "How do I ship my items?", a: "You can arrange local pickup or use your preferred delivery service. Just make sure to communicate with the buyer." }
+    ]
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[var(--color-bg-base)]">
       <Header currentPage="home" />
 
-      <section className="relative min-h-[95vh] md:min-h-[90vh] flex items-center justify-center overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-[20s] hover:scale-110"
-          style={{
-            backgroundImage: "url('/hero-image.png')"
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-gray-900" />
-        
-        {/* Decorative elements */}
-        <div className="absolute top-20 left-[5%] w-72 h-72 bg-green-500/20 rounded-full blur-[120px] animate-pulse-soft pointer-events-none" />
-        <div className="absolute bottom-20 right-[5%] w-96 h-96 bg-green-400/10 rounded-full blur-[140px] animate-pulse-soft delay-500 pointer-events-none" />
-        
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 lg:py-32 flex flex-col lg:flex-row items-center justify-between gap-12 w-full">
-          {/* Left Side text */}
-          <div className="flex-1 text-white text-center lg:text-left">
-            <div className="animate-fade-in mb-8">
-              <span className="inline-flex items-center gap-2 px-5 py-2 bg-white/10 backdrop-blur-xl rounded-full text-sm font-bold border border-white/20 shadow-xl">
-                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                Your Estate & Street, Connected
-              </span>
-            </div>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 leading-[1.1] animate-fade-in-up text-balance tracking-tighter">
-              Your Neighbourhood,<br />
-              <span className="text-gradient drop-shadow-sm">Connected</span>
-            </h1>
-            <p className="text-lg sm:text-xl md:text-2xl mb-12 max-w-2xl mx-auto lg:mx-0 text-white/80 animate-fade-in-up delay-200 text-pretty leading-relaxed font-medium">
-              Stay in the loop with your neighbours, buy and sell safely on your street, and discover local owambe and events just steps away.
-            </p>
-          </div>
-
-          {/* Right Side Form */}
-          <div className="w-full lg:w-[420px] animate-fade-in-up delay-300">
-            <HeroLoginForm />
+      {/* HERO SECTION */}
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 px-6 overflow-hidden">
+        <div className="max-w-[1000px] mx-auto text-center relative z-10">
+          <div className="flex flex-wrap justify-center gap-3 mb-8">
+            <span className="trust-pill"><Heart className="w-4 h-4" /> Trusted</span>
+            <span className="trust-pill"><Lock className="w-4 h-4" /> Secure</span>
+            <span className="trust-pill"><ShoppingBag className="w-4 h-4" /> Local</span>
           </div>
           
-          {/* Scroll indicator */}
-          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-float hidden md:flex flex-col items-center gap-3">
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Explore More</span>
-            <div className="w-6 h-10 border-2 border-white/20 rounded-full flex justify-center pt-2 backdrop-blur-sm">
-              <div className="w-1 h-2 bg-green-500 rounded-full animate-bounce" />
-            </div>
+          <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-extrabold tracking-tight leading-[1.1] text-balance mb-8">
+            Just Like Your Local Market, <span className="text-brand block md:inline">but Safer</span>
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-[var(--color-text-secondary)] mb-10 max-w-2xl mx-auto">
+            Make space and make sales in your community with built-in trust and verified neighbours.
+          </p>
+          
+          <Button className="btn-primary text-lg h-14 px-10">
+            Shop Now
+          </Button>
+        </div>
+      </section>
+
+      {/* CATEGORY MARQUEE */}
+      <section className="py-10 border-y border-[var(--color-border-default)] overflow-hidden bg-[var(--color-bg-subtle)]">
+        <div className="flex w-full overflow-hidden">
+          <div className="marquee-track gap-8 px-4">
+            {[...CATEGORIES, ...CATEGORIES, ...CATEGORIES].map((category, i) => (
+              <div key={i} className="flex items-center gap-2 text-xl font-medium text-[var(--color-text-primary)] whitespace-nowrap">
+                <span className="w-2 h-2 rounded-full bg-brand/30" />
+                {category}
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-
-      <section className="py-24 md:py-32 bg-gray-900 text-white relative overflow-hidden">
-        {/* Background text */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
-          <h2 className="text-[18vw] font-black tracking-tighter opacity-[0.02] whitespace-nowrap uppercase">
-            Discovery Hub
-          </h2>
+      {/* FEATURE BENTO GRID */}
+      <section className="py-24 px-6 max-w-[1280px] mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">Everything You Need</h2>
         </div>
         
-        <div className="relative z-10 max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20">
-            <div className="max-w-2xl">
-              <span className="text-green-500 font-black uppercase tracking-[0.3em] text-xs mb-4 block">Community Feed</span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 tracking-tight">See What's Happening <br className="hidden md:block" /> In Your Estate</h2>
-              <p className="text-gray-400 text-lg md:text-xl leading-relaxed">
-                Connect with verified neighbours, support local businesses, and attend curated events that matter to your community.
-              </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Bento 1 */}
+          <div className="card p-8 md:p-12 bg-[#F5C518]/10 border-[#F5C518]/20 flex flex-col justify-between h-[400px]">
+            <div>
+              <ShieldCheck className="w-12 h-12 text-[#F5C518] mb-6" />
+              <h3 className="text-2xl font-bold mb-2">SafePay Protection</h3>
+              <p className="text-[var(--color-text-secondary)]">Your money is held securely until you receive exactly what you paid for.</p>
             </div>
-            <Link href="/events">
-              <Button variant="outline" className="h-14 px-8 rounded-2xl border-white/10 hover:bg-white hover:text-gray-900 transition-all font-bold group bg-transparent">
-                Browse All Events
-                <ChevronRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </Link>
+            <div className="mt-auto flex justify-end">
+               <div className="bg-white p-4 rounded-xl shadow-sm w-3/4 translate-x-4 translate-y-4 border border-[var(--color-border-default)]">
+                 <div className="flex items-center gap-3 mb-2">
+                   <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600"><Lock className="w-4 h-4"/></div>
+                   <div className="font-bold text-sm">Payment Secured</div>
+                 </div>
+                 <div className="text-xs text-[var(--color-text-muted)]">Awaiting seller fulfillment...</div>
+               </div>
+            </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start">
-            <div className="group card-glow rounded-[2.5rem] overflow-hidden bg-gray-800/30 p-6 border border-white/5">
-              <div className="relative overflow-hidden rounded-[2rem] mb-6 aspect-[3/4]">
-                <Image
-                  src="/discover1.png"
-                  alt="Discover Local Events"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </div>
-              <h3 className="text-xl md:text-2xl font-black mb-3 tracking-tight">
-                Local Owambe & Events
-              </h3>
-              <p className="text-gray-400 text-sm leading-relaxed">Find estate meetings, networking meetups, and local parties happening today.</p>
+          {/* Bento 2 */}
+          <div className="card p-8 md:p-12 bg-blue-50 border-blue-100 flex flex-col justify-between h-[400px]">
+            <div>
+              <MessageSquare className="w-12 h-12 text-blue-500 mb-6" />
+              <h3 className="text-2xl font-bold mb-2">Ask Seller</h3>
+              <p className="text-[var(--color-text-secondary)]">Direct chat built-in. Get all your questions answered before you commit.</p>
             </div>
-
-            <div className="group card-glow rounded-[2.5rem] overflow-hidden bg-gray-800/30 p-6 border border-white/5 md:-translate-y-12">
-              <div className="relative overflow-hidden rounded-[2rem] mb-6 aspect-[3/4]">
-                <Image
-                  src="/discover2.png"
-                  alt="Main Feature"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </div>
-              <h3 className="text-xl md:text-2xl font-black mb-3 tracking-tight">
-                Neighbourhood Market
-              </h3>
-              <p className="text-gray-400 text-sm leading-relaxed">Support your local vendors or post your own hustle to reach neighbours you trust.</p>
+            <div className="mt-auto flex justify-end">
+               <div className="bg-white p-4 rounded-xl shadow-sm w-full border border-[var(--color-border-default)]">
+                 <div className="flex gap-2 mb-3">
+                   <div className="bg-gray-100 p-2 rounded-lg text-xs w-3/4">Is this still available?</div>
+                 </div>
+                 <div className="flex gap-2 justify-end">
+                   <div className="bg-blue-500 text-white p-2 rounded-lg text-xs w-2/3">Yes, you can come pick it up today!</div>
+                 </div>
+               </div>
             </div>
+          </div>
 
-            <div className="group card-glow rounded-[2.5rem] overflow-hidden bg-gray-800/30 p-6 border border-white/5">
-              <div className="relative overflow-hidden rounded-[2rem] mb-6 aspect-[3/4]">
-                <Image
-                  src="/discover3.png"
-                  alt="Community Connection"
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </div>
-              <h3 className="text-xl md:text-2xl font-black mb-3 tracking-tight">
-                Verified Neighbours Only
-              </h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-6">Safe interactions powered by local verification. Connect with real people on your street.</p>
-              <Link href="/learn-more" className="flex items-center justify-between group/link transition-smooth text-green-500 font-bold uppercase tracking-widest text-[10px]">
-                <span>Deep Dive</span>
-                <ChevronRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
-              </Link>
+          {/* Bento 3 */}
+          <div className="card p-8 md:p-12 bg-purple-50 border-purple-100 flex flex-col justify-between h-[400px]">
+            <div>
+              <Tag className="w-12 h-12 text-purple-500 mb-6" />
+              <h3 className="text-2xl font-bold mb-2">Make Offer</h3>
+              <p className="text-[var(--color-text-secondary)]">Haggle just like in the local market. Propose a price that works for you.</p>
+            </div>
+            <div className="mt-auto flex justify-start">
+               <div className="bg-white p-4 rounded-xl shadow-sm border border-[var(--color-border-default)]">
+                 <div className="text-sm font-bold mb-1">Make an Offer</div>
+                 <div className="flex items-center gap-2">
+                   <div className="border rounded-md px-3 py-1.5 font-mono">₦15,000</div>
+                   <Button size="sm" className="bg-purple-500 hover:bg-purple-600 text-white">Send</Button>
+                 </div>
+               </div>
+            </div>
+          </div>
+
+          {/* Bento 4 */}
+          <div className="card p-8 md:p-12 bg-brand/5 border-brand/20 flex flex-col justify-between h-[400px]">
+            <div>
+              <Camera className="w-12 h-12 text-brand mb-6" />
+              <h3 className="text-2xl font-bold mb-2">List Items Fast</h3>
+              <p className="text-[var(--color-text-secondary)]">Snap, price, and post. It takes less than 60 seconds to start selling.</p>
+            </div>
+            <div className="mt-auto flex justify-center">
+               <Button className="btn-primary shadow-lg flex items-center gap-2"><Plus className="w-5 h-5"/> Create Listing</Button>
             </div>
           </div>
         </div>
       </section>
 
-
-      <section className="py-24 md:py-32 bg-white relative overflow-hidden">
-        {/* Decorative background elements */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-green-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-green-50/30 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-6 relative">
-          <div className="text-center mb-20 md:mb-24">
-            <span className="inline-block px-5 py-2 bg-green-100 text-green-700 rounded-full text-xs font-black uppercase tracking-[0.2em] mb-6 shadow-sm shadow-green-600/5">
-              Experience Yrdly
-            </span>
-            <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-gray-900 mb-8 tracking-tighter leading-tight">
-              Your Estate,<br className="hidden md:block" /> In Your Pocket
-            </h2>
-            <p className="text-lg md:text-2xl text-gray-500 max-w-3xl mx-auto leading-relaxed">
-              We've stripped away the noise to give you the most intuitive way to buy, sell, and connect with your immediate community.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-            <div className="group text-center hover-lift bg-white rounded-[2.5rem] p-8 md:p-10 shadow-premium border border-gray-100/50">
-              <div className="relative mb-10 mx-auto w-fit">
-                <div className="absolute inset-0 bg-green-200/40 rounded-[2.5rem] blur-2xl scale-75 group-hover:scale-110 transition-transform duration-700" />
-                <Image
-                  src="/listing.png"
-                  alt="Create Listing"
-                  width={220}
-                  height={220}
-                  className="relative rounded-[2rem] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-2 rotate-0"
-                />
-              </div>
-              <div className="inline-flex items-center justify-center w-10 h-10 bg-green-600 text-white rounded-2xl text-xs font-black mb-6 shadow-lg shadow-green-600/20">01</div>
-              <h3 className="text-2xl font-black text-gray-900 mb-4 tracking-tight">
-                Swift Listings
-              </h3>
-              <p className="text-gray-500 text-base leading-relaxed">
-                Post in seconds. Upload your media and reach your local circle instantly.
-              </p>
-            </div>
-
-            <div className="group text-center hover-lift bg-white rounded-[2.5rem] p-8 md:p-10 shadow-premium border border-gray-100/50 md:-translate-y-6">
-              <div className="relative mb-10 mx-auto w-fit">
-                <div className="absolute inset-0 bg-green-200/40 rounded-[2.5rem] blur-2xl scale-75 group-hover:scale-110 transition-transform duration-700" />
-                <Image
-                  src="/browse.png"
-                  alt="Browse and Filter"
-                  width={220}
-                  height={220}
-                  className="relative rounded-[2rem] transition-transform duration-700 group-hover:scale-110 group-hover:rotate-2 rotate-0"
-                />
-              </div>
-              <div className="inline-flex items-center justify-center w-10 h-10 bg-green-600 text-white rounded-2xl text-xs font-black mb-6 shadow-lg shadow-green-600/20">02</div>
-              <h3 className="text-2xl font-black text-gray-900 mb-4 tracking-tight">
-                Effortless Discovery
-              </h3>
-              <p className="text-gray-500 text-base leading-relaxed">
-                Powerful filters to find exactly what you need without the endless scrolling.
-              </p>
-            </div>
-
-            <div className="group text-center hover-lift bg-white rounded-[2.5rem] p-8 md:p-10 shadow-premium border border-gray-100/50">
-              <div className="relative mb-10 mx-auto w-fit">
-                <div className="absolute inset-0 bg-green-200/40 rounded-[2.5rem] blur-2xl scale-75 group-hover:scale-110 transition-transform duration-700" />
-                <Image
-                  src="/Local.png"
-                  alt="Local Events"
-                  width={220}
-                  height={220}
-                  className="relative rounded-[2rem] transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-2 rotate-0"
-                />
-              </div>
-              <div className="inline-flex items-center justify-center w-10 h-10 bg-green-600 text-white rounded-2xl text-xs font-black mb-6 shadow-lg shadow-green-600/20">03</div>
-              <h3 className="text-2xl font-black text-gray-900 mb-4 tracking-tight">
-                Estate & Local Events
-              </h3>
-              <p className="text-gray-500 mb-8 text-base leading-relaxed">
-                Connect in person. Secure your spot at estate meetings, street parties, and local events.
-              </p>
-              <div className="flex flex-col items-center gap-4">
-                {selectedEvent.id && (
-                  <div className="w-full max-w-[220px] space-y-3">
-                    <Button 
-                      onClick={() => openEventModal(selectedEvent.id, selectedEvent.name)}
-                      className="bg-green-600 hover:bg-gray-900 text-white w-full h-12 rounded-2xl transition-all font-black uppercase tracking-widest text-[10px] shadow-xl hover:shadow-green-600/20"
-                    >
-                      Quick Join Now
-                    </Button>
-                    {selectedEvent.attendees && (
-                      <p className="text-[10px] font-black text-green-600 uppercase tracking-[0.2em] text-center animate-pulse">
-                        {selectedEvent.attendees}
-                      </p>
-                    )}
-                  </div>
-                )}
-                <Link href="/events" className="text-green-600 hover:text-gray-900 font-black text-[10px] uppercase tracking-widest flex items-center group/link transition-all">
-                  Browse Event Hub <ChevronRight className="w-3.5 h-3.5 ml-1 transition-transform group-hover/link:translate-x-1" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      <section 
-        className="py-24 md:py-32 text-white relative overflow-hidden group/newsletter"
-        style={{
-          backgroundImage: `url('/newsletter-bg.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-900/95 via-gray-900/40 to-transparent pointer-events-none" />
-        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-green-500 via-yellow-400 to-green-500" />
-        <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-gradient-to-r from-green-500 via-yellow-400 to-green-500" />
-        
-        <div className="max-w-7xl mx-auto px-6 relative flex flex-col md:flex-row items-center gap-16">
-          <div className="flex-1 max-w-xl text-center md:text-left">
-            <span className="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-8 border border-white/20">
-              Community Pulse
-            </span>
-            <h2 className="text-4xl md:text-5xl lg:text-7xl font-black mb-8 leading-[1.1] tracking-tighter">
-              The Best of Your <br className="hidden lg:block" /><span className="text-green-400">Estate & City</span>
-            </h2>
-            <p className="text-xl md:text-2xl mb-10 text-white/80 leading-relaxed font-medium">
-              Join our newsletter to get updates on estate news, local hustles, and events directly to your inbox.
-            </p>
-
-            <NewsletterSignup 
-              placeholder="Your primary email..."
-              buttonText="Sign Me Up"
-              source="newsletter-section"
-              className="mb-6 shadow-2xl"
-            />
-
-            <p className="text-xs text-white/40 font-bold uppercase tracking-widest">
-              No spam. Just community trust. By signing up, you agree to our{' '}
+      {/* HOW IT WORKS */}
+      <section className="py-24 px-6 bg-[var(--color-bg-subtle)]">
+        <div className="max-w-[1000px] mx-auto text-center">
+          <h2 className="text-3xl md:text-5xl font-bold mb-10">How It Works</h2>
+          
+          <div className="flex justify-center mb-12">
+            <div className="flex bg-white rounded-full p-1 border border-[var(--color-border-default)]">
               <button 
-                onClick={() => setIsTermsModalOpen(true)}
-                className="text-white hover:text-green-400 underline decoration-green-400/30 underline-offset-4 cursor-pointer transition-colors"
+                onClick={() => setHowItWorksTab('buying')}
+                className={`px-8 py-2.5 rounded-full font-medium transition-all ${howItWorksTab === 'buying' ? 'bg-brand text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]'}`}
               >
-                Terms
+                Buying
               </button>
-            </p>
+              <button 
+                onClick={() => setHowItWorksTab('selling')}
+                className={`px-8 py-2.5 rounded-full font-medium transition-all ${howItWorksTab === 'selling' ? 'bg-brand text-white shadow-md' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]'}`}
+              >
+                Selling
+              </button>
+            </div>
           </div>
-          
-          <div className="hidden lg:block flex-1 relative h-[500px] w-full max-w-md animate-float">
-             <div className="absolute inset-0 bg-green-500/20 rounded-[3rem] blur-[100px] opacity-50" />
-             <div className="relative h-full w-full glass-dark rounded-[3rem] p-10 flex flex-col justify-center border-white/10">
-                <div className="space-y-6">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="h-20 bg-white/5 rounded-2xl border border-white/10 flex items-center px-6 gap-4 animate-pulse-soft" style={{ animationDelay: `${i * 200}ms` }}>
-                      <div className="w-10 h-10 rounded-full bg-green-500/20" />
-                      <div className="flex-1 space-y-2">
-                        <div className="h-2 w-1/2 bg-white/20 rounded" />
-                        <div className="h-2 w-full bg-white/10 rounded" />
-                      </div>
-                    </div>
-                  ))}
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[1, 2, 3].map((step) => (
+              <div key={step} className="text-left flex flex-col items-center">
+                <div className="w-12 h-12 bg-brand/10 text-brand rounded-full flex items-center justify-center font-bold text-xl mb-6">
+                  {step}
                 </div>
-             </div>
-          </div>
-        </div>
-      </section>
-
-
-      <section className="py-24 md:py-32 bg-gray-50 relative overflow-hidden">
-        <div className="max-w-4xl mx-auto px-6 relative">
-          <div className="text-center mb-20">
-            <span className="text-green-600 font-black uppercase tracking-[0.3em] text-[10px] mb-4 block">Knowledge Hub</span>
-            <h2 className="text-4xl md:text-6xl font-black text-gray-900 mb-6 tracking-tighter">Frequently Asked</h2>
-            <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
-              Everything you need to know about the Yrdly ecosystem.
-            </p>
-          </div>
-
-          <div className="space-y-6">
-            {[ 
-              {
-                question: "How to create listings?",
-                answer: "To create a listing, navigate to the 'Create Listing' section from your dashboard. Fill in the required details such as title, description, price, and category, then upload images if necessary. Once you submit, your listing will be visible to the community."
-              },
-              {
-                question: "How to purchase items?",
-                answer: "To purchase an item, browse available listings and click on the one you're interested in. Tap the 'Buy Now' or 'Contact Seller' button to proceed. Payments can be made securely through our supported payment gateways, and you will receive a confirmation once the purchase is complete."
-              },
-              {
-                question: "How to attend events?",
-                answer: "To attend an event, go to the 'Events' section of the app. Select the event you're interested in, check the details, and click 'Join' or 'Get Ticket'. If it's a paid event, you'll need to complete the payment process before your spot is confirmed."
-              },
-              {
-                question: "Can I save listings?",
-                answer: "Yes, you can save listings to view later. Simply tap the 'Save' or 'Bookmark' button on any listing. Your saved listings will be available under your profile in the 'Saved Items' section."
-              },
-              {
-                question: "What if I have a question?",
-                answer: "If you have a question, you can visit our Help Center or contact support directly from the app. Go to 'Settings' → 'Support' to chat with our team or send us an email. You can also check our community forums for quick answers."
-              }
-            ].map((faq, index) => (
-              <div key={index} className="group">
-                <div className="bg-white rounded-[2rem] p-8 shadow-soft card-glow border border-transparent hover:border-green-100 transition-all duration-500">
-                  <h3 className="text-xl md:text-2xl font-black text-gray-900 mb-6 flex items-start gap-5">
-                    <span className="inline-flex items-center justify-center w-10 h-10 bg-green-50 text-green-600 rounded-2xl text-xs font-black flex-shrink-0">
-                      {index + 1}
-                    </span>
-                    {faq.question}
-                  </h3>
-                  <p className="text-gray-500 leading-relaxed pl-14 text-sm md:text-base font-medium">
-                    {faq.answer}
-                  </p>
+                <h4 className="text-xl font-bold mb-3 text-center">
+                  {howItWorksTab === 'buying' 
+                    ? (step === 1 ? 'Find It' : step === 2 ? 'Price It' : 'Get It')
+                    : (step === 1 ? 'Snap It' : step === 2 ? 'Post It' : 'Sell It')}
+                </h4>
+                <p className="text-[var(--color-text-secondary)] text-center mb-8">
+                  {howItWorksTab === 'buying' 
+                    ? (step === 1 ? 'Search our local inventory for exactly what you need.' : step === 2 ? 'Use SafePay to secure the item or make a counter-offer.' : 'Meet up locally or get it delivered securely.')
+                    : (step === 1 ? 'Take clear photos of the item you want to let go of.' : step === 2 ? 'Add a description and set your asking price.' : 'Ship it or hand it over and get paid instantly.')}
+                </p>
+                <div className="w-full max-w-[240px] aspect-[1/2] bg-white rounded-[2rem] border-4 border-gray-100 shadow-xl overflow-hidden relative">
+                  <div className="absolute inset-0 flex items-center justify-center text-[var(--color-text-muted)] text-sm font-medium bg-gray-50">
+                    App UI Mockup
+                  </div>
                 </div>
               </div>
             ))}
           </div>
+          
+          <div className="mt-16">
+            <Button className="btn-primary text-lg h-14 px-10">Start {howItWorksTab === 'buying' ? 'Shopping' : 'Selling'}</Button>
+          </div>
+        </div>
+      </section>
 
-          <div className="text-center mt-20 bg-gray-900 rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />
-            <h3 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight relative z-10">
-              Still Have Questions?
-            </h3>
-            <p className="text-gray-400 mb-10 text-lg relative z-10">
-              Our community support team is always ready to help you navigate Yrdly.
+      {/* TRUST STATEMENT */}
+      <section className="py-32 px-6 bg-[var(--color-bg-dark)] text-white relative overflow-hidden text-center flex items-center justify-center min-h-[60vh]">
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+        <div className="relative z-10 max-w-4xl mx-auto">
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold leading-tight mb-8">
+            Commerce That Doesn't Ask You To Hope For The Best.
+          </h2>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            We built Yrdly because we believe buying and selling online shouldn't feel like a gamble.
+          </p>
+        </div>
+      </section>
+
+      {/* SAFEPAY SPOTLIGHT */}
+      <section className="py-24 px-6 max-w-[1280px] mx-auto">
+        <div className="flex flex-col lg:flex-row gap-16 items-center">
+          <div className="w-full lg:w-1/2">
+            <div className="aspect-square bg-gray-200 rounded-[2rem] overflow-hidden relative">
+              <Image src="/listing.png" alt="Happy Customer" fill className="object-cover" />
+            </div>
+          </div>
+          <div className="w-full lg:w-1/2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#F5C518]/10 text-[#D4A000] rounded-full text-sm font-bold uppercase tracking-wider mb-6">
+              <ShieldCheck className="w-4 h-4" /> Yrdly SafePay
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">Total peace of mind <br/>for every transaction.</h2>
+            <p className="text-lg text-[var(--color-text-secondary)] mb-8">
+              Whether you are buying a used phone or selling a designer bag, our escrow service ensures nobody gets cheated. The buyer's money is held safely until they approve the item.
             </p>
-            <Link href="/contact" className="relative z-10">
-              <Button className="bg-green-600 hover:bg-white hover:text-gray-900 text-white px-10 h-14 rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-xl shadow-green-600/10">
-                Talk to Us
-              </Button>
+            
+            <div className="flex flex-wrap gap-3 mb-10">
+              <span className="trust-pill border-gray-200 bg-white text-gray-600"><Lock className="w-4 h-4"/> Trust</span>
+              <span className="trust-pill border-gray-200 bg-white text-gray-600"><Zap className="w-4 h-4"/> Visibility</span>
+              <span className="trust-pill border-gray-200 bg-white text-gray-600"><UserCheck className="w-4 h-4"/> Familiarity</span>
+            </div>
+            
+            <Link href="/about" className="text-brand font-bold flex items-center gap-2 hover:gap-3 transition-all">
+              Learn more about SafePay <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
       </section>
 
+      {/* WHO IT'S BUILT FOR */}
+      <section className="py-24 px-6 bg-[var(--color-bg-subtle)]">
+        <div className="max-w-[1280px] mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">Who is Yrdly for?</h2>
+            <p className="text-[var(--color-text-secondary)] text-lg">Built for the community, driven by trust.</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <div className="card">
+              <div className="aspect-[4/3] bg-gray-200 relative">
+                 <div className="absolute inset-0 flex items-center justify-center text-gray-400">Lifestyle Image</div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-2">Thrifters & Deal Hunters</h3>
+                <p className="text-[var(--color-text-secondary)]">Find incredible local deals without the risk of getting scammed.</p>
+              </div>
+            </div>
+            <div className="card">
+              <div className="aspect-[4/3] bg-gray-200 relative">
+                 <div className="absolute inset-0 flex items-center justify-center text-gray-400">Lifestyle Image</div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-2">Side Hustlers</h3>
+                <p className="text-[var(--color-text-secondary)]">Start your small business and reach real buyers in your community.</p>
+              </div>
+            </div>
+            <div className="card">
+              <div className="aspect-[4/3] bg-gray-200 relative">
+                 <div className="absolute inset-0 flex items-center justify-center text-gray-400">Lifestyle Image</div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-2">Declutterers</h3>
+                <p className="text-[var(--color-text-secondary)]">Make space in your home by easily selling items you no longer need.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="text-center">
+            <Button className="btn-primary text-lg h-14 px-10">Create Account</Button>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="py-24 px-6 max-w-[800px] mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold mb-10">Frequently Asked Questions</h2>
+          
+          <div className="flex justify-center mb-12">
+            <div className="flex border-b border-[var(--color-border-default)]">
+              <button 
+                onClick={() => setFaqTab('buying')}
+                className={`px-8 py-3 font-medium transition-all border-b-2 ${faqTab === 'buying' ? 'text-brand border-brand' : 'text-[var(--color-text-muted)] border-transparent hover:text-[var(--color-text-primary)]'}`}
+              >
+                Buying
+              </button>
+              <button 
+                onClick={() => setFaqTab('selling')}
+                className={`px-8 py-3 font-medium transition-all border-b-2 ${faqTab === 'selling' ? 'text-brand border-brand' : 'text-[var(--color-text-muted)] border-transparent hover:text-[var(--color-text-primary)]'}`}
+              >
+                Selling
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          {faqs[faqTab].map((faq, i) => (
+            <div key={i} className="border border-[var(--color-border-default)] rounded-xl overflow-hidden bg-white">
+              <button 
+                onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                className="w-full px-6 py-5 text-left flex justify-between items-center font-bold text-lg hover:bg-gray-50 transition-colors"
+              >
+                {faq.q}
+                <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${openFaq === i ? 'rotate-180' : ''}`} />
+              </button>
+              {openFaq === i && (
+                <div className="px-6 pb-5 text-[var(--color-text-secondary)]">
+                  {faq.a}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        
+        <div className="text-center mt-12">
+          <Button className="btn-outline">Get Started Today</Button>
+        </div>
+      </section>
 
       <Footer />
-
-      <TermsModal 
-        isOpen={isTermsModalOpen} 
-        onClose={() => setIsTermsModalOpen(false)} 
-      />
-
-      <EventRegistrationModal 
-        isOpen={isEventModalOpen}
-        onClose={() => setIsEventModalOpen(false)}
-        eventId={selectedEvent.id}
-        eventName={selectedEvent.name}
-      />
     </div>
   )
 }

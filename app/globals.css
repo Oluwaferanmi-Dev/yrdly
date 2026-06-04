@@ -4,13 +4,44 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* Brand Tokens */
+  --color-brand-primary: #009834;
+  --color-brand-primary-light: #00c241;
+  --color-brand-primary-dark: #006b25;
+
+  /* SafePay Badge */
+  --color-safepay-accent: #F5C518;
+  --color-safepay-bg: #FFF8E1;
+
+  /* Neutrals & Surfaces */
+  --color-bg-base: #FFFFFF;
+  --color-bg-subtle: #F7F7F7;
+  --color-bg-dark: #0D0D0D;
+  --color-surface: #FFFFFF;
+
+  /* Text */
+  --color-text-primary: #0D0D0D;
+  --color-text-secondary: #4A4A4A;
+  --color-text-muted: #9B9B9B;
+  --color-text-inverse: #FFFFFF;
+
+  /* Borders */
+  --color-border-default: #E5E5E5;
+  --color-border-strong: #C4C4C4;
+
+  /* Status */
+  --color-success: #009834;
+  --color-error: #D32F2F;
+  --color-warning: #F5C518;
+
+  /* Standard Shadcn overrides */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: #009834;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -23,20 +54,7 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
 }
 
 .dark {
@@ -46,7 +64,7 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.145 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
+  --primary: #00c241;
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -59,22 +77,17 @@
   --border: oklch(0.269 0 0);
   --input: oklch(0.269 0 0);
   --ring: oklch(0.439 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+
+  --color-bg-base: #0D0D0D;
+  --color-bg-subtle: #1A1A1A;
+  --color-surface: #141414;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #E5E5E5;
+  --color-border-default: #333333;
 }
 
 @theme inline {
+  /* Shadcn mappings */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -94,23 +107,48 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Yadsale brand colors — flat names for Tailwind v4 utilities */
+  --color-brand: #009834;
+  --color-brand-light: #00c241;
+  --color-brand-dark: #006b25;
+  --color-safepay: #F5C518;
+
+  /* Font families */
+  --font-display: 'ClashDisplay-Variable', 'General Sans', sans-serif;
+  --font-body: 'DM Sans', 'Inter', sans-serif;
+
+  /* Shadows */
+  --shadow-brand: 0 4px 24px rgba(0, 152, 52, 0.2);
+  --shadow-soft: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+  --shadow-premium: 0 25px 50px -12px rgba(0, 0, 0, 0.12);
+
+  /* Marquee keyframe */
+  --animate-marquee: marquee 30s linear infinite;
+
+  @keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* Fade animations */
+  --animate-fade-in-up: fade-in-up 0.7s ease-out forwards;
+
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  --animate-float: float 3s ease-in-out infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-10px); }
+  }
 }
 
 @layer base {
@@ -118,155 +156,129 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-body);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-text-primary);
   }
 }
 
-/* Smooth scroll behavior */
+/* ==============================
+   Yadsale Component Classes
+   (vanilla CSS — no @apply brand utilities here)
+   ============================== */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #009834;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 4px 24px rgba(0, 152, 52, 0.2);
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #00c241;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #009834;
+  color: #009834;
+  background: transparent;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-outline:hover {
+  background-color: rgba(0, 152, 52, 0.05);
+}
+
+.card {
+  background: var(--color-surface);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  border: 1px solid var(--color-border-default);
+}
+
+.card:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.trust-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 152, 52, 0.08);
+  border: 1px solid rgba(0, 152, 52, 0.2);
+  border-radius: 9999px;
+  color: #009834;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Scrolling Marquee */
+.marquee-track {
+  display: flex;
+  animation: marquee 30s linear infinite;
+  width: max-content;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Utilities */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom animations */
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.text-brand {
+  color: #009834;
 }
 
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.bg-brand {
+  background-color: #009834;
 }
 
-@keyframes slide-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.border-brand {
+  border-color: #009834;
 }
 
-@keyframes slide-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.shadow-brand {
+  box-shadow: 0 4px 24px rgba(0, 152, 52, 0.2);
 }
 
-@keyframes scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+.font-display {
+  font-family: var(--font-display);
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+.font-body {
+  font-family: var(--font-body);
 }
 
-@keyframes pulse-soft {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-/* Animation utility classes */
-.animate-fade-in {
-  animation: fade-in 0.6s ease-out forwards;
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 0.7s ease-out forwards;
-}
-
-.animate-slide-in-left {
-  animation: slide-in-left 0.6s ease-out forwards;
-}
-
-.animate-slide-in-right {
-  animation: slide-in-right 0.6s ease-out forwards;
-}
-
-.animate-scale-in {
-  animation: scale-in 0.5s ease-out forwards;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-pulse-soft {
-  animation: pulse-soft 2s ease-in-out infinite;
-}
-
-/* Staggered animation delays */
-.delay-100 { animation-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; }
-.delay-400 { animation-delay: 400ms; }
-.delay-500 { animation-delay: 500ms; }
-.delay-600 { animation-delay: 600ms; }
-
-/* Start invisible for animations */
-.animate-on-scroll {
-  opacity: 0;
-}
-
-/* Smooth transitions for interactive elements */
-.transition-smooth {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Hover lift effect */
-.hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
-}
-
-/* Gradient text */
-.text-gradient {
-  background: linear-gradient(135deg, #16a34a 0%, #22c55e 50%, #4ade80 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Glass morphism effect */
+/* Glass morphism */
 .glass {
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(16px) saturate(180%);
@@ -274,61 +286,26 @@ html {
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.glass-dark {
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* Animation utilities */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
 }
 
-/* Soft shadow */
-.shadow-soft {
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
-}
+/* Stagger delays */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
 
-.shadow-premium {
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.12);
-}
-
-.shadow-glow {
-  box-shadow: 0 0 30px -5px rgba(34, 197, 94, 0.2);
-}
-
-/* Card hover glow */
-.card-glow {
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.card-glow:hover {
-  box-shadow: 0 20px 40px -10px rgba(22, 163, 74, 0.25);
-  transform: translateY(-6px);
-}
-
-/* Ticket Stub Style */
+/* Ticket styling (preserved) */
 .ticket-stub {
-  background-image: 
+  background-image:
     radial-gradient(circle at 0 50%, transparent 10px, white 11px),
     radial-gradient(circle at 100% 50%, transparent 10px, white 11px);
   background-position: left, right;
   background-size: 50% 100%;
   background-repeat: no-repeat;
 }
-
-.ticket-divider {
-  border-top: 2px dashed #e2e8f0;
-  position: relative;
-}
-
-.ticket-divider::before,
-.ticket-divider::after {
-  content: '';
-  position: absolute;
-  top: -10px;
-  width: 20px;
-  height: 20px;
-  background-color: var(--background);
-  border-radius: 50%;
-}
-
-.ticket-divider::before { left: -30px; }
-.ticket-divider::after { right: -30px; }

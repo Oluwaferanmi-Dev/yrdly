@@ -1,10 +1,15 @@
 import type { Metadata, Viewport } from 'next'
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
+import { DM_Sans } from 'next/font/google'
 import './globals.css'
 import { CookieConsent } from '@/components/cookie-consent'
 import { Analytics } from '@vercel/analytics/next'
 import Script from 'next/script'
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  variable: '--font-body',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'Yrdly - Your Neighborhood Network',
@@ -23,9 +28,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="bg-background">
+    <html lang="en" className={`bg-background ${dmSans.variable}`}>
       <head>
-
+        <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,400,700,500,600,300&display=swap" rel="stylesheet" />
+        
         {/* ✅ Google AdSense */}
         <Script
           async
@@ -35,15 +41,13 @@ export default function RootLayout({
         />
 
         <style>{`
-html {
-  font-family: ${GeistSans.style.fontFamily};
-  --font-sans: ${GeistSans.variable};
-  --font-mono: ${GeistMono.variable};
-}
+          html {
+            --font-display: 'ClashDisplay-Variable', 'General Sans', sans-serif;
+          }
         `}</style>
       </head>
 
-      <body>
+      <body className="font-body text-[var(--color-text-secondary)] antialiased bg-[var(--color-bg-base)]">
         {children}
         <CookieConsent />
         <Analytics />
