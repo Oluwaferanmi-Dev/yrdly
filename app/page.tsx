@@ -125,7 +125,7 @@ export default function LandingPage() {
             <div className="group card-glow rounded-[2.5rem] overflow-hidden bg-gray-800/30 p-6 border border-white/5">
               <div className="relative overflow-hidden rounded-[2rem] mb-6 aspect-[3/4]">
                 <Image
-                  src="/discover1.png"
+                  src="/pexels-k.jpg"
                   alt="Discover Local Events"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -141,7 +141,7 @@ export default function LandingPage() {
             <div className="group card-glow rounded-[2.5rem] overflow-hidden bg-gray-800/30 p-6 border border-white/5 md:-translate-y-12">
               <div className="relative overflow-hidden rounded-[2rem] mb-6 aspect-[3/4]">
                 <Image
-                  src="/discover2.png"
+                  src="/clothes.webp"
                   alt="Main Feature"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -157,7 +157,7 @@ export default function LandingPage() {
             <div className="group card-glow rounded-[2.5rem] overflow-hidden bg-gray-800/30 p-6 border border-white/5">
               <div className="relative overflow-hidden rounded-[2rem] mb-6 aspect-[3/4]">
                 <Image
-                  src="/discover3.png"
+                  src="/pexels-e.jpg"
                   alt="Community Connection"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
