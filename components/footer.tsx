@@ -1,110 +1,68 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { Twitter, Instagram, Mail, ArrowUpRight } from 'lucide-react'
-
-const footerLinks = [
-  {
-    title: "Product",
-    links: [
-      { label: "Market Place", href: `${process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'}/marketplace` },
-      { label: "Events", href: "/events" },
-      { label: "Learn More", href: "/learn-more" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { label: "About Us", href: "/about" },
-      { label: "Contact", href: "/contact" },
-    ],
-  },
-  {
-    title: "Support",
-    links: [
-      { label: "Privacy Policy", href: "/privacy-policy" },
-      { label: "Terms", href: "/terms" },
-    ],
-  },
-]
+import Link from "next/link";
+import { Twitter, Instagram, Mail } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-100 overflow-hidden">
-      {/* Top Section - Brand & Newsletter */}
-      <div className="max-w-7xl mx-auto px-6 py-24 md:py-32">
-        <div className="grid lg:grid-cols-2 gap-24 items-start">
-          <div className="space-y-10">
-            <Link href="/" className="flex items-center space-x-3 group transition-smooth">
-              <div className="w-12 h-12 bg-green-600 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-3 shadow-lg shadow-green-600/20 overflow-hidden">
-                <img src="/favicon.ico" alt="Yrdly Logo" className="w-7 h-7 object-contain" />
-              </div>
-              <span className="font-black text-3xl tracking-tighter text-gray-900">
-                yrdly<span className="text-green-600">.</span>
-              </span>
+    <footer className="bg-muted/50 border-t border-border py-12 font-worksans">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div className="space-y-4">
+            <Link href="/" className="inline-block">
+              <span className="text-3xl font-jersey text-[#82DB7E]">yrdly.</span>
             </Link>
-            <p className="text-xl text-gray-500 font-medium max-w-sm leading-relaxed tracking-tight">
-              Your neighborhood, connected. Yrdly brings Nigerians closer to their local community, market, and events.
+            <p className="text-sm text-muted-foreground font-worksans">
+              Your estate & street, connected.
             </p>
             <div className="flex gap-4">
-              {[
-                { icon: <Twitter className="w-5 h-5" />, href: "https://x.com/yrdlyapp", label: "X (Twitter)" },
-                { icon: <Instagram className="w-5 h-5" />, href: "https://www.instagram.com/yardly.ng", label: "Instagram" },
-                { icon: <Mail className="w-5 h-5" />, href: "mailto:yrdly@gmail.com", label: "Email" },
-              ].map((social, i) => (
-                <Link 
-                  key={i} 
-                  href={social.href}
-                  aria-label={social.label}
-                  className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 hover:bg-green-600 hover:text-white hover:scale-110 transition-all border border-gray-100"
-                >
-                  {social.icon}
-                </Link>
-              ))}
+              <Link href="https://x.com/yrdlyapp" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">
+                <Twitter size={20} />
+              </Link>
+              <Link href="https://www.instagram.com/yardly.ng" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">
+                <Instagram size={20} />
+              </Link>
+              <Link href="mailto:yrdly@gmail.com" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">
+                <Mail size={20} />
+              </Link>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-12 lg:gap-8">
-            {footerLinks.map((section) => (
-              <div key={section.title} className="space-y-6">
-                <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">
-                  {section.title}
-                </h4>
-                <ul className="space-y-4">
-                  {section.links.map((link) => (
-                    <li key={link.label}>
-                      <Link 
-                        href={link.href}
-                        className="text-[13px] font-black text-gray-900 hover:text-green-600 hover:ml-1 transition-all flex items-center gap-1 group"
-                      >
-                        {link.label}
-                        <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          <div>
+            <h3 className="font-raleway font-bold mb-4">Product</h3>
+            <ul className="space-y-2 text-sm font-worksans">
+              <li><Link href="/" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Features</Link></li>
+              <li><Link href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'}/marketplace`} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Marketplace</Link></li>
+              <li><Link href="/events" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Events</Link></li>
+              <li><Link href="/learn-more" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Safety</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="font-raleway font-bold mb-4">Company</h3>
+            <ul className="space-y-2 text-sm font-worksans">
+              <li><Link href="/about" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">About Us</Link></li>
+              <li><Link href="/contact" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Careers</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Blog</Link></li>
+              <li><Link href="/" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Press</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="font-raleway font-bold mb-4">Support</h3>
+            <ul className="space-y-2 text-sm font-worksans">
+              <li><Link href="/contact" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Help Center</Link></li>
+              <li><Link href="/contact" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Contact</Link></li>
+              <li><Link href="/privacy-policy" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Privacy</Link></li>
+              <li><Link href="/terms" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Terms</Link></li>
+            </ul>
           </div>
         </div>
-      </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-gray-100 bg-gray-50/50">
-        <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
-            © 2026 YRDLY TECHNOLOGIES. ALL RIGHTS RESERVED.
-          </p>
-          <div className="flex gap-8">
-            <Link href="/privacy-policy" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-green-600 transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="/terms" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-green-600 transition-colors">
-              Terms of Service
-            </Link>
-          </div>
+        <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground font-worksans">
+          <p>&copy; {new Date().getFullYear()} Yrdly. All rights reserved. Built for Lagos, made with love.</p>
         </div>
       </div>
     </footer>
-  )
+  );
 }
