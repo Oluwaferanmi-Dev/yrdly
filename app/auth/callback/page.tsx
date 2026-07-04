@@ -84,9 +84,7 @@ function CallbackHandler() {
   return (
     <div className="min-h-screen bg-[#fafaf9] flex items-center justify-center px-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl border border-gray-100 p-8 text-center">
-        <div className="w-14 h-14 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-600/20">
-          <img src="/favicon.ico" alt="Yrdly" className="w-8 h-8 object-contain" />
-        </div>
+        <img src="/logo.png" alt="Yrdly Logo" className="h-12 w-auto mx-auto mb-6" />
 
         {status === 'loading' && (
           <>
@@ -126,9 +124,7 @@ function CallbackSkeleton() {
   return (
     <div className="min-h-screen bg-[#fafaf9] flex items-center justify-center px-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl border border-gray-100 p-8 text-center">
-        <div className="w-14 h-14 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-600/20">
-          <img src="/favicon.ico" alt="Yrdly" className="w-8 h-8 object-contain" />
-        </div>
+        <img src="/logo.png" alt="Yrdly Logo" className="h-12 w-auto mx-auto mb-6" />
         <Loader2 className="w-8 h-8 text-green-600 animate-spin mx-auto mb-4" />
         <h2 className="text-lg font-bold text-gray-900 tracking-tight">Signing you in…</h2>
         <p className="text-sm text-gray-400 mt-2">Just a moment</p>

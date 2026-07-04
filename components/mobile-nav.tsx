@@ -38,10 +38,7 @@ export default function MobileNav() {
           {/* Top Bar */}
           <div className="flex items-center justify-between px-8 py-8">
             <Link href="/" onClick={() => setIsOpen(false)} className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center overflow-hidden">
-                <img src="/favicon.ico" alt="Yrdly Logo" className="w-5 h-5 object-contain" />
-              </div>
-              <span className="font-black text-xl tracking-tighter">yrdly.</span>
+              <img src="/logo.png" alt="Yrdly Logo" className="h-8 w-auto" />
             </Link>
             <Button
               variant="ghost"

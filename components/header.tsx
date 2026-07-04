@@ -25,7 +25,7 @@ export default function Header({ currentPage }: HeaderProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center">
-            <span className="text-2xl font-jersey text-[#82DB7E]">yrdly.</span>
+            <img src="/logo.png" alt="Yrdly Logo" className="h-8 w-auto" />
           </Link>
           
           <div className="hidden md:flex items-center space-x-8">
@@ -42,7 +42,7 @@ export default function Header({ currentPage }: HeaderProps) {
                 {link.label}
               </Link>
             ))}
-            <Link href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'}/marketplace`} target="_blank" rel="noopener noreferrer">
+            <Link href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'}`} target="_blank" rel="noopener noreferrer">
               <Button className="bg-[#82DB7E] hover:bg-[#82DB7E]/90 text-background font-raleway font-semibold">
                 Open App
               </Button>
@@ -75,7 +75,7 @@ export default function Header({ currentPage }: HeaderProps) {
                 {link.label}
               </Link>
             ))}
-            <Link href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'}/marketplace`} target="_blank" rel="noopener noreferrer" className="block mt-4">
+            <Link href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'}`} target="_blank" rel="noopener noreferrer" className="block mt-4">
               <Button className="w-full bg-[#82DB7E] hover:bg-[#82DB7E]/90 text-background font-raleway font-semibold">
                 Open App
               </Button>
