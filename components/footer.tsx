@@ -10,7 +10,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div className="space-y-4">
             <Link href="/" className="inline-block">
-              <img src="/logo.png" alt="Yrdly Logo" className="h-10 w-auto" />
+              <img src="/logo.png" alt="Yrdly Logo" className="h-16 w-auto drop-shadow-sm hover:scale-105 transition-transform" />
             </Link>
             <p className="text-sm text-muted-foreground font-worksans">
               Your estate & street, connected.

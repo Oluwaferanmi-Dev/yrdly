@@ -38,7 +38,7 @@ export default function MobileNav() {
           {/* Top Bar */}
           <div className="flex items-center justify-between px-8 py-8">
             <Link href="/" onClick={() => setIsOpen(false)} className="flex items-center space-x-2">
-              <img src="/logo.png" alt="Yrdly Logo" className="h-8 w-auto" />
+              <img src="/logo.png" alt="Yrdly Logo" className="h-12 w-auto drop-shadow-sm" />
             </Link>
             <Button
               variant="ghost"
