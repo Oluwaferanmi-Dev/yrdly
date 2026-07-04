@@ -105,7 +105,7 @@ const YrdlyHomepage: React.FC = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'}`} target="_blank" rel="noopener noreferrer">
+                <Link href="https://app.yrdly.ng" target="_blank" rel="noopener noreferrer">
                   <Button size="lg" className="bg-[#82DB7E] hover:bg-[#82DB7E]/90 text-background font-raleway font-bold text-lg px-8 w-full sm:w-auto">
                     Get Started
                   </Button>

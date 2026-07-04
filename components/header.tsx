@@ -42,7 +42,7 @@ export default function Header({ currentPage }: HeaderProps) {
                 {link.label}
               </Link>
             ))}
-            <Link href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'}`} target="_blank" rel="noopener noreferrer">
+            <Link href="https://app.yrdly.ng" target="_blank" rel="noopener noreferrer">
               <Button className="bg-[#82DB7E] hover:bg-[#82DB7E]/90 text-background font-raleway font-semibold">
                 Open App
               </Button>
@@ -75,7 +75,7 @@ export default function Header({ currentPage }: HeaderProps) {
                 {link.label}
               </Link>
             ))}
-            <Link href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'}`} target="_blank" rel="noopener noreferrer" className="block mt-4">
+            <Link href="https://app.yrdly.ng" target="_blank" rel="noopener noreferrer" className="block mt-4">
               <Button className="w-full bg-[#82DB7E] hover:bg-[#82DB7E]/90 text-background font-raleway font-semibold">
                 Open App
               </Button>

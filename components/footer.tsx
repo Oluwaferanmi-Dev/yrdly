@@ -32,7 +32,7 @@ export default function Footer() {
             <h3 className="font-raleway font-bold mb-4">Product</h3>
             <ul className="space-y-2 text-sm font-worksans">
               <li><Link href="/" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Features</Link></li>
-              <li><Link href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'}/marketplace`} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Marketplace</Link></li>
+              <li><Link href="https://app.yrdly.ng/marketplace" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Marketplace</Link></li>
               <li><Link href="/events" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Events</Link></li>
               <li><Link href="/learn-more" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Safety</Link></li>
             </ul>
