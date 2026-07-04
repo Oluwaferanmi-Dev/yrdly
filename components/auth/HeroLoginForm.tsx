@@ -21,27 +21,43 @@ export function HeroLoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleGoogleSignIn = async () => {
+    console.log('Google Sign In clicked!');
     if (!supabaseAuthClient) {
       setError('Authentication is not configured properly.');
       return;
     }
-    setGoogleLoading(true);
-    setError('');
-    const { error: oauthError } = await supabaseAuthClient.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: OAUTH_REDIRECT,
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
+    
+    try {
+      setGoogleLoading(true);
+      setError('');
+      console.log('Calling signInWithOAuth with redirect:', OAUTH_REDIRECT);
+      
+      const { data, error: oauthError } = await supabaseAuthClient.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: OAUTH_REDIRECT,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
         },
-      },
-    });
-    if (oauthError) {
-      setError(oauthError.message);
+      });
+      
+      console.log('Result:', { data, oauthError });
+      
+      if (oauthError) {
+        setError(oauthError.message);
+        setGoogleLoading(false);
+      } else if (data?.url) {
+        // Fallback in case Supabase doesn't automatically redirect
+        console.log('Redirecting to Google...', data.url);
+        window.location.href = data.url;
+      }
+    } catch (err: any) {
+      console.error('Exception during Google Sign In:', err);
+      setError(err?.message || 'An unexpected error occurred during Google Sign In.');
       setGoogleLoading(false);
     }
-    // On success Supabase redirects the browser — no further action needed here
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
