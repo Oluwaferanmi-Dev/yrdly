@@ -8,7 +8,11 @@ const scanSchema = z.object({
   adminPassword: z.string().min(1, 'Admin password is required'),
 });
 
-const ADMIN_PASSWORD = process.env.SCANNER_ADMIN_PASSWORD || 'YRDLY-ADMIN-2026';
+const ADMIN_PASSWORD = process.env.SCANNER_ADMIN_PASSWORD;
+if (!ADMIN_PASSWORD) {
+  // Crash loudly at module load time in prod so the deployment is blocked, not silently broken.
+  throw new Error('[scanner] SCANNER_ADMIN_PASSWORD environment variable is not set. Refusing to start with no password protection.');
+}
 
 const DATA_PATH = path.join(process.cwd(), 'lib/data/tickets.json');
 
