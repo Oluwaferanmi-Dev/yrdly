@@ -143,6 +143,7 @@ export default function ScannerPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${adminPassword}`,
         },
         body: JSON.stringify({ ticketId }),
       })
