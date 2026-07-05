@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
+import jsQR from "jsqr"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -21,6 +22,8 @@ export default function ScannerPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const streamRef = useRef<MediaStream | null>(null)
 
+  const scanningRef = useRef(false)
+
   // Initialize camera
   const startCamera = async () => {
     try {
@@ -31,10 +34,9 @@ export default function ScannerPage() {
         videoRef.current.srcObject = stream
         streamRef.current = stream
         setIsCameraActive(true)
-        scanQRCode()
       }
     } catch (error) {
-      console.error('[v0] Camera access denied:', error)
+      console.error('[scanner] Camera access denied:', error)
       toast.error('Camera access denied. Please enable camera permissions.')
       setUseCameraScanning(false)
     }
@@ -42,6 +44,7 @@ export default function ScannerPage() {
 
   // Stop camera
   const stopCamera = () => {
+    scanningRef.current = false
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop())
       streamRef.current = null
@@ -49,73 +52,90 @@ export default function ScannerPage() {
     }
   }
 
-  // Simple QR code detection - looks for typical 8-char ticket format
-  const detectTicketInFrame = (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement): string | null => {
-    try {
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-      const data = imageData.data
-      
-      // Convert to grayscale and look for high contrast areas (QR codes are black/white)
-      let darkPixels = 0
-      for (let i = 0; i < data.length; i += 4) {
-        const r = data[i]
-        const g = data[i + 1]
-        const b = data[i + 2]
-        const brightness = (r + g + b) / 3
-        if (brightness < 128) darkPixels++
-      }
-      
-      // QR codes typically have 20-50% dark pixels
-      const darkRatio = darkPixels / (data.length / 4)
-      if (darkRatio < 0.15 || darkRatio > 0.55) {
-        return null // Not likely a QR code
-      }
-      
-      // If this looks like it could contain a QR code, signal to manual entry
-      // (For production, use a library like jsQR)
-      console.log('[v0] QR-like pattern detected. Use manual entry for now.')
-      return null
-    } catch (error) {
-      console.error('[v0] Detection error:', error)
-      return null
-    }
-  }
-
-  // Continuous QR scanning
-  const scanQRCode = () => {
-    if (!videoRef.current || !isCameraActive) return
-
+  // QR scan loop — runs every animation frame while camera is active
+  const scanQRCode = useCallback(() => {
+    if (!scanningRef.current) return
     const video = videoRef.current
     const canvas = canvasRef.current
-    if (!canvas) return
+    if (!video || !canvas || video.readyState !== video.HAVE_ENOUGH_DATA) {
+      requestAnimationFrame(scanQRCode)
+      return
+    }
 
-    const ctx = canvas.getContext('2d')
+    canvas.width = video.videoWidth
+    canvas.height = video.videoHeight
+    const ctx = canvas.getContext('2d', { willReadFrequently: true })
     if (!ctx) return
 
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-    
-    // Check if we can detect a QR code in the frame
-    const detected = detectTicketInFrame(ctx, canvas)
-    if (detected) {
-      setTicketId(detected)
-      handleScan()
-      return
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+    const code = jsQR(imageData.data, imageData.width, imageData.height, {
+      inversionAttempts: 'dontInvert',
+    })
+
+    if (code?.data) {
+      const decoded = code.data.trim().toUpperCase()
+      setTicketId(decoded)
+      // Auto-submit — use a direct fetch so we don't need to wait for state to flush
+      autoSubmitScan(decoded)
+      return // stop loop until result is processed
     }
-    
+
     requestAnimationFrame(scanQRCode)
+  }, [adminPassword])
+
+  // Auto-submit on QR decode (avoids stale state in handleScan)
+  const autoSubmitScan = async (id: string) => {
+    if (!id) return
+    setIsLoading(true)
+    setResult(null)
+    try {
+      const response = await fetch('/api/events/scan-v2', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminPassword}`,
+        },
+        body: JSON.stringify({ ticketId: id }),
+      })
+      const data = await response.json()
+      setResult(data)
+      if (data.success) {
+        toast.success('Ticket Validated!')
+        setTicketId('')
+        // Resume scanning after a brief pause so the operator can read the result
+        setTimeout(() => { if (scanningRef.current) requestAnimationFrame(scanQRCode) }, 2500)
+      } else {
+        toast.error(data.message || 'Invalid Ticket')
+        setTicketId('')
+        setTimeout(() => { if (scanningRef.current) requestAnimationFrame(scanQRCode) }, 2000)
+      }
+    } catch {
+      toast.error('Network error during scan.')
+      setTimeout(() => { if (scanningRef.current) requestAnimationFrame(scanQRCode) }, 1500)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  // Setup camera on login
+  // Start scan loop once camera is active
   useEffect(() => {
-    if (isLoggedIn && useCameraScanning && !isCameraActive) {
+    if (isLoggedIn && useCameraScanning) {
       startCamera()
+    } else {
+      stopCamera()
     }
-    return () => {
-      if (isLoggedIn && useCameraScanning) {
-        stopCamera()
-      }
-    }
+    return () => stopCamera()
   }, [isLoggedIn, useCameraScanning])
+
+  useEffect(() => {
+    if (isCameraActive) {
+      scanningRef.current = true
+      requestAnimationFrame(scanQRCode)
+    } else {
+      scanningRef.current = false
+    }
+  }, [isCameraActive, scanQRCode])
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
@@ -230,22 +250,39 @@ export default function ScannerPage() {
                       ref={videoRef}
                       autoPlay
                       playsInline
+                      muted
                       className="w-full h-full object-cover"
                     />
                     <canvas
                       ref={canvasRef}
-                      width={320}
-                      height={240}
                       className="hidden"
                     />
                     {isCameraActive && (
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <div className="w-48 h-48 border-2 border-green-500 rounded-lg opacity-50"></div>
+                      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                        {/* Corner brackets */}
+                        <div className="relative w-48 h-48">
+                          <span className="absolute top-0 left-0 w-6 h-6 border-t-4 border-l-4 border-green-400 rounded-tl" />
+                          <span className="absolute top-0 right-0 w-6 h-6 border-t-4 border-r-4 border-green-400 rounded-tr" />
+                          <span className="absolute bottom-0 left-0 w-6 h-6 border-b-4 border-l-4 border-green-400 rounded-bl" />
+                          <span className="absolute bottom-0 right-0 w-6 h-6 border-b-4 border-r-4 border-green-400 rounded-br" />
+                          {/* Animated scan line */}
+                          <div
+                            className="absolute left-1 right-1 h-0.5 bg-green-400 opacity-80"
+                            style={{ animation: 'scanline 1.8s ease-in-out infinite' }}
+                          />
+                        </div>
                       </div>
                     )}
                   </div>
+                  <style>{`
+                    @keyframes scanline {
+                      0%   { top: 4px; }
+                      50%  { top: calc(100% - 4px); }
+                      100% { top: 4px; }
+                    }
+                  `}</style>
                   <p className="text-xs text-center text-gray-500 mb-4">
-                    {isCameraActive ? "Scanning..." : "Initializing camera..."}
+                    {isLoading ? 'Validating...' : isCameraActive ? 'Scanning for QR code...' : 'Initializing camera...'}
                   </p>
                 </>
               )}
