@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { sendWelcomeEmail } from '@/lib/resend-email';
+import { sendWelcomeEmail, addAttendeeContact } from '@/lib/resend-email';
+import { checkRateLimit, recordRateLimit } from '@/lib/supabase-client';
 
 // Validation schema for newsletter signup
 const newsletterSchema = z.object({
@@ -8,62 +9,72 @@ const newsletterSchema = z.object({
   source: z.string().optional().default('newsletter-signup'),
 });
 
+// Re-use the same Supabase-backed rate limit pattern as register-v2:
+// max 5 newsletter signups per IP per event window ('newsletter' as the eventId key)
+const RATE_LIMIT_MAX = 5;
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
+
     // Validate the request body
     const validatedData = newsletterSchema.parse(body);
     const { email, source } = validatedData;
 
-    // Here you would typically:
-    // 1. Save to your database (Firebase Firestore, PostgreSQL, etc.)
-    // 2. Send to email service provider (Mailchimp, ConvertKit, etc.)
-    // 3. Send confirmation email
-    
-    // Log the signup
-    console.log('Newsletter signup:', { email, source, timestamp: new Date().toISOString() });
-    
-    // Send welcome email via Resend
+    // ── IP Rate Limiting ──────────────────────────────────────────────────────
+    const forwardedFor = request.headers.get('x-forwarded-for');
+    const ip = (
+      forwardedFor
+        ? forwardedFor.split(',')[0].trim()
+        : request.headers.get('x-real-ip') || 'unknown'
+    ).substring(0, 45);
+
+    const rateLimitCount = await checkRateLimit(ip, 'newsletter');
+    if (rateLimitCount >= RATE_LIMIT_MAX) {
+      return NextResponse.json(
+        { success: false, message: 'Too many requests. Please try again later.' },
+        { status: 429 }
+      );
+    }
+    await recordRateLimit(ip, 'newsletter');
+
+    // ── Send welcome email ────────────────────────────────────────────────────
     const emailResult = await sendWelcomeEmail({
       email,
       source,
-      name: undefined // You can add name field later if needed
+      name: undefined,
     });
-    
+
     if (!emailResult.success) {
       console.error('Failed to send welcome email:', emailResult.error);
-      // We still return 200 for the subscription but add a warning if it's a dev environment
-      // Or just log it clearly. For now, let's keep it consistent.
     }
 
+    // ── Persist contact to Resend audience ───────────────────────────────────
+    await addAttendeeContact({ email, name: undefined, eventName: 'Newsletter' });
+
     return NextResponse.json(
-      { 
-        success: true, 
-        message: 'Successfully subscribed to newsletter! Check your email for a welcome message.' 
+      {
+        success: true,
+        message: 'Successfully subscribed to newsletter! Check your email for a welcome message.',
       },
       { status: 200 }
     );
-
   } catch (error) {
     console.error('Newsletter signup error:', error);
-    
+
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { 
-          success: false, 
+        {
+          success: false,
           message: 'Invalid email address',
-          errors: error.errors 
+          errors: error.errors,
         },
         { status: 400 }
       );
     }
 
     return NextResponse.json(
-      { 
-        success: false, 
-        message: 'Failed to subscribe. Please try again later.' 
-      },
+      { success: false, message: 'Failed to subscribe. Please try again later.' },
       { status: 500 }
     );
   }

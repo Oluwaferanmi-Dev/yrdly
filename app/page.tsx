@@ -62,6 +62,27 @@ const ProductStep: React.FC<ProductStepProps> = ({ number, title, description })
 
 const YrdlyHomepage: React.FC = () => {
   const [email, setEmail] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const handleSubscribe = async () => {
+    if (!email || newsletterStatus === 'loading') return;
+    setNewsletterStatus('loading');
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      if (res.ok) {
+        setNewsletterStatus('success');
+        setEmail('');
+      } else {
+        setNewsletterStatus('error');
+      }
+    } catch {
+      setNewsletterStatus('error');
+    }
+  };
 
   const faqs = [
     {
@@ -215,15 +236,26 @@ const YrdlyHomepage: React.FC = () => {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
                 className="flex-1 border-border font-worksans"
+                disabled={newsletterStatus === 'loading' || newsletterStatus === 'success'}
               />
-              <Button className="bg-[#82DB7E] hover:bg-[#82DB7E]/90 text-background font-raleway font-semibold px-8">
-                Subscribe
+              <Button
+                onClick={handleSubscribe}
+                disabled={newsletterStatus === 'loading' || newsletterStatus === 'success'}
+                className="bg-[#82DB7E] hover:bg-[#82DB7E]/90 text-background font-raleway font-semibold px-8"
+              >
+                {newsletterStatus === 'loading' ? 'Subscribing…' : newsletterStatus === 'success' ? '✓ Subscribed!' : 'Subscribe'}
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground font-worksans">
-              We respect your privacy. Unsubscribe anytime.
-            </p>
+            {newsletterStatus === 'error' && (
+              <p className="text-xs text-red-500 font-worksans">Something went wrong. Please try again.</p>
+            )}
+            {newsletterStatus !== 'error' && (
+              <p className="text-xs text-muted-foreground font-worksans">
+                We respect your privacy. Unsubscribe anytime.
+              </p>
+            )}
           </div>
         </div>
       </section>
