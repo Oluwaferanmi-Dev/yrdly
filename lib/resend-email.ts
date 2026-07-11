@@ -7,8 +7,8 @@ if (!RESEND_API_KEY) {
   console.warn('WARNING: RESEND_API_KEY is not defined in environment variables.');
 }
 
-// Initialize Resend API
-const resend = new Resend(RESEND_API_KEY || 'dummy_key_to_prevent_crash');
+// Initialize Resend — will throw on first use if key is missing (functions guard with early throws)
+const resend = new Resend(RESEND_API_KEY);
 
 export interface EmailData {
   email: string;
