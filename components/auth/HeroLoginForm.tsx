@@ -21,7 +21,7 @@ export function HeroLoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleGoogleSignIn = async () => {
-    console.log('Google Sign In clicked!');
+    if (process.env.NODE_ENV === 'development') console.log('Google Sign In clicked!');
     if (!supabaseAuthClient) {
       setError('Authentication is not configured properly.');
       return;
@@ -30,7 +30,7 @@ export function HeroLoginForm() {
     try {
       setGoogleLoading(true);
       setError('');
-      console.log('Calling signInWithOAuth with redirect:', OAUTH_REDIRECT);
+      if (process.env.NODE_ENV === 'development') console.log('Calling signInWithOAuth with redirect:', OAUTH_REDIRECT);
       
       const { data, error: oauthError } = await supabaseAuthClient.auth.signInWithOAuth({
         provider: 'google',
@@ -43,14 +43,14 @@ export function HeroLoginForm() {
         },
       });
       
-      console.log('Result:', { data, oauthError });
+      if (process.env.NODE_ENV === 'development') console.log('Result:', { data, oauthError });
       
       if (oauthError) {
         setError(oauthError.message);
         setGoogleLoading(false);
       } else if (data?.url) {
         // Fallback in case Supabase doesn't automatically redirect
-        console.log('Redirecting to Google...', data.url);
+        if (process.env.NODE_ENV === 'development') console.log('Redirecting to Google...', data.url);
         window.location.href = data.url;
       }
     } catch (err: any) {
