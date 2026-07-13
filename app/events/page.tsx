@@ -9,7 +9,7 @@ import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://app.yrdly.ng"
+const APP_URL = "https://app.yrdly.ng"
 
 interface MarketingEvent {
   id: string;

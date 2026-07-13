@@ -20,7 +20,7 @@ import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://app.yrdly.ng'
+const APP_URL = 'https://app.yrdly.ng'
 
 const features = [
   {
@@ -158,20 +158,23 @@ export default function LearnMorePage() {
             {features.map((feature, index) => {
               const IconComponent = feature.icon
               return (
-                <div key={index} className="group bg-white rounded-[2.5rem] p-8 border border-gray-100 hover:border-green-100 hover:shadow-xl transition-all duration-500">
-                  <div className="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-green-600 transition-colors">
-                    <IconComponent className="w-6 h-6 text-green-600 group-hover:text-white transition-colors" />
+                <div key={index} className="group relative bg-white rounded-[2.5rem] p-8 border border-gray-100 hover:border-transparent hover:shadow-[0_20px_50px_-12px_rgba(34,197,94,0.15)] transition-all duration-500 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="relative z-10">
+                    <div className="w-16 h-16 bg-gradient-to-br from-green-50 to-green-100/50 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:from-green-500 group-hover:to-green-600 transition-all duration-500 shadow-sm">
+                      <IconComponent className="w-8 h-8 text-green-600 group-hover:text-white transition-colors duration-500" />
+                    </div>
+                    <h3 className="text-2xl font-black text-gray-900 mb-3 tracking-tight group-hover:text-green-700 transition-colors">{feature.title}</h3>
+                    <p className="text-gray-500 text-base mb-8 font-medium leading-relaxed">{feature.description}</p>
+                    <ul className="space-y-3">
+                      {feature.details.map((detail, i) => (
+                        <li key={i} className="flex items-start gap-3 text-sm text-gray-600 font-medium">
+                          <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                          {detail}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <h3 className="text-xl font-black text-gray-900 mb-2 tracking-tight">{feature.title}</h3>
-                  <p className="text-gray-400 text-sm mb-6 font-medium">{feature.description}</p>
-                  <ul className="space-y-2">
-                    {feature.details.map((detail, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                        <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                        {detail}
-                      </li>
-                    ))}
-                  </ul>
                 </div>
               )
             })}
@@ -196,12 +199,15 @@ export default function LearnMorePage() {
             {benefits.map((benefit, index) => {
               const IconComponent = benefit.icon
               return (
-                <div key={index} className="bg-white rounded-[2rem] p-8 shadow-sm border border-gray-100 hover:border-green-100 hover:shadow-lg transition-all">
-                  <div className="w-12 h-12 bg-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-green-600/20">
-                    <IconComponent className="w-5 h-5 text-white" />
+                <div key={index} className="group relative bg-white rounded-[2rem] p-8 shadow-sm border border-gray-100 hover:border-green-200 hover:shadow-xl transition-all duration-500 overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-green-50 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="relative z-10">
+                    <div className="w-14 h-14 bg-gray-900 group-hover:bg-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-gray-900/10 group-hover:shadow-green-600/30 transition-all duration-500 transform group-hover:-translate-y-1">
+                      <IconComponent className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-xl font-black text-gray-900 mb-3 tracking-tight group-hover:text-green-700 transition-colors">{benefit.title}</h3>
+                    <p className="text-gray-500 text-base leading-relaxed font-medium">{benefit.description}</p>
                   </div>
-                  <h3 className="text-lg font-black text-gray-900 mb-3 tracking-tight">{benefit.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{benefit.description}</p>
                 </div>
               )
             })}

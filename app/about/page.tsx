@@ -46,7 +46,7 @@ export default function AboutPage() {
               <div className="absolute inset-0 bg-green-200/40 rounded-[3rem] blur-3xl scale-90 translate-y-8" />
               <div className="relative rounded-[3rem] overflow-hidden shadow-premium border-8 border-white">
                 <Image
-                  src="/about.png"
+                  src="/pexels-e.jpg"
                   alt="Nigerian estate community"
                   width={600}
                   height={800}

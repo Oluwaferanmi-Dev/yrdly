@@ -1,12 +1,58 @@
+"use client"
+
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import { Mail, Phone, ChevronRight } from 'lucide-react'
+import { Mail, Phone, ChevronRight, Loader2, CheckCircle } from 'lucide-react'
 
 export default function ContactPage() {
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState("")
+  const [message, setMessage] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState("")
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError("")
+    
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: `${firstName} ${lastName}`.trim(),
+          email,
+          message,
+        }),
+      })
+
+      const data = await res.json()
+      
+      if (res.ok) {
+        setSuccess(true)
+        setFirstName("")
+        setLastName("")
+        setEmail("")
+        setMessage("")
+      } else {
+        setError(data.message || "Failed to send message")
+      }
+    } catch (err) {
+      setError("An unexpected error occurred. Please try again.")
+    } finally {
+      setLoading(false)
+    }
+  }
   return (
     <div className="min-h-screen bg-white">
       <Header currentPage="contact" />
@@ -93,35 +139,80 @@ export default function ContactPage() {
                 
                 <h3 className="text-3xl font-black text-gray-900 mb-10 tracking-tight">Send a Message</h3>
                 
-                <form className="space-y-8">
-                  <div className="grid sm:grid-cols-2 gap-8">
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">First Name</label>
-                      <Input placeholder="Alex" className="h-16 rounded-2xl border-gray-100 bg-gray-50/50 focus:bg-white transition-all text-base font-medium px-6" />
+                {success ? (
+                  <div className="text-center py-12 px-6">
+                    <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <CheckCircle className="w-10 h-10 text-green-600" />
                     </div>
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Last Name</label>
-                      <Input placeholder="Neighbor" className="h-16 rounded-2xl border-gray-100 bg-gray-50/50 focus:bg-white transition-all text-base font-medium px-6" />
+                    <h3 className="text-2xl font-black text-gray-900 mb-4 tracking-tight">Message Sent Successfully!</h3>
+                    <p className="text-gray-500 font-medium">We've received your message and will get back to you within 24 hours.</p>
+                    <Button onClick={() => setSuccess(false)} variant="outline" className="mt-8 font-black uppercase tracking-widest text-xs h-12 px-8 rounded-xl border-gray-200">
+                      Send Another Message
+                    </Button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-8">
+                    {error && (
+                      <div className="p-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium border border-red-100">
+                        {error}
+                      </div>
+                    )}
+                    <div className="grid sm:grid-cols-2 gap-8">
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">First Name</label>
+                        <Input 
+                          placeholder="Alex" 
+                          required
+                          value={firstName}
+                          onChange={(e) => setFirstName(e.target.value)}
+                          className="h-16 rounded-2xl border-gray-100 bg-gray-50/50 focus:bg-white transition-all text-base font-medium px-6" 
+                        />
+                      </div>
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Last Name</label>
+                        <Input 
+                          placeholder="Neighbor" 
+                          required
+                          value={lastName}
+                          onChange={(e) => setLastName(e.target.value)}
+                          className="h-16 rounded-2xl border-gray-100 bg-gray-50/50 focus:bg-white transition-all text-base font-medium px-6" 
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Email Address</label>
-                    <Input placeholder="alex@neighborhood.com" type="email" className="h-16 rounded-2xl border-gray-100 bg-gray-50/50 focus:bg-white transition-all text-base font-medium px-6" />
-                  </div>
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Email Address</label>
+                      <Input 
+                        placeholder="alex@neighborhood.com" 
+                        type="email" 
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="h-16 rounded-2xl border-gray-100 bg-gray-50/50 focus:bg-white transition-all text-base font-medium px-6" 
+                      />
+                    </div>
 
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Your Message</label>
-                    <Textarea 
-                      placeholder="How can we help you today?" 
-                      className="min-h-[180px] rounded-[2rem] border-gray-100 bg-gray-50/50 focus:bg-white transition-all text-base font-medium px-6 py-5 resize-none" 
-                    />
-                  </div>
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Your Message</label>
+                      <Textarea 
+                        placeholder="How can we help you today?" 
+                        required
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        className="min-h-[180px] rounded-[2rem] border-gray-100 bg-gray-50/50 focus:bg-white transition-all text-base font-medium px-6 py-5 resize-none" 
+                      />
+                    </div>
 
-                  <Button className="w-full h-16 bg-gray-900 hover:bg-green-600 text-white rounded-2xl font-black uppercase tracking-[0.2em] text-xs shadow-xl shadow-gray-900/10 transition-all active:scale-[0.98]">
-                    Deliver Message
-                  </Button>
-                </form>
+                    <Button 
+                      type="submit" 
+                      disabled={loading}
+                      className="w-full h-16 bg-gray-900 hover:bg-green-600 text-white rounded-2xl font-black uppercase tracking-[0.2em] text-xs shadow-xl shadow-gray-900/10 transition-all active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2"
+                    >
+                      {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+                      {loading ? "Delivering..." : "Deliver Message"}
+                    </Button>
+                  </form>
+                )}
               </div>
             </div>
 

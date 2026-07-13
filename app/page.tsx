@@ -112,41 +112,20 @@ const YrdlyHomepage: React.FC = () => {
       <Header currentPage="home" />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <h1 className="text-5xl sm:text-6xl lg:text-7xl font-jersey text-foreground leading-tight">
-                  Your Neighbourhood, Connected.
-                </h1>
-                <p className="text-lg sm:text-xl text-muted-foreground font-worksans leading-relaxed max-w-xl">
-                  Stay in the loop with your neighbours, buy and sell safely on your street, and discover local owambe and events just steps away.
-                </p>
-              </div>
+      <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&q=80"
+            alt="People in a park"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/20" />
+        </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="https://app.yrdly.ng" target="_blank" rel="noopener noreferrer">
-                  <Button size="lg" className="bg-[#82DB7E] hover:bg-[#82DB7E]/90 text-background font-raleway font-bold text-lg px-8 w-full sm:w-auto">
-                    Get Started
-                  </Button>
-                </Link>
-                <Button size="lg" variant="outline" className="border-border font-raleway font-semibold text-lg">
-                  Learn More
-                </Button>
-              </div>
-
-              <div className="w-full max-w-md">
-                <HeroLoginForm />
-              </div>
-            </div>
-
-            <div className="relative h-[500px] bg-gradient-to-br from-[#82DB7E]/30 via-[#82DB7E]/10 to-transparent rounded-3xl border-2 border-border shadow-2xl flex items-center justify-center">
-              <span className="text-sm text-muted-foreground font-medium px-6 py-3 bg-background/80 backdrop-blur-sm rounded-lg border border-border">
-                REAL PHOTO — estate/street scene
-              </span>
-            </div>
-          </div>
+        {/* Content */}
+        <div className="relative z-10 w-full max-w-md px-4 py-20 mt-16 flex flex-col items-center">
+          <HeroLoginForm />
         </div>
       </section>
 
