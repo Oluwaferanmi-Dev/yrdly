@@ -30,9 +30,9 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, pla
         <div className="p-2 bg-[#82DB7E]/10 rounded-lg text-[#82DB7E]">
           {icon}
         </div>
-        <h3 className="font-raleway font-bold text-lg">{title}</h3>
+        <h3 className="font-bold text-lg">{title}</h3>
       </div>
-      <p className="text-muted-foreground font-worksans text-sm leading-relaxed">{description}</p>
+      <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
     </CardContent>
   </Card>
 );
@@ -54,8 +54,8 @@ const ProductStep: React.FC<ProductStepProps> = ({ number, title, description })
       <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#82DB7E] text-background font-bold text-lg">
         {number}
       </div>
-      <h3 className="font-raleway font-bold text-xl">{title}</h3>
-      <p className="text-muted-foreground font-worksans text-sm max-w-xs">{description}</p>
+      <h3 className="font-bold text-xl">{title}</h3>
+      <p className="text-muted-foreground text-sm max-w-xs">{description}</p>
     </div>
   </div>
 );
@@ -108,7 +108,7 @@ const YrdlyHomepage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-worksans">
+    <div className="min-h-screen bg-background text-foreground">
       <Header currentPage="home" />
 
       {/* Hero Section */}
@@ -133,10 +133,10 @@ const YrdlyHomepage: React.FC = () => {
       <section className="py-16 lg:py-24 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-4xl sm:text-5xl font-jersey text-foreground mb-4">
+            <h2 className="text-4xl sm:text-5xl text-foreground mb-4">
               See What's Happening In Your Estate
             </h2>
-            <p className="text-lg text-muted-foreground font-worksans max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               From owambe to marketplace deals, your neighbourhood is buzzing with activity
             </p>
           </div>
@@ -168,10 +168,10 @@ const YrdlyHomepage: React.FC = () => {
       <section className="py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-jersey text-foreground mb-4">
+            <h2 className="text-4xl sm:text-5xl text-foreground mb-4">
               Your Estate, In Your Pocket
             </h2>
-            <p className="text-lg text-muted-foreground font-worksans max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Everything you need to stay connected with your neighbourhood, right at your fingertips
             </p>
           </div>
@@ -203,10 +203,10 @@ const YrdlyHomepage: React.FC = () => {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#82DB7E] text-background mb-4">
               <Mail size={32} />
             </div>
-            <h2 className="text-3xl sm:text-4xl font-jersey text-foreground">
+            <h2 className="text-3xl sm:text-4xl text-foreground">
               Join Our Community Pulse
             </h2>
-            <p className="text-lg text-muted-foreground font-worksans max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Get weekly updates on what's happening in Lagos estates. No spam. Just community trust.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
@@ -216,22 +216,22 @@ const YrdlyHomepage: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
-                className="flex-1 border-border font-worksans"
+                className="flex-1 border-border"
                 disabled={newsletterStatus === 'loading' || newsletterStatus === 'success'}
               />
               <Button
                 onClick={handleSubscribe}
                 disabled={newsletterStatus === 'loading' || newsletterStatus === 'success'}
-                className="bg-[#82DB7E] hover:bg-[#82DB7E]/90 text-background font-raleway font-semibold px-8"
+                className="bg-[#82DB7E] hover:bg-[#82DB7E]/90 text-background font-semibold px-8"
               >
                 {newsletterStatus === 'loading' ? 'Subscribing…' : newsletterStatus === 'success' ? '✓ Subscribed!' : 'Subscribe'}
               </Button>
             </div>
             {newsletterStatus === 'error' && (
-              <p className="text-xs text-red-500 font-worksans">Something went wrong. Please try again.</p>
+              <p className="text-xs text-red-500">Something went wrong. Please try again.</p>
             )}
             {newsletterStatus !== 'error' && (
-              <p className="text-xs text-muted-foreground font-worksans">
+              <p className="text-xs text-muted-foreground">
                 We respect your privacy. Unsubscribe anytime.
               </p>
             )}
@@ -243,10 +243,10 @@ const YrdlyHomepage: React.FC = () => {
       <section className="py-16 lg:py-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-4xl sm:text-5xl font-jersey text-foreground mb-4">
+            <h2 className="text-4xl sm:text-5xl text-foreground mb-4">
               Questions? We Got You
             </h2>
-            <p className="text-lg text-muted-foreground font-worksans">
+            <p className="text-lg text-muted-foreground">
               Everything you need to know about Yrdly
             </p>
           </div>
@@ -258,10 +258,10 @@ const YrdlyHomepage: React.FC = () => {
                 value={`item-${index}`}
                 className="border border-border rounded-lg px-6 bg-card"
               >
-                <AccordionTrigger className="font-raleway font-semibold text-left hover:no-underline">
+                <AccordionTrigger className="font-semibold text-left hover:no-underline">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground font-worksans leading-relaxed">
+                <AccordionContent className="text-muted-foreground leading-relaxed">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
