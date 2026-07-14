@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseUrl = process.env.NEXT_PUBLIC_APP_SUPABASE_URL
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 // Initialize client only if variables are present
@@ -10,7 +10,7 @@ export const supabase = (supabaseUrl && supabaseKey)
 
 function ensureSupabase() {
   if (!supabase) {
-    throw new Error('Supabase is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your environment.')
+    throw new Error('Supabase is not configured. Please set NEXT_PUBLIC_APP_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in your environment.')
   }
 }
 
@@ -136,7 +136,7 @@ export async function checkRateLimit(ip: string, eventId: string) {
   const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString()
 
   const { count, error } = await supabase!
-    .from('rate_limits')
+    .from('marketing_rate_limits')
     .select('*', { count: 'exact', head: true })
     .eq('ip_address', ip)
     .eq('event_id', eventId)
@@ -153,7 +153,7 @@ export async function checkRateLimit(ip: string, eventId: string) {
 export async function recordRateLimit(ip: string, eventId: string) {
   ensureSupabase()
   const { error } = await supabase!
-    .from('rate_limits')
+    .from('marketing_rate_limits')
     .insert([{ ip_address: ip, event_id: eventId }])
 
   if (error) {
