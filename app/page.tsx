@@ -50,14 +50,23 @@ interface ProductStepProps {
   number: string;
   title: string;
   description: string;
+  image?: string;
 }
 
-const ProductStep: React.FC<ProductStepProps> = ({ number, title, description }) => (
+const ProductStep: React.FC<ProductStepProps> = ({ number, title, description, image }) => (
   <div className="flex flex-col items-center text-center space-y-4">
-    <div className="relative w-64 h-[500px] bg-gradient-to-br from-background via-muted/30 to-background border-4 border-border rounded-[2.5rem] shadow-xl flex items-center justify-center">
-      <span className="text-xs text-muted-foreground font-medium px-4 py-2 bg-background/80 backdrop-blur-sm rounded-md border border-border">
-        SCREENSHOT: yrdly-app
-      </span>
+    <div className="relative w-64 h-[500px] bg-gradient-to-br from-background via-muted/30 to-background border-4 border-border rounded-[2.5rem] shadow-xl flex items-center justify-center overflow-hidden">
+      {image ? (
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        <span className="text-xs text-muted-foreground font-medium px-4 py-2 bg-background/80 backdrop-blur-sm rounded-md border border-border">
+          SCREENSHOT: yrdly-app
+        </span>
+      )}
     </div>
     <div className="space-y-2">
       <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#82DB7E] text-background font-bold text-lg">
@@ -190,16 +199,19 @@ const YrdlyHomepage: React.FC = () => {
               number="1"
               title="Swift Listings"
               description="Snap, price, post. List anything in seconds and reach neighbours who are actually nearby and ready to buy."
+              image="/sell-item.jpeg"
             />
             <ProductStep
               number="2"
               title="Effortless Discovery"
               description="Browse what's for sale on your street. Filter by category, save your favorites, and chat directly with sellers."
+              image="/explore.jpeg"
             />
             <ProductStep
               number="3"
               title="Estate & Local Events"
               description="Stay in the know. From birthday parties to estate clean-ups, see what's happening and join in."
+              image="/events.jpeg"
             />
           </div>
         </div>
