@@ -15,15 +15,24 @@ interface FeatureCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
-  placeholderLabel: string;
+  placeholderLabel?: string;
+  image?: string;
 }
 
-const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, placeholderLabel }) => (
+const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, placeholderLabel, image }) => (
   <Card className="overflow-hidden border-border hover:shadow-lg transition-shadow">
-    <div className="relative h-48 bg-gradient-to-br from-[#82DB7E]/20 via-[#82DB7E]/10 to-transparent flex items-center justify-center">
-      <span className="text-xs text-muted-foreground font-medium px-4 py-2 bg-background/80 backdrop-blur-sm rounded-md border border-border">
-        {placeholderLabel}
-      </span>
+    <div className="relative h-48 bg-gradient-to-br from-[#82DB7E]/20 via-[#82DB7E]/10 to-transparent flex items-center justify-center overflow-hidden">
+      {image ? (
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        <span className="text-xs text-muted-foreground font-medium px-4 py-2 bg-background/80 backdrop-blur-sm rounded-md border border-border">
+          {placeholderLabel}
+        </span>
+      )}
     </div>
     <CardContent className="p-6">
       <div className="flex items-center gap-3 mb-3">
@@ -146,19 +155,19 @@ const YrdlyHomepage: React.FC = () => {
               icon={<Calendar size={24} />}
               title="Local Owambe & Events"
               description="Never miss a party, estate meeting, or community gathering. See what's happening this weekend and RSVP with one tap."
-              placeholderLabel="REAL PHOTO — to be inserted"
+              image="/owambe.jpeg"
             />
             <FeatureCard
               icon={<ShoppingBag size={24} />}
               title="Neighbourhood Market"
               description="Buy and sell with people down the road. From furniture to fashion, find deals from trusted neighbours — no shipping, no wahala."
-              placeholderLabel="REAL PHOTO — to be inserted"
+              image="/market.jpeg"
             />
             <FeatureCard
               icon={<Users size={24} />}
               title="Verified Neighbours Only"
               description="Every user is verified by estate and street address. Connect with real people in your community, safely and securely."
-              placeholderLabel="REAL PHOTO — to be inserted"
+              image="/neighbours.jpeg"
             />
           </div>
         </div>
