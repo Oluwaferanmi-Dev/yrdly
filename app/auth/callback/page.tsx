@@ -47,7 +47,14 @@ function CallbackHandler() {
           setStatus('success');
           setMessage('Signed in! Redirecting…');
           setTimeout(() => {
-            window.location.href = `${APP_URL}/home`;
+            // If the account was created within the last 30 s, treat as a new sign-up
+            const createdAt = session.user?.created_at
+              ? new Date(session.user.created_at).getTime()
+              : 0;
+            const isNewUser = Date.now() - createdAt < 30_000;
+            window.location.href = isNewUser
+              ? `${APP_URL}/onboarding`
+              : `${APP_URL}/home`;
           }, 1000);
           subscription.unsubscribe();
         }
