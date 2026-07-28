@@ -60,7 +60,7 @@ export default function EventsPage() {
             </div>
 
             <h1 className="text-5xl md:text-8xl font-black text-gray-900 mb-8 tracking-tighter animate-fade-in-up leading-none">
-              Estate & Street <br /><span className="text-green-600">Owambes</span>
+              Estate & Street <br /><span className="text-green-600">Events</span>
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-500 max-w-2xl mx-auto mb-12 font-medium leading-relaxed tracking-tight animate-fade-in-up delay-100">

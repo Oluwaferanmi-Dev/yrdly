@@ -12,7 +12,7 @@ export default function AboutPage() {
 
       {/* Hero Section */}
       <section className="relative h-[350px] md:h-[450px] flex items-center justify-center overflow-hidden">
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center scale-105"
           style={{
             backgroundImage: `url('/about-bg.png')`,
@@ -20,7 +20,7 @@ export default function AboutPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-gray-900/90 via-gray-900/80 to-gray-900" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,197,94,0.15),transparent_50%)]" />
-        
+
         <div className="relative z-10 text-center text-white px-6 animate-fade-in">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-6 border border-white/10">
             Our DNA
@@ -38,7 +38,7 @@ export default function AboutPage() {
       <section className="py-24 md:py-32 bg-white relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-green-50/50 rounded-full blur-[140px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-        
+
         <div className="max-w-7xl mx-auto px-6 relative">
           <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
             {/* Image Cluster */}
@@ -68,7 +68,7 @@ export default function AboutPage() {
                   Technology That Works For <span className="text-green-600 underline decoration-green-600/20 underline-offset-8">You</span>.
                 </h2>
               </div>
-              
+
               <div className="space-y-8 text-gray-500 text-lg md:text-xl font-medium leading-relaxed">
                 <p>
                   Yrdly is built for Nigerians by Nigerians. We understand the hustle, the owambe weekends, and the unique pulse of our estates and streets.
@@ -117,7 +117,7 @@ export default function AboutPage() {
               },
               {
                 question: "How do I attend local events?",
-                answer: "Head to the Events tab to see owambes, estate meetings, and parties near you. Tap 'Get Ticket' to secure your spot. For paid events, checkout is seamless and your ticket is stored in the app."
+                answer: "Head to the Events tab to see Events, estate meetings, and parties near you. Tap 'Get Ticket' to secure your spot. For paid events, checkout is seamless and your ticket is stored in the app."
               },
               {
                 question: "Can I save items from vendors?",
