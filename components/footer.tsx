@@ -59,8 +59,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground font-worksans">
+        <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground font-worksans space-y-1">
           <p>&copy; {new Date().getFullYear()} Yrdly. All rights reserved. Built for Lagos, made with love.</p>
+          <p>Plot 7, Awoniran Layout, Apata, Oyo State, Nigeria</p>
         </div>
       </div>
     </footer>
