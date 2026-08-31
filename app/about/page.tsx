@@ -1,164 +1,184 @@
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import Image from "next/image"
-import Link from "next/link"
+import Link from "next/link";
+import Image from "next/image";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+
+const VALUES = [
+  { icon: "🏘️", title: "Community First", body: "Every decision we make starts with one question: does this bring neighbours closer together? Not engagement metrics. Not growth rates. Community." },
+  { icon: "🔒", title: "Trust as Default", body: "Every member is verified. Unverified people don't get in. This isn't a nice-to-have — it's the entire foundation of what Yrdly is." },
+  { icon: "🇳🇬", title: "Proudly Nigerian", body: "We don't aspire to be a Nigerian copy of something foreign. We're building for how Nigerians actually live — communal, loud, warm, and deeply local." },
+  { icon: "⚡", title: "Real-time or Nothing", body: "Stale information is useless in a community. We prioritise speed so that when something happens in your yard, you know about it now — not tomorrow." },
+];
+
+export const metadata = {
+  title: "About Us - Yrdly",
+  description: "We missed the spirit of the old neighbourhood. So we rebuilt it. Built for Nigerians, by Nigerians.",
+};
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-white">
-      <Header currentPage="about" />
+    <div style={{ background: "var(--bg)", color: "var(--fg)" }}>
+      <Header />
 
-      {/* Hero Section */}
-      <section className="relative h-[350px] md:h-[450px] flex items-center justify-center overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center scale-105"
-          style={{
-            backgroundImage: `url('/about-bg.png')`,
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-900/90 via-gray-900/80 to-gray-900" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,197,94,0.15),transparent_50%)]" />
-
-        <div className="relative z-10 text-center text-white px-6 animate-fade-in">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-6 border border-white/10">
-            Our DNA
-          </span>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-none mb-4">
-            About <span className="text-green-500">Us</span>
+      {/* Hero */}
+      <section style={{ paddingTop: 96, paddingBottom: "5rem", paddingLeft: "1.5rem", paddingRight: "1.5rem", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0 }}>
+          <Image
+            src="/images/market-2.jpg"
+            alt="Nigerian community gathering"
+            fill
+            priority
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+          <div style={{ position: "absolute", inset: 0, background: "var(--hero-overlay)" }} />
+        </div>
+        <div style={{ position: "relative", maxWidth: 1152, margin: "0 auto", paddingTop: "4rem", paddingBottom: "4rem" }}>
+          <Link
+            href="/"
+            style={{
+              fontSize: "0.82rem",
+              color: "rgba(255,255,255,0.6)",
+              fontFamily: "var(--font-work-sans), sans-serif",
+              marginBottom: "1.5rem",
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+              textDecoration: "none",
+              width: "fit-content",
+            }}
+          >
+            ← Back to Home
+          </Link>
+          <span className="pill" style={{ marginBottom: "1.25rem", display: "inline-flex" }}>Our DNA</span>
+          <h1
+            className="font-display"
+            style={{
+              fontSize: "clamp(2.4rem, 5vw, 4rem)",
+              fontWeight: 600,
+              color: "#f0ede8",
+              lineHeight: 1.1,
+              marginBottom: "1.25rem",
+              maxWidth: 600,
+            }}
+          >
+            About Us
           </h1>
-          <p className="text-lg md:text-xl text-white/60 font-medium max-w-xl mx-auto tracking-tight">
-            Built for Nigerians, by Nigerians. Fostering trust on every street and in every estate.
+          <p style={{ fontSize: "1.1rem", lineHeight: 1.75, color: "rgba(240,237,232,0.65)", fontWeight: 300, maxWidth: 460 }}>
+            We missed the spirit of the old neighbourhood. So we rebuilt it.
           </p>
         </div>
       </section>
 
-      {/* Our Story Section */}
-      <section className="py-24 md:py-32 bg-white relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-green-50/50 rounded-full blur-[140px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto px-6 relative">
-          <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
-            {/* Image Cluster */}
-            <div className="relative flex-1 animate-fade-in-up">
-              <div className="absolute inset-0 bg-green-200/40 rounded-[3rem] blur-3xl scale-90 translate-y-8" />
-              <div className="relative rounded-[3rem] overflow-hidden shadow-premium border-8 border-white">
-                <Image
-                  src="/pexels-e.jpg"
-                  alt="Nigerian estate community"
-                  width={600}
-                  height={800}
-                  className="object-cover w-full aspect-[4/5] transition-transform duration-700 hover:scale-105"
-                />
-              </div>
-              {/* Floating Stat Badge */}
-              <div className="absolute -bottom-10 -right-6 md:right-10 bg-gray-900 text-white p-8 rounded-[2.5rem] shadow-2xl animate-float z-20 hidden md:block">
-                <p className="text-3xl font-black text-green-500 mb-1">100%</p>
-                <p className="text-[10px] font-black uppercase tracking-widest text-white/50">Local Impact</p>
-              </div>
+      {/* Story */}
+      <section style={{ padding: "6rem 1.5rem" }}>
+        <div style={{ maxWidth: 1152, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5rem", alignItems: "center" }} className="two-col">
+          <div>
+            <span className="pill" style={{ marginBottom: "1.5rem", display: "inline-flex" }}>Our Story</span>
+            <h2 className="font-display" style={{ fontSize: "clamp(2rem, 4vw, 2.8rem)", fontWeight: 600, color: "var(--fg)", lineHeight: 1.2, marginBottom: "1.5rem" }}>
+              Built for Nigerians,{" "}
+              <em style={{ color: "var(--green-text)", fontStyle: "italic" }}>by Nigerians.</em>
+            </h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", fontSize: "0.95rem", lineHeight: 1.8, color: "var(--fg-muted)", fontWeight: 300 }}>
+              <p>
+                There was a time when you knew every face on your street. The woman whose jollof rice could settle any argument. The man who fixed your generator before yours even made smoke. That warm, spontaneous community spirit — deeply Nigerian — has been fading from our communities.
+              </p>
+              <p>
+                Yrdly started from a simple frustration: we kept missing the best things happening around us. A neighbour selling homemade chin-chin two streets over. A block party with the best afrobeats DJ. A trusted mechanic in the next community.
+              </p>
+              <p>
+                We built Yrdly so none of that gets missed. Not a platform that tries to make Nigerian neighbourhoods look like somewhere else — but one that makes them feel like Nigeria again.
+              </p>
             </div>
-
-            {/* Content Column */}
-            <div className="flex-1 space-y-10 animate-fade-in-up delay-200">
-              <div className="space-y-6">
-                <span className="text-green-600 font-black uppercase tracking-[0.3em] text-[10px]">The Yrdly Mission</span>
-                <h2 className="text-4xl md:text-6xl font-black text-gray-900 leading-[1.1] tracking-tighter">
-                  Technology That Works For <span className="text-green-600 underline decoration-green-600/20 underline-offset-8">You</span>.
-                </h2>
-              </div>
-
-              <div className="space-y-8 text-gray-500 text-lg md:text-xl font-medium leading-relaxed">
-                <p>
-                  Yrdly is built for Nigerians by Nigerians. We understand the hustle, the owambe weekends, and the unique pulse of our estates and streets.
-                </p>
-                <p>
-                  From buying from the vendor next door to securing your spot at the estate meeting, Yrdly brings your immediate community right to your fingertips.
-                </p>
-                <div className="pt-6 border-l-4 border-green-600 pl-8 space-y-4">
-                  <p className="italic text-gray-900 font-black text-2xl tracking-tight">
-                    "Our goal is to bring back the age-old Nigerian spirit of community — where neighbours actually know, trust, and support each other."
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-4 pt-4">
-                <Link href="/contact">
-                  <Button className="h-14 px-10 bg-gray-900 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-green-600 transition-all shadow-xl shadow-gray-900/10">
-                    Join the Movement
-                  </Button>
-                </Link>
-              </div>
+          </div>
+          <div style={{ position: "relative" }}>
+            <div style={{ borderRadius: 16, overflow: "hidden", border: "1px solid var(--border-accent)" }}>
+              <Image src="/images/community-banner.jpg" alt="Nigerian neighbourhood community" width={700} height={380} style={{ width: "100%", height: 380, objectFit: "cover", display: "block" }} />
+            </div>
+            <div className="redesign-card" style={{ position: "absolute", bottom: -20, left: -24, padding: "1rem 1.25rem", maxWidth: 200, background: "var(--bg-card)" }}>
+              <div style={{ fontSize: "1.3rem", marginBottom: 4 }}>🏘️</div>
+              <p style={{ fontSize: "0.8rem", fontWeight: 500, color: "var(--fg)", lineHeight: 1.4 }}>10+ communities across Nigeria and counting.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">FAQs</h2>
-            <p className="text-lg text-gray-600">
-              Find answers to your questions about listings, purchases, and events right here.
-            </p>
-          </div>
+      {/* Mission */}
+      <section style={{ padding: "5rem 1.5rem", background: "var(--section-alt)" }}>
+        <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
+          <span className="pill" style={{ marginBottom: "1.25rem", display: "inline-flex" }}>Our Mission</span>
+          <blockquote
+            className="font-display"
+            style={{
+              fontSize: "clamp(1.6rem, 3.5vw, 2.2rem)",
+              fontWeight: 400,
+              fontStyle: "italic",
+              color: "var(--fg)",
+              lineHeight: 1.45,
+              margin: 0,
+            }}
+          >
+            &ldquo;To rebuild the spirit of Nigerian community — one community at a time — by connecting neighbours through trust, commerce, and celebration.&rdquo;
+          </blockquote>
+        </div>
+      </section>
 
-          <div className="space-y-0">
-            {[
-              {
-                question: "How to sell on the Neighbourhood Market?",
-                answer: "To sell an item, go to the Marketplace and tap 'Post Hustle'. Add photos, set your price in Naira, and wait for verified neighbours to contact you. It's safe, local, and quick."
-              },
-              {
-                question: "How to buy from neighbours?",
-                answer: "Browse the Marketplace for items in your estate or city. You can chat with the seller directly in the app or pay securely via Paystack escrow to ensure you get exactly what you paid for."
-              },
-              {
-                question: "How do I attend local events?",
-                answer: "Head to the Events tab to see Events, estate meetings, and parties near you. Tap 'Get Ticket' to secure your spot. For paid events, checkout is seamless and your ticket is stored in the app."
-              },
-              {
-                question: "Can I save items from vendors?",
-                answer: "Yes! Spot a good deal but not ready to buy? Tap the save icon. You can find all your saved items later in your profile under 'Saved Items'."
-              },
-              {
-                question: "How do I contact support?",
-                answer: "Having issues? Our Nigerian support team is always ready to help. Go to 'Settings' → 'Support' in the app to chat with us, or send an email to yrdly@gmail.com."
-              }
-            ].map((faq, index) => (
-              <div key={index}>
-                <div className="py-8">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
-                    {faq.question}
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    {faq.answer}
-                  </p>
-                </div>
-                {index < 5 && <div className="border-t-2 border-gray-900"></div>}
+      {/* Values */}
+      <section style={{ padding: "6rem 1.5rem" }}>
+        <div style={{ maxWidth: 1152, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
+            <span className="pill" style={{ marginBottom: "1.25rem", display: "inline-flex" }}>What We Stand For</span>
+            <h2 className="font-display" style={{ fontSize: "clamp(2rem, 4vw, 2.8rem)", fontWeight: 600, color: "var(--fg)", lineHeight: 1.2 }}>Our values.</h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem" }}>
+            {VALUES.map((v, i) => (
+              <div key={i} className="redesign-card" style={{ padding: "2rem" }}>
+                <div style={{ fontSize: "1.8rem", marginBottom: "1rem" }}>{v.icon}</div>
+                <h3 className="font-display" style={{ fontSize: "1.1rem", fontWeight: 600, color: "var(--fg)", marginBottom: "0.625rem" }}>{v.title}</h3>
+                <p style={{ fontSize: "0.875rem", lineHeight: 1.7, color: "var(--fg-muted)", fontWeight: 300 }}>{v.body}</p>
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          <div className="text-center mt-16">
-            <h3 className="text-3xl font-bold text-gray-900 mb-4">
-              Still have questions?
-            </h3>
-            <p className="text-lg text-gray-600 mb-8">
-              We're here to help you!
-            </p>
-            <Link href="/contact">
-              <Button className="bg-green-600 hover:bg-green-700 text-white px-8">
-                Contact Us
-              </Button>
-            </Link>
+      {/* Where we are */}
+      <section style={{ padding: "6rem 1.5rem", background: "var(--section-alt)" }}>
+        <div style={{ maxWidth: 1152, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5rem", alignItems: "center" }} className="two-col">
+            <div>
+              <span className="pill" style={{ marginBottom: "1.5rem", display: "inline-flex" }}>Where We Are</span>
+              <h2 className="font-display" style={{ fontSize: "clamp(2rem, 4vw, 2.8rem)", fontWeight: 600, color: "var(--fg)", lineHeight: 1.2, marginBottom: "1.25rem" }}>
+                From Kano to Port Harcourt,{" "}
+                <em style={{ color: "var(--green-text)", fontStyle: "italic" }}>we&apos;re growing.</em>
+              </h2>
+              <p style={{ fontSize: "0.95rem", lineHeight: 1.8, color: "var(--fg-muted)", fontWeight: 300, marginBottom: "2rem" }}>
+                We started in a single community in Ibadan. Today, Yrdly communities exist across Oyo, Lagos, Abuja, Rivers, Enugu, Kano, and Delta States. Every week, a new community joins — and we&apos;re just getting started.
+              </p>
+            </div>
+            <div style={{ borderRadius: 16, overflow: "hidden", border: "1px solid var(--border)" }}>
+              <Image src="/images/hero-community.jpg" alt="Nigerian community event" width={700} height={380} style={{ width: "100%", height: 380, objectFit: "cover", display: "block" }} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section style={{ padding: "6rem 1.5rem" }}>
+        <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
+          <h2 className="font-display" style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 600, color: "var(--fg)", lineHeight: 1.2, marginBottom: "1rem" }}>
+            Ready to join your yard?
+          </h2>
+          <p style={{ fontSize: "0.95rem", lineHeight: 1.75, color: "var(--fg-muted)", fontWeight: 300, marginBottom: "2rem" }}>
+            Thousands of Nigerians are already connecting with their neighbours on Yrdly. Don&apos;t miss out on what&apos;s happening in your community.
+          </p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", justifyContent: "center" }}>
+            <a href="https://app.yrdly.ng" target="_blank" rel="noreferrer" className="btn-cta">Join Your Community</a>
+            <Link href="/contact" className="btn-outline">Get in Touch</Link>
           </div>
         </div>
       </section>
 
       <Footer />
     </div>
-  )
+  );
 }

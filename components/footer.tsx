@@ -1,69 +1,184 @@
 "use client";
 
 import Link from "next/link";
-import { Twitter, Instagram, Mail } from 'lucide-react';
+
+const PRODUCT_LINKS = [
+  { label: "Features", href: "/learn-more" },
+  { label: "Events", href: "/events" },
+  { label: "Marketplace", href: "/marketplace" },
+  { label: "Learn More", href: "/learn-more" },
+];
+
+const COMPANY_LINKS = [
+  { label: "About Us", href: "/about" },
+  { label: "Contact", href: "/contact" },
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms & Conditions", href: "/terms" },
+];
 
 export default function Footer() {
   return (
-    <footer className="bg-muted/50 border-t border-border py-12 font-worksans">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-4 gap-8 mb-8">
-          <div className="space-y-4">
-            <Link href="/" className="inline-block">
-              <img src="/logo.png" alt="Yrdly Logo" className="h-16 w-auto drop-shadow-sm hover:scale-105 transition-transform" />
+    <footer style={{ borderTop: "1px solid var(--border)", padding: "3.5rem 1.5rem 2rem", background: "var(--bg)" }}>
+      <div style={{ maxWidth: 1152, margin: "0 auto" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+            gap: "2.5rem",
+            marginBottom: "3rem",
+          }}
+        >
+          {/* Brand */}
+          <div style={{ gridColumn: "span 2" }}>
+            <Link
+              href="/"
+              style={{
+                textDecoration: "none",
+                marginBottom: "1rem",
+                display: "block",
+              }}
+            >
+              <span
+                className="font-display"
+                style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--green-text)" }}
+              >
+                Yrdly
+              </span>
             </Link>
-            <p className="text-sm text-muted-foreground font-worksans">
-              Your estate & street, connected.
+            <p
+              style={{
+                fontSize: "0.875rem",
+                lineHeight: 1.7,
+                fontWeight: 300,
+                color: "var(--fg-muted)",
+                maxWidth: 280,
+                marginBottom: "1.25rem",
+              }}
+            >
+              Your community &amp; street, connected. Built for Nigerians, by Nigerians.
+              Governed by the laws of the Federal Republic of Nigeria.
             </p>
-            <div className="flex gap-4">
-              <Link href="https://x.com/yrdlyapp" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">
-                <Twitter size={20} />
-              </Link>
-              <Link href="https://www.instagram.com/yardly.ng" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">
-                <Instagram size={20} />
-              </Link>
-              <Link href="mailto:yrdly@gmail.com" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">
-                <Mail size={20} />
-              </Link>
+            <div style={{ display: "flex", gap: "0.625rem", flexWrap: "wrap" }}>
+              <a
+                href="https://instagram.com/yardly.ng"
+                target="_blank"
+                rel="noreferrer"
+                className="pill"
+              >
+                📸 @yardly.ng
+              </a>
+              <a href="mailto:yrdly@gmail.com" className="pill">
+                ✉️ Email
+              </a>
+              <a href="tel:09166368783" className="pill">
+                📱 Call
+              </a>
             </div>
           </div>
 
+          {/* Product */}
           <div>
-            <h3 className="font-raleway font-bold mb-4">Product</h3>
-            <ul className="space-y-2 text-sm font-worksans">
-              <li><Link href="/" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Features</Link></li>
-              <li><Link href="https://app.yrdly.ng/marketplace" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Marketplace</Link></li>
-              <li><Link href="/events" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Events</Link></li>
-              <li><Link href="/learn-more" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Safety</Link></li>
-            </ul>
+            <p
+              style={{
+                fontSize: "0.7rem",
+                fontWeight: 600,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "var(--fg-subtle)",
+                marginBottom: "1rem",
+              }}
+            >
+              Product
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.625rem" }}>
+              {PRODUCT_LINKS.map((l) => (
+                <FooterLink key={l.label + l.href} href={l.href} label={l.label} />
+              ))}
+            </div>
           </div>
 
+          {/* Company */}
           <div>
-            <h3 className="font-raleway font-bold mb-4">Company</h3>
-            <ul className="space-y-2 text-sm font-worksans">
-              <li><Link href="/about" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">About Us</Link></li>
-              <li><Link href="/contact" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Careers</Link></li>
-              <li><Link href="/" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Blog</Link></li>
-              <li><Link href="/" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Press</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-raleway font-bold mb-4">Support</h3>
-            <ul className="space-y-2 text-sm font-worksans">
-              <li><Link href="/contact" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Help Center</Link></li>
-              <li><Link href="/contact" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Contact</Link></li>
-              <li><Link href="/privacy-policy" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Privacy</Link></li>
-              <li><Link href="/terms" className="text-muted-foreground hover:text-[#82DB7E] transition-colors">Terms</Link></li>
-            </ul>
+            <p
+              style={{
+                fontSize: "0.7rem",
+                fontWeight: 600,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "var(--fg-subtle)",
+                marginBottom: "1rem",
+              }}
+            >
+              Company
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.625rem" }}>
+              {COMPANY_LINKS.map((l) => (
+                <FooterLink key={l.label} href={l.href} label={l.label} />
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground font-worksans space-y-1">
-          <p>&copy; {new Date().getFullYear()} Yrdly. All rights reserved. Built for Lagos, made with love.</p>
-          <p>Plot 7, Awoniran Layout, Apata, Oyo State, Nigeria</p>
+        <div
+          style={{
+            paddingTop: "1.5rem",
+            borderTop: "1px solid var(--border)",
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+            gap: "0.75rem",
+            fontSize: "0.78rem",
+            color: "var(--fg-subtle)",
+          }}
+        >
+          <span>© {new Date().getFullYear()} Yrdly. All rights reserved.</span>
+          <div style={{ display: "flex", gap: "1.25rem" }}>
+            <Link
+              href="/privacy-policy"
+              style={{
+                textDecoration: "none",
+                fontSize: "0.78rem",
+                color: "var(--fg-subtle)",
+                fontFamily: "var(--font-work-sans), sans-serif",
+              }}
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/terms"
+              style={{
+                textDecoration: "none",
+                fontSize: "0.78rem",
+                color: "var(--fg-subtle)",
+                fontFamily: "var(--font-work-sans), sans-serif",
+              }}
+            >
+              Terms
+            </Link>
+          </div>
+          <span>Oyo State, Nigeria 🇳🇬</span>
         </div>
       </div>
     </footer>
+  );
+}
+
+function FooterLink({ href, label }: { href: string; label: string }) {
+  return (
+    <Link
+      href={href}
+      style={{
+        fontFamily: "var(--font-work-sans), sans-serif",
+        fontSize: "0.875rem",
+        color: "var(--fg-muted)",
+        textAlign: "left",
+        textDecoration: "none",
+        transition: "color 0.15s",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.color = "var(--green-text)")}
+      onMouseLeave={(e) => (e.currentTarget.style.color = "var(--fg-muted)")}
+    >
+      {label}
+    </Link>
   );
 }

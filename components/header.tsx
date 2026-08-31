@@ -25,7 +25,7 @@ export default function Header({ currentPage }: HeaderProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
           <Link href="/" className="flex items-center">
-            <img src="/logo.png" alt="Yrdly Logo" className="h-9 w-auto drop-shadow-sm hover:scale-105 transition-transform" />
+            <img src="/logo.png" alt="Yrdly Logo" className="h-16 w-auto drop-shadow-xl hover:scale-125 transition-transform" />
           </Link>
           
           <div className="hidden md:flex items-center space-x-8">

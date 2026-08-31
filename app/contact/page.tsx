@@ -1,226 +1,194 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import Link from "next/link"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import { Mail, Phone, ChevronRight, Loader2, CheckCircle } from 'lucide-react'
+import { useState } from "react";
+import Link from "next/link";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 export default function ContactPage() {
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [email, setEmail] = useState("")
-  const [message, setMessage] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [error, setError] = useState("")
+  const [form, setForm] = useState({ first: "", last: "", email: "", message: "" });
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  const inputStyle: React.CSSProperties = {
+    background: "var(--bg-raised)",
+    border: "1px solid var(--border)",
+    color: "var(--fg)",
+    fontFamily: "var(--font-work-sans), sans-serif",
+    fontSize: "0.9rem",
+    borderRadius: 10,
+    padding: "0.7rem 1rem",
+    outline: "none",
+    width: "100%",
+    boxSizing: "border-box",
+    transition: "border-color 0.15s",
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError("")
-    
+    e.preventDefault();
+    setSending(true);
+    setError(null);
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: `${firstName} ${lastName}`.trim(),
-          email,
-          message,
+          name: `${form.first} ${form.last}`.trim(),
+          email: form.email,
+          message: form.message,
         }),
-      })
-
-      const data = await res.json()
-      
-      if (res.ok) {
-        setSuccess(true)
-        setFirstName("")
-        setLastName("")
-        setEmail("")
-        setMessage("")
-      } else {
-        setError(data.message || "Failed to send message")
-      }
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to send message");
+      setSent(true);
     } catch (err) {
-      setError("An unexpected error occurred. Please try again.")
+      setError(err instanceof Error ? err.message : "Failed to send message. Please try again.");
     } finally {
-      setLoading(false)
+      setSending(false);
     }
-  }
-  return (
-    <div className="min-h-screen bg-white">
-      <Header currentPage="contact" />
+  };
 
-      {/* Hero Section */}
-      <section className="relative h-[400px] md:h-[500px] flex items-center justify-center overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `url('/contact-bg.png')`,
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-900/90 via-gray-900/80 to-gray-900" />
-        
-        <div className="relative z-10 text-center px-6 animate-fade-in pt-20">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-white mb-6 border border-white/10">
-            Support Center
-          </span>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-none mb-4">
-            Get in <span className="text-green-500">Touch</span>
+  return (
+    <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--fg)", display: "flex", flexDirection: "column" }}>
+      <Header />
+
+      {/* Header */}
+      <section style={{ paddingTop: 96, paddingBottom: "4rem", paddingLeft: "1.5rem", paddingRight: "1.5rem", background: "var(--section-alt)" }}>
+        <div style={{ maxWidth: 1152, margin: "0 auto" }}>
+          <Link
+            href="/"
+            style={{
+              fontSize: "0.82rem",
+              color: "var(--fg-muted)",
+              fontFamily: "var(--font-work-sans), sans-serif",
+              marginBottom: "1.5rem",
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+              textDecoration: "none",
+              width: "fit-content",
+            }}
+          >
+            ← Back to Home
+          </Link>
+          <span className="pill" style={{ marginBottom: "1rem", display: "inline-flex" }}>Support Centre</span>
+          <h1
+            className="font-display"
+            style={{
+              fontSize: "clamp(2.4rem, 5vw, 3.5rem)",
+              fontWeight: 600,
+              color: "var(--fg)",
+              lineHeight: 1.15,
+              marginBottom: "1rem",
+            }}
+          >
+            We&apos;re just a{" "}
+            <em style={{ color: "var(--green-text)", fontStyle: "italic" }}>message away.</em>
           </h1>
-          <p className="text-lg md:text-xl text-white/50 font-medium max-w-xl mx-auto tracking-tight">
-            We're here to help you navigate your neighborhood.
+          <p style={{ fontSize: "1rem", lineHeight: 1.75, color: "var(--fg-muted)", fontWeight: 300, maxWidth: 460 }}>
+            Have a question, spotted an issue, or want to host an event in your community? Reach us anytime.
           </p>
         </div>
       </section>
 
-      {/* Main Support Section */}
-      <section className="py-24 md:py-32 bg-white relative overflow-hidden">
-        {/* Decorative background atoms */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-green-50/50 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-green-50/30 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+      {/* Content */}
+      <section style={{ padding: "5rem 1.5rem 6rem", flex: 1 }}>
+        <div style={{ maxWidth: 1152, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.4fr", gap: "5rem", alignItems: "start" }} className="two-col">
+          {/* Contact info */}
+          <div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", marginBottom: "3rem" }}>
+              {[
+                { icon: "✉️", label: "Email", val: "yrdly@gmail.com", href: "mailto:yrdly@gmail.com" },
+                { icon: "📱", label: "Phone", val: "09166368783", href: "tel:09166368783" },
+                { icon: "📸", label: "Instagram", val: "@yardly.ng", href: "https://instagram.com/yardly.ng" },
+              ].map((c) => (
+                <a key={c.label} href={c.href} target={c.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: "1rem", textDecoration: "none" }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 12, background: "var(--pill-bg)", border: "1px solid var(--border-accent)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem", flexShrink: 0 }}>{c.icon}</div>
+                  <div>
+                    <div style={{ fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--fg-subtle)", fontWeight: 600 }}>{c.label}</div>
+                    <div style={{ fontSize: "0.95rem", fontWeight: 500, color: "var(--fg)", marginTop: 2 }}>{c.val}</div>
+                  </div>
+                </a>
+              ))}
+            </div>
 
-        <div className="max-w-7xl mx-auto px-6 relative">
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
-            
-            {/* Left Column - Contact Info */}
-            <div className="space-y-12 animate-fade-in-up">
-              <div className="space-y-6">
-                <span className="text-green-600 font-black uppercase tracking-[0.3em] text-[10px]">Contact Details</span>
-                <h2 className="text-4xl md:text-6xl font-black text-gray-900 leading-[1.1] tracking-tighter">
-                  Let's Start a <br /> <span className="text-green-600">Conversation</span>.
-                </h2>
-                <p className="text-gray-500 text-lg md:text-xl font-medium leading-relaxed max-w-md">
-                   Have a specific inquiry or just want to say hello? Our team is always ready to connect.
+            <div style={{ padding: "1.75rem", borderRadius: 14, border: "1px solid var(--border)", background: "var(--bg-card)" }}>
+              <div style={{ fontSize: "1.5rem", marginBottom: "0.75rem" }}>🕐</div>
+              <h3 className="font-display" style={{ fontSize: "1rem", fontWeight: 600, color: "var(--fg)", marginBottom: "0.5rem" }}>Response Time</h3>
+              <p style={{ fontSize: "0.875rem", lineHeight: 1.7, color: "var(--fg-muted)", fontWeight: 300 }}>
+                We respond to all messages within 24 hours on weekdays. For urgent issues, call us directly at 09166368783.
+              </p>
+            </div>
+
+            <div style={{ marginTop: "1.5rem", padding: "1.75rem", borderRadius: 14, border: "1px solid var(--border-accent)", background: "var(--pill-bg)" }}>
+              <div style={{ fontSize: "1.5rem", marginBottom: "0.75rem" }}>📍</div>
+              <h3 className="font-display" style={{ fontSize: "1rem", fontWeight: 600, color: "var(--fg)", marginBottom: "0.5rem" }}>Office</h3>
+              <p style={{ fontSize: "0.875rem", lineHeight: 1.7, color: "var(--fg-muted)", fontWeight: 300 }}>
+                Oyo State, Nigeria.<br />
+                Governed by the laws of the Federal Republic of Nigeria.
+              </p>
+            </div>
+          </div>
+
+          {/* Form */}
+          <div className="redesign-card" style={{ padding: "2rem", background: "var(--bg-card)" }}>
+            {sent ? (
+              <div style={{ padding: "4rem 0", textAlign: "center" }}>
+                <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🎉</div>
+                <h3 className="font-display" style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--fg)", marginBottom: "0.5rem" }}>Message received!</h3>
+                <p style={{ fontSize: "0.9rem", color: "var(--fg-muted)", fontWeight: 300, marginBottom: "1.5rem" }}>We&apos;ll get back to you within 24 hours.</p>
+                <button
+                  onClick={() => {
+                    setSent(false);
+                    setForm({ first: "", last: "", email: "", message: "" });
+                  }}
+                  className="btn-outline"
+                  style={{ fontSize: "0.85rem" }}
+                >
+                  Send another message
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.78rem", color: "var(--fg-subtle)", marginBottom: "0.4rem", textTransform: "capitalize" }}>First Name</label>
+                    <input required value={form.first} onChange={set("first")} style={inputStyle} />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: "0.78rem", color: "var(--fg-subtle)", marginBottom: "0.4rem", textTransform: "capitalize" }}>Last Name</label>
+                    <input required value={form.last} onChange={set("last")} style={inputStyle} />
+                  </div>
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.78rem", color: "var(--fg-subtle)", marginBottom: "0.4rem" }}>Email</label>
+                  <input type="email" required value={form.email} onChange={set("email")} style={inputStyle} />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "0.78rem", color: "var(--fg-subtle)", marginBottom: "0.4rem" }}>Message</label>
+                  <textarea required rows={5} minLength={10} value={form.message} onChange={set("message")} style={{ ...inputStyle, resize: "vertical" }} />
+                </div>
+                <button type="submit" className="btn-cta" disabled={sending}>
+                  {sending ? "Sending…" : "Send Message"}
+                </button>
+                {error && <p style={{ fontSize: "0.82rem", color: "#e57373", textAlign: "center" }}>{error}</p>}
+                <p style={{ fontSize: "0.78rem", color: "var(--fg-subtle)", textAlign: "center" }}>
+                  We never share your email. Read our{" "}
+                  <Link href="/privacy-policy" style={{ color: "var(--green-text)", fontSize: "0.78rem", fontFamily: "var(--font-work-sans), sans-serif", textDecoration: "underline" }}>
+                    Privacy Policy
+                  </Link>
                 </p>
-              </div>
-
-              <div className="grid sm:grid-cols-2 gap-8">
-                <div className="p-8 bg-gray-50 rounded-[2.5rem] border border-gray-100 hover:border-green-100 transition-colors group">
-                  <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-soft group-hover:scale-110 transition-transform">
-                    <Mail className="w-6 h-6 text-green-600" />
-                  </div>
-                  <h3 className="text-sm font-black uppercase tracking-widest text-gray-400 mb-2">Email Us</h3>
-                  <p className="text-lg font-black text-gray-900">yrdly@gmail.com</p>
-                </div>
-
-                <div className="p-8 bg-gray-50 rounded-[2.5rem] border border-gray-100 hover:border-green-100 transition-colors group">
-                  <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-soft group-hover:scale-110 transition-transform">
-                    <Phone className="w-6 h-6 text-green-600" />
-                  </div>
-                  <h3 className="text-sm font-black uppercase tracking-widest text-gray-400 mb-2">Call Us</h3>
-                  <p className="text-lg font-black text-gray-900">09166368783</p>
-                </div>
-              </div>
-
-              {/* Social Connection */}
-              <div className="p-10 bg-gray-900 rounded-[3rem] text-white relative overflow-hidden group">
-                 <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl pointer-events-none" />
-                 <h3 className="text-2xl font-black mb-4 relative z-10">Social Connection</h3>
-                 <p className="text-white/50 mb-8 font-medium relative z-10 leading-relaxed">
-                   Follow us on Instagram for the latest neighborhood highlights and exclusive events.
-                 </p>
-                 <Link href="https://www.instagram.com/yardly.ng" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-green-500 font-black uppercase tracking-widest text-xs group-hover:gap-4 transition-all">
-                   @yardly.ng <ChevronRight className="w-4 h-4" />
-                 </Link>
-              </div>
-            </div>
-
-            {/* Right Column - Form */}
-            <div className="animate-fade-in-up delay-200">
-              <div className="bg-white rounded-[3rem] p-10 md:p-14 shadow-premium border border-gray-100 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-green-600 to-green-400" />
-                
-                <h3 className="text-3xl font-black text-gray-900 mb-10 tracking-tight">Send a Message</h3>
-                
-                {success ? (
-                  <div className="text-center py-12 px-6">
-                    <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <CheckCircle className="w-10 h-10 text-green-600" />
-                    </div>
-                    <h3 className="text-2xl font-black text-gray-900 mb-4 tracking-tight">Message Sent Successfully!</h3>
-                    <p className="text-gray-500 font-medium">We've received your message and will get back to you within 24 hours.</p>
-                    <Button onClick={() => setSuccess(false)} variant="outline" className="mt-8 font-black uppercase tracking-widest text-xs h-12 px-8 rounded-xl border-gray-200">
-                      Send Another Message
-                    </Button>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-8">
-                    {error && (
-                      <div className="p-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium border border-red-100">
-                        {error}
-                      </div>
-                    )}
-                    <div className="grid sm:grid-cols-2 gap-8">
-                      <div className="space-y-3">
-                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">First Name</label>
-                        <Input 
-                          placeholder="Alex" 
-                          required
-                          value={firstName}
-                          onChange={(e) => setFirstName(e.target.value)}
-                          className="h-16 rounded-2xl border-gray-100 bg-gray-50/50 focus:bg-white transition-all text-base font-medium px-6" 
-                        />
-                      </div>
-                      <div className="space-y-3">
-                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Last Name</label>
-                        <Input 
-                          placeholder="Neighbor" 
-                          required
-                          value={lastName}
-                          onChange={(e) => setLastName(e.target.value)}
-                          className="h-16 rounded-2xl border-gray-100 bg-gray-50/50 focus:bg-white transition-all text-base font-medium px-6" 
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Email Address</label>
-                      <Input 
-                        placeholder="alex@neighborhood.com" 
-                        type="email" 
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="h-16 rounded-2xl border-gray-100 bg-gray-50/50 focus:bg-white transition-all text-base font-medium px-6" 
-                      />
-                    </div>
-
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 ml-1">Your Message</label>
-                      <Textarea 
-                        placeholder="How can we help you today?" 
-                        required
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        className="min-h-[180px] rounded-[2rem] border-gray-100 bg-gray-50/50 focus:bg-white transition-all text-base font-medium px-6 py-5 resize-none" 
-                      />
-                    </div>
-
-                    <Button 
-                      type="submit" 
-                      disabled={loading}
-                      className="w-full h-16 bg-gray-900 hover:bg-green-600 text-white rounded-2xl font-black uppercase tracking-[0.2em] text-xs shadow-xl shadow-gray-900/10 transition-all active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2"
-                    >
-                      {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-                      {loading ? "Delivering..." : "Deliver Message"}
-                    </Button>
-                  </form>
-                )}
-              </div>
-            </div>
-
+              </form>
+            )}
           </div>
         </div>
       </section>
 
       <Footer />
     </div>
-  )
+  );
 }

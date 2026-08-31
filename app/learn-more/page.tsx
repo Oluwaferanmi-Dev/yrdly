@@ -1,340 +1,240 @@
-import { Button } from "@/components/ui/button"
-import { 
-  Home, 
-  ShoppingCart, 
-  Building2, 
-  Calendar, 
-  MessageCircle, 
-  Shield, 
-  Smartphone, 
-  CheckCircle,
-  ArrowRight,
-  Globe,
-  Bell,
-  Lock,
-  CreditCard,
-  Users,
-  MapPin,
-} from 'lucide-react'
-import Link from "next/link"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
+import Link from "next/link";
+import Image from "next/image";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 
-const APP_URL = 'https://app.yrdly.ng'
-
-const features = [
+const FEATURES = [
   {
-    icon: Home,
+    icon: "📡",
     title: "Neighbourhood Feed",
-    description: "Real-time updates from your local community",
-    details: [
-      "Live feed of posts from neighbours nearby",
-      "Community announcements and local news",
-      "Neighbour-to-neighbour communication",
-      "Estate and street-level group boards",
-    ]
+    body: "A real-time stream of everything happening in your community. Announcements, listings, events, alerts — all from verified neighbours who actually live around you. No noise from outside your boundary.",
+    details: ["Location-gated content", "Real-time notifications", "Post text, photos, and links", "React and comment with neighbours"],
   },
   {
-    icon: ShoppingCart,
+    icon: "🛒",
     title: "Local Marketplace",
-    description: "Buy and sell safely within your neighbourhood",
-    details: [
-      "List items for sale in seconds",
-      "Secure escrow payments via Paystack",
-      "Seller verification and trust ratings",
-      "Category-based search and browse",
-    ]
+    body: "Buy and sell with people a few streets away. Fresh produce, electronics, furniture, services — everything from trusted neighbours. No delivery surprises, no random strangers.",
+    details: ["Verified seller profiles", "Paystack escrow for large transactions", "In-app direct messaging", "Saved items and wishlists"],
   },
   {
-    icon: Building2,
+    icon: "🏪",
     title: "Business Directory",
-    description: "Discover and support local Nigerian businesses",
-    details: [
-      "Verified local business listings",
-      "Customer reviews and star ratings",
-      "Direct contact and location info",
-      "Business hours and service details",
-    ]
+    body: "Every community has talented people running small businesses. Yrdly puts them in front of their closest customers — the people living around them.",
+    details: ["Free business listings", "Customer reviews from neighbours", "Direct WhatsApp and call links", "Category browsing (food, repairs, beauty...)"],
   },
   {
-    icon: Calendar,
+    icon: "🎉",
     title: "Events & Activities",
-    description: "From owambe parties to networking meetups",
-    details: [
-      "Discover events in your estate or city",
-      "Create and promote your own events",
-      "Buy tickets securely online",
-      "RSVP and attendance reminders",
-    ]
+    body: "Create events, sell tickets, and manage attendance — all within Yrdly. Attendees get QR-coded tickets on their phone. Organisers scan at the gate.",
+    details: ["Paystack ticket payments", "QR code check-in tool", "Event co-hosting", "RSVP and waiting lists"],
   },
   {
-    icon: MessageCircle,
+    icon: "💬",
     title: "Direct Messaging",
-    description: "Chat privately with neighbours and sellers",
-    details: [
-      "Private one-on-one chats",
-      "In-app marketplace buyer-seller chat",
-      "Photo and media sharing",
-      "Group chats for estates and communities",
-    ]
+    body: "Message any verified neighbour directly. Negotiate a price, ask about an event, or just say hello. Private, secure, and only available to verified members.",
+    details: ["End-to-end encrypted DMs", "Share listings in chat", "Group chats for community committees", "Read receipts and media sharing"],
   },
   {
-    icon: Shield,
+    icon: "🛡️",
     title: "Safety & Trust",
-    description: "Verified identities and secure transactions",
-    details: [
-      "Multi-level user verification",
-      "Encrypted, secure payment processing",
-      "Granular privacy controls",
-      "Report and block functionality",
-    ]
+    body: "Safety is not a feature — it's the product. Location verification, Paystack escrow, and a one-tap reporting system mean every interaction on Yrdly is accountable.",
+    details: ["Location verification at signup", "Government ID optional verification", "Paystack escrow for transactions", "One-tap reporting with 24hr response"],
   },
-]
+];
 
-const benefits = [
-  { icon: MapPin, title: "Hyperlocal", description: "Content is filtered to your exact neighbourhood — estate, street, or city." },
-  { icon: Users, title: "Community First", description: "Foster real connections with neighbours you can actually see and meet." },
-  { icon: Shield, title: "Safe & Verified", description: "Verified users, secured payments, and privacy controls at every step." },
-  { icon: Globe, title: "All-in-One", description: "Marketplace, events, messaging, and community — one platform, no apps to juggle." },
-  { icon: Bell, title: "Real-time Alerts", description: "Instant notifications about local listings, events, and neighbourhood updates." },
-  { icon: Smartphone, title: "Mobile & Web", description: "Full access on your phone or browser. Your neighbourhood is always with you." },
-]
+const ADVANTAGE = [
+  { icon: "📍", title: "Hyperlocal", body: "Your feed only shows what's within your community boundary. No noise from across the country." },
+  { icon: "🤝", title: "Community First", body: "Built for people who know their neighbours' names. Relationships over transactions, always." },
+  { icon: "⚡", title: "Real-time Alerts", body: "Security notices, last-minute event spots — know before the street gist goes cold." },
+  { icon: "🔐", title: "Community Verified", body: "No anonymous accounts. Every person on Yrdly has been verified to actually live in their community." },
+];
 
-const onboardingSteps = [
-  { step: 1, title: "Sign Up", description: "Create your account with email or Google in under a minute." },
-  { step: 2, title: "Verify Location", description: "Set your neighbourhood so you only see what's relevant to you." },
-  { step: 3, title: "Complete Profile", description: "Add your name, photo, and a brief bio so neighbours can trust you." },
-  { step: 4, title: "Explore Features", description: "Browse local listings, upcoming events, and connect with neighbours." },
-  { step: 5, title: "Start Engaging", description: "Post your first listing, RSVP to an event, or say hello to a neighbour." },
-]
+const STEPS = [
+  { n: "1", title: "Download & Sign Up", body: "Get the Yrdly app on your phone. Sign up with your email or Google account." },
+  { n: "2", title: "Verify Your Location", body: "We use your device location to confirm which community you live in. This is what keeps your feed local." },
+  { n: "3", title: "Complete Your Profile", body: "Add your name, a photo, and a short bio. Neighbours trust people who show up properly." },
+  { n: "4", title: "Join Your Community", body: "Select your community from the list. You're now part of your neighbourhood community." },
+  { n: "5", title: "Start Engaging", body: "Browse the feed, post a listing, discover events — your community is waiting for you." },
+];
+
+export const metadata = {
+  title: "Learn More - Yrdly",
+  description: "A full breakdown of every Yrdly feature — feed, marketplace, business directory, events, messaging, and safety.",
+};
 
 export default function LearnMorePage() {
   return (
-    <div className="min-h-screen bg-white">
-      <Header currentPage="learn-more" />
+    <div style={{ background: "var(--bg)", color: "var(--fg)" }}>
+      <Header />
 
       {/* Hero */}
-      <section className="pt-40 pb-24 bg-gradient-to-b from-green-50 to-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-green-100/60 rounded-full blur-[140px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-        <div className="max-w-4xl mx-auto px-6 text-center relative">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-100 text-green-700 rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-8">
-            <MapPin className="w-3 h-3" /> Built for Nigerian Neighbourhoods
-          </span>
-          <h1 className="text-5xl md:text-7xl font-black text-gray-900 tracking-tighter leading-none mb-8">
-            Everything You Need<br />to Know About <span className="text-green-600">Yrdly</span>
+      <section style={{ paddingTop: 96, paddingBottom: "4rem", paddingLeft: "1.5rem", paddingRight: "1.5rem", background: "var(--section-alt)" }}>
+        <div style={{ maxWidth: 1152, margin: "0 auto" }}>
+          <Link
+            href="/"
+            style={{
+              fontSize: "0.82rem",
+              color: "var(--fg-muted)",
+              fontFamily: "var(--font-work-sans), sans-serif",
+              marginBottom: "1.5rem",
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+              textDecoration: "none",
+              width: "fit-content",
+            }}
+          >
+            ← Back to Home
+          </Link>
+          <span className="pill" style={{ marginBottom: "1rem", display: "inline-flex" }}>Platform Deep Dive</span>
+          <h1
+            className="font-display"
+            style={{
+              fontSize: "clamp(2.4rem, 5vw, 3.8rem)",
+              fontWeight: 600,
+              color: "var(--fg)",
+              lineHeight: 1.15,
+              marginBottom: "1rem",
+            }}
+          >
+            Everything Yrdly{" "}
+            <em style={{ color: "var(--green-text)", fontStyle: "italic" }}>can do for your community.</em>
           </h1>
-          <p className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed mb-10">
-            Yrdly is Nigeria's neighbourhood super-app — connecting you to your local market, community events, and the people just steps away.
+          <p style={{ fontSize: "1rem", lineHeight: 1.75, color: "var(--fg-muted)", fontWeight: 300, maxWidth: 520 }}>
+            A full breakdown of every feature — built around how Nigerians actually live in their communities.
           </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link href={APP_URL} target="_blank" rel="noopener noreferrer">
-              <Button className="h-14 px-10 bg-gray-900 hover:bg-green-600 text-white rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl transition-all">
-                Join Yrdly Now <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </Link>
-            <Link href="/events">
-              <Button variant="outline" className="h-14 px-10 rounded-2xl font-black uppercase tracking-widest text-xs border-gray-200 hover:border-green-600 hover:text-green-600 transition-all">
-                Browse Local Events
-              </Button>
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* Key Features */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <span className="text-green-600 font-black uppercase tracking-[0.3em] text-[10px] mb-4 block">Platform Features</span>
-            <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tighter mb-6">
-              What Yrdly Does
-            </h2>
-            <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
-              From the Ikoyi estate to the Ibadan street — Yrdly brings every neighbourhood together in one place.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => {
-              const IconComponent = feature.icon
-              return (
-                <div key={index} className="group relative bg-white rounded-[2.5rem] p-8 border border-gray-100 hover:border-transparent hover:shadow-[0_20px_50px_-12px_rgba(34,197,94,0.15)] transition-all duration-500 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative z-10">
-                    <div className="w-16 h-16 bg-gradient-to-br from-green-50 to-green-100/50 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:from-green-500 group-hover:to-green-600 transition-all duration-500 shadow-sm">
-                      <IconComponent className="w-8 h-8 text-green-600 group-hover:text-white transition-colors duration-500" />
-                    </div>
-                    <h3 className="text-2xl font-black text-gray-900 mb-3 tracking-tight group-hover:text-green-700 transition-colors">{feature.title}</h3>
-                    <p className="text-gray-500 text-base mb-8 font-medium leading-relaxed">{feature.description}</p>
-                    <ul className="space-y-3">
-                      {feature.details.map((detail, i) => (
-                        <li key={i} className="flex items-start gap-3 text-sm text-gray-600 font-medium">
-                          <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                          {detail}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+      {/* Features */}
+      <section style={{ padding: "5rem 1.5rem" }}>
+        <div style={{ maxWidth: 1152, margin: "0 auto" }}>
+          <div style={{ display: "grid", gap: "2rem" }}>
+            {FEATURES.map((f, i) => (
+              <div key={i} className="redesign-card feat-card">
+                <div>
+                  <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>{f.icon}</div>
+                  <h3 className="font-display" style={{ fontSize: "1.4rem", fontWeight: 600, color: "var(--fg)", marginBottom: "0.75rem" }}>{f.title}</h3>
+                  <p style={{ fontSize: "0.93rem", lineHeight: 1.75, color: "var(--fg-muted)", fontWeight: 300 }}>{f.body}</p>
                 </div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Why Yrdly */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <span className="text-green-600 font-black uppercase tracking-[0.3em] text-[10px] mb-4 block">The Yrdly Advantage</span>
-            <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tighter mb-6">
-              Why Nigerians Choose Yrdly
-            </h2>
-            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-              We're not just another app. We're the digital backbone of your street, estate, and city.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {benefits.map((benefit, index) => {
-              const IconComponent = benefit.icon
-              return (
-                <div key={index} className="group relative bg-white rounded-[2rem] p-8 shadow-sm border border-gray-100 hover:border-green-200 hover:shadow-xl transition-all duration-500 overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-green-50 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative z-10">
-                    <div className="w-14 h-14 bg-gray-900 group-hover:bg-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-gray-900/10 group-hover:shadow-green-600/30 transition-all duration-500 transform group-hover:-translate-y-1">
-                      <IconComponent className="w-6 h-6 text-white" />
-                    </div>
-                    <h3 className="text-xl font-black text-gray-900 mb-3 tracking-tight group-hover:text-green-700 transition-colors">{benefit.title}</h3>
-                    <p className="text-gray-500 text-base leading-relaxed font-medium">{benefit.description}</p>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Security Section */}
-      <section className="py-24 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <span className="text-green-600 font-black uppercase tracking-[0.3em] text-[10px] mb-4 block">Trust & Safety</span>
-              <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tighter mb-8">
-                Security First, Always
-              </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-10">
-                Your safety and privacy are our top priorities. We've built multiple layers of protection — because trust is the foundation of every neighbourhood.
-              </p>
-              <div className="space-y-6">
-                {[
-                  { icon: Lock, title: "Verified Neighbours", desc: "Every user goes through identity verification before joining their neighbourhood." },
-                  { icon: CreditCard, title: "Secure Nigerian Payments", desc: "Paystack-powered escrow ensures money is held safely until delivery is confirmed." },
-                  { icon: Shield, title: "Privacy Controls", desc: "You control who sees your profile, location, and contact details." },
-                ].map((item, i) => {
-                  const Icon = item.icon
-                  return (
-                    <div key={i} className="flex items-start gap-4">
-                      <div className="w-10 h-10 bg-green-50 rounded-2xl flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-5 h-5 text-green-600" />
+                <div>
+                  <p style={{ fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0.09em", textTransform: "uppercase", color: "var(--fg-subtle)", marginBottom: "1rem" }}>What&apos;s included</p>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.625rem" }}>
+                    {f.details.map((d, j) => (
+                      <div key={j} style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
+                        <span style={{ color: "var(--green-text)", fontSize: "0.8rem", fontWeight: 600, flexShrink: 0 }}>✓</span>
+                        <span style={{ fontSize: "0.875rem", color: "var(--fg-muted)" }}>{d}</span>
                       </div>
-                      <div>
-                        <h3 className="font-black text-gray-900 mb-1">{item.title}</h3>
-                        <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-            <div className="bg-gray-900 rounded-[3rem] p-10 text-white text-center relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-40 h-40 bg-green-500/10 rounded-full blur-3xl pointer-events-none" />
-              <div className="w-20 h-20 bg-green-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-green-600/30">
-                <Shield className="w-10 h-10 text-white" />
-              </div>
-              <h3 className="text-3xl font-black mb-4 tracking-tight">Trusted by Neighbours</h3>
-              <p className="text-gray-400 mb-8 leading-relaxed">
-                Verified Nigerians across Lagos, Abuja, Port Harcourt and beyond trust Yrdly for their daily community needs.
-              </p>
-              <div className="grid grid-cols-2 gap-4">
-                {["✓ Verified Users", "✓ Secure Escrow", "✓ Privacy First", "✓ Local Focus"].map((item, i) => (
-                  <div key={i} className="bg-white/5 rounded-2xl px-4 py-3 text-sm font-bold border border-white/10">{item}</div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How to Get Started */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <span className="text-green-600 font-black uppercase tracking-[0.3em] text-[10px] mb-4 block">Getting Started</span>
-            <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tighter mb-6">
-              Join in 5 Easy Steps
-            </h2>
-            <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-              Less than 5 minutes and you'll be connected to your neighbourhood.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-5 gap-8 mb-16">
-            {onboardingSteps.map((step, index) => (
-              <div key={index} className="text-center">
-                <div className="relative">
-                  <div className="w-16 h-16 bg-green-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-black shadow-lg shadow-green-600/20">
-                    {step.step}
+                    ))}
                   </div>
-                  {index < onboardingSteps.length - 1 && (
-                    <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-green-100 transform translate-x-8" />
-                  )}
                 </div>
-                <h3 className="text-base font-black text-gray-900 mb-2 tracking-tight">{step.title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">{step.description}</p>
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          <div className="text-center">
-            <Link href={APP_URL} target="_blank" rel="noopener noreferrer">
-              <Button size="lg" className="h-16 px-12 bg-green-600 hover:bg-gray-900 text-white rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl shadow-green-600/20 transition-all">
-                Start Your Journey <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
-            </Link>
+      {/* The Yrdly Advantage */}
+      <section style={{ padding: "6rem 1.5rem", background: "var(--section-alt)" }}>
+        <div style={{ maxWidth: 1152, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
+            <span className="pill" style={{ marginBottom: "1.25rem", display: "inline-flex" }}>The Yrdly Advantage</span>
+            <h2 className="font-display" style={{ fontSize: "clamp(2rem, 4vw, 2.8rem)", fontWeight: 600, color: "var(--fg)", lineHeight: 1.2 }}>
+              Why Yrdly is different.
+            </h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1.5rem" }}>
+            {ADVANTAGE.map((a, i) => (
+              <div key={i} className="redesign-card" style={{ padding: "1.75rem" }}>
+                <div style={{ fontSize: "1.75rem", marginBottom: "0.875rem" }}>{a.icon}</div>
+                <h3 className="font-display" style={{ fontSize: "1.05rem", fontWeight: 600, color: "var(--fg)", marginBottom: "0.5rem" }}>{a.title}</h3>
+                <p style={{ fontSize: "0.875rem", lineHeight: 1.7, color: "var(--fg-muted)", fontWeight: 300 }}>{a.body}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Banner */}
-      <section className="py-24 bg-gray-900 text-white relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-green-500/10 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-green-500/5 rounded-full blur-[100px] pointer-events-none" />
-        <div className="max-w-4xl mx-auto px-6 text-center relative">
-          <span className="text-green-400 font-black uppercase tracking-[0.3em] text-[10px] mb-6 block">Ready to Join?</span>
-          <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-8">
-            Connect With Your<br /><span className="text-green-400">Neighbourhood Today</span>
+      {/* Security */}
+      <section style={{ padding: "6rem 1.5rem" }}>
+        <div style={{ maxWidth: 1152, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5rem", alignItems: "center" }} className="two-col">
+            <div>
+              <span className="pill" style={{ marginBottom: "1.5rem", display: "inline-flex" }}>Security & Trust</span>
+              <h2 className="font-display" style={{ fontSize: "clamp(2rem, 4vw, 2.8rem)", fontWeight: 600, color: "var(--fg)", lineHeight: 1.2, marginBottom: "1.25rem" }}>
+                Your safety is the{" "}
+                <em style={{ color: "var(--green-text)", fontStyle: "italic" }}>whole product.</em>
+              </h2>
+              <p style={{ fontSize: "0.95rem", lineHeight: 1.8, color: "var(--fg-muted)", fontWeight: 300, marginBottom: "1.5rem" }}>
+                Security isn&apos;t a feature we bolted on. It&apos;s the foundation everything else is built on. Here&apos;s what protects you on Yrdly:
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                {[
+                  { icon: "📍", title: "Location Verification", body: "Verified at signup using your device's GPS. Can't fake your community." },
+                  { icon: "💳", title: "Paystack Escrow", body: "Payments are held in escrow until both parties confirm the deal is done." },
+                  { icon: "🔒", title: "Privacy Controls", body: "Your address, phone number, and full name are never publicly visible." },
+                  { icon: "🚨", title: "One-Tap Reporting", body: "Report anything suspicious in one tap. Response within 24 hours, guaranteed." },
+                ].map((s, i) => (
+                  <div key={i} style={{ display: "flex", gap: "1rem", alignItems: "flex-start" }}>
+                    <div style={{ width: 38, height: 38, borderRadius: 10, background: "var(--pill-bg)", border: "1px solid var(--border-accent)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1rem", flexShrink: 0 }}>{s.icon}</div>
+                    <div>
+                      <div className="font-display" style={{ fontWeight: 600, fontSize: "0.95rem", color: "var(--fg)", marginBottom: 3 }}>{s.title}</div>
+                      <div style={{ fontSize: "0.85rem", color: "var(--fg-muted)", lineHeight: 1.6 }}>{s.body}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{ borderRadius: 16, overflow: "hidden", border: "1px solid var(--border-accent)" }}>
+              <Image src="/images/trust.jpg" alt="Community trust" width={700} height={420} style={{ width: "100%", height: 420, objectFit: "cover", display: "block" }} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Onboarding */}
+      <section style={{ padding: "6rem 1.5rem", background: "var(--section-alt)" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
+            <span className="pill" style={{ marginBottom: "1.25rem", display: "inline-flex" }}>Getting Started</span>
+            <h2 className="font-display" style={{ fontSize: "clamp(2rem, 4vw, 2.8rem)", fontWeight: 600, color: "var(--fg)", lineHeight: 1.2 }}>
+              Up and running in 5 steps.
+            </h2>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 0, border: "1px solid var(--border)", borderRadius: 16, overflow: "hidden", background: "var(--bg-card)" }}>
+            {STEPS.map((s, i) => (
+              <div key={i} style={{ display: "flex", gap: "1.5rem", padding: "1.5rem 2rem", borderBottom: i < STEPS.length - 1 ? "1px solid var(--border)" : "none", alignItems: "flex-start" }}>
+                <div style={{ width: 32, height: 32, borderRadius: "50%", background: "var(--pill-bg)", border: "1px solid var(--border-accent)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.8rem", fontWeight: 700, color: "var(--green-text)", flexShrink: 0 }}>{s.n}</div>
+                <div>
+                  <h3 className="font-display" style={{ fontWeight: 600, fontSize: "1rem", color: "var(--fg)", marginBottom: "0.3rem" }}>{s.title}</h3>
+                  <p style={{ fontSize: "0.875rem", color: "var(--fg-muted)", lineHeight: 1.65, fontWeight: 300 }}>{s.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ textAlign: "center", marginTop: "2.5rem" }}>
+            <a href="https://app.yrdly.ng" target="_blank" rel="noreferrer" className="btn-cta">Get Started Free</a>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section style={{ padding: "6rem 1.5rem" }}>
+        <div style={{ maxWidth: 680, margin: "0 auto", textAlign: "center" }}>
+          <h2 className="font-display" style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 600, color: "var(--fg)", lineHeight: 1.2, marginBottom: "1rem" }}>
+            Still have questions?
           </h2>
-          <p className="text-gray-400 text-lg mb-12 max-w-2xl mx-auto leading-relaxed">
-            Thousands of Nigerians are already buying, selling, and connecting locally on Yrdly. Your street is waiting.
+          <p style={{ fontSize: "0.95rem", lineHeight: 1.75, color: "var(--fg-muted)", fontWeight: 300, marginBottom: "2rem" }}>
+            Our team is always available to help. Whether you want to host an event, join a new community, or just understand how things work — reach out.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href={APP_URL} target="_blank" rel="noopener noreferrer">
-              <Button size="lg" className="h-14 px-10 bg-green-600 hover:bg-white hover:text-gray-900 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-green-600/20">
-                Join Yrdly Free
-              </Button>
-            </Link>
-            <Link href="/contact">
-              <Button size="lg" variant="outline" className="h-14 px-10 rounded-2xl font-black uppercase tracking-widest text-xs border-white/20 text-white hover:bg-white hover:text-gray-900 bg-transparent transition-all">
-                Talk to Us
-              </Button>
-            </Link>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", justifyContent: "center" }}>
+            <a href="https://app.yrdly.ng" target="_blank" rel="noreferrer" className="btn-cta">Open Yrdly App</a>
+            <Link href="/contact" className="btn-outline">Contact Support</Link>
           </div>
         </div>
       </section>
 
       <Footer />
     </div>
-  )
+  );
 }

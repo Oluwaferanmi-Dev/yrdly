@@ -1,10 +1,25 @@
 import type { Metadata, Viewport } from 'next'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
+import { Fraunces, Work_Sans } from 'next/font/google'
 import './globals.css'
 import { CookieConsent } from '@/components/cookie-consent'
 import { Analytics } from '@vercel/analytics/next'
 import Script from 'next/script'
+import { ThemeProvider } from '@/components/theme-provider'
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-fraunces',
+  weight: ['300', '400', '600', '700'],
+  style: ['normal', 'italic'],
+})
+
+const workSans = Work_Sans({
+  subsets: ['latin'],
+  variable: '--font-work-sans',
+  weight: ['300', '400', '500', '600', '700'],
+})
 
 export const metadata: Metadata = {
   title: 'Yrdly - Your Neighborhood Network',
@@ -38,7 +53,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="bg-background">
+    <html lang="en" className="bg-background" suppressHydrationWarning>
       <head>
 
         {/* ✅ Google AdSense */}
@@ -51,17 +66,19 @@ export default function RootLayout({
 
         <style>{`
 html {
-  font-family: ${GeistSans.style.fontFamily};
+  font-family: ${workSans.style.fontFamily};
   --font-sans: ${GeistSans.variable};
   --font-mono: ${GeistMono.variable};
 }
         `}</style>
       </head>
 
-      <body>
-        {children}
-        <CookieConsent />
-        <Analytics />
+      <body className={`${fraunces.variable} ${workSans.variable}`}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
+          {children}
+          <CookieConsent />
+          <Analytics />
+        </ThemeProvider>
       </body>
     </html>
   )
