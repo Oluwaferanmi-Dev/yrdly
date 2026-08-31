@@ -88,7 +88,7 @@
   --pill-bg: rgba(58, 143, 55, 0.08);
   --pill-border: rgba(58, 143, 55, 0.2);
   --nav-bg: rgba(250, 249, 246, 0.9);
-  --hero-overlay: linear-gradient(to right, rgba(250, 249, 246, 0.9) 45%, rgba(250, 249, 246, 0.4) 100%);
+  --hero-overlay: linear-gradient(to right, rgba(0, 0, 0, 0.75) 45%, rgba(0, 0, 0, 0.45) 100%);
   --section-alt: #f0ede7;
 }
 
