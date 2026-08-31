@@ -21,23 +21,26 @@ export default function AboutPage() {
       <Header />
 
       {/* Hero */}
-      <section style={{ paddingTop: 96, paddingBottom: "5rem", paddingLeft: "1.5rem", paddingRight: "1.5rem", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0 }}>
+      <section style={{ paddingTop: 96, paddingBottom: "5rem", paddingLeft: "1.5rem", paddingRight: "1.5rem", position: "relative", overflow: "hidden", minHeight: 520 }}>
+        {/* Background image */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
           <Image
             src="/images/market-2.jpg"
             alt="Nigerian community gathering"
             fill
             priority
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            style={{ objectFit: "cover" }}
           />
-          <div style={{ position: "absolute", inset: 0, background: "var(--hero-overlay)" }} />
         </div>
-        <div style={{ position: "relative", maxWidth: 1152, margin: "0 auto", paddingTop: "4rem", paddingBottom: "4rem" }}>
+        {/* Dark overlay — hardcoded so text always reads regardless of light/dark mode */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, background: "linear-gradient(to right, rgba(8,22,8,0.90) 40%, rgba(8,22,8,0.65) 100%)" }} />
+        {/* Content */}
+        <div style={{ position: "relative", zIndex: 2, maxWidth: 1152, margin: "0 auto", paddingTop: "4rem", paddingBottom: "4rem" }}>
           <Link
             href="/"
             style={{
               fontSize: "0.82rem",
-              color: "rgba(255,255,255,0.6)",
+              color: "rgba(255,255,255,0.7)",
               fontFamily: "var(--font-work-sans), sans-serif",
               marginBottom: "1.5rem",
               display: "flex",
@@ -49,7 +52,7 @@ export default function AboutPage() {
           >
             ← Back to Home
           </Link>
-          <span className="pill" style={{ marginBottom: "1.25rem", display: "inline-flex" }}>Our DNA</span>
+          <span className="pill" style={{ marginBottom: "1.25rem", display: "inline-flex", color: "#82DB7E", borderColor: "rgba(130,219,126,0.35)", background: "rgba(130,219,126,0.12)" }}>Our DNA</span>
           <h1
             className="font-display"
             style={{
@@ -63,7 +66,7 @@ export default function AboutPage() {
           >
             About Us
           </h1>
-          <p style={{ fontSize: "1.1rem", lineHeight: 1.75, color: "rgba(240,237,232,0.65)", fontWeight: 300, maxWidth: 460 }}>
+          <p style={{ fontSize: "1.1rem", lineHeight: 1.75, color: "rgba(240,237,232,0.75)", fontWeight: 300, maxWidth: 460 }}>
             We missed the spirit of the old neighbourhood. So we rebuilt it.
           </p>
         </div>
@@ -155,9 +158,10 @@ export default function AboutPage() {
                 We started in a single community in Ibadan. Today, Yrdly communities exist across Oyo, Lagos, Abuja, Rivers, Enugu, Kano, and Delta States. Every week, a new community joins — and we&apos;re just getting started.
               </p>
             </div>
-            <div style={{ borderRadius: 16, overflow: "hidden", border: "1px solid var(--border)" }}>
-              <Image src="/images/hero-community.jpg" alt="Nigerian community event" width={700} height={380} style={{ width: "100%", height: 380, objectFit: "cover", display: "block" }} />
-            </div>
+            <div style={{ borderRadius: 16, overflow: "hidden", border: "1px solid var(--border)", position: "relative" }}>
+                <Image src="/images/hero-community.jpg" alt="Nigerian community event" width={700} height={380} style={{ width: "100%", height: 380, objectFit: "cover", display: "block", position: "absolute", inset: 0 }} />
+                <div style={{ position: "absolute", inset: 0, background: "rgba(0, 0, 0, 0.4)", zIndex: 1 }} />
+              </div>
           </div>
         </div>
       </section>

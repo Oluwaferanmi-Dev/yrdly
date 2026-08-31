@@ -143,17 +143,20 @@ export default async function MarketplacePage() {
       <Header />
 
       {/* Hero */}
-      <section style={{ paddingTop: 96, paddingBottom: "5rem", paddingLeft: "1.5rem", paddingRight: "1.5rem", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0 }}>
-          <Image src="/images/market.jpg" alt="Nigerian marketplace" fill priority style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-          <div style={{ position: "absolute", inset: 0, background: "var(--hero-overlay)" }} />
+      <section style={{ paddingTop: 96, paddingBottom: "5rem", paddingLeft: "1.5rem", paddingRight: "1.5rem", position: "relative", overflow: "hidden", minHeight: 520 }}>
+        {/* Background image */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+          <Image src="/images/market.jpg" alt="Nigerian marketplace" fill priority style={{ objectFit: "cover" }} />
         </div>
-        <div style={{ position: "relative", maxWidth: 1152, margin: "0 auto", paddingTop: "4rem", paddingBottom: "3rem" }}>
+        {/* Dark overlay — always dark regardless of theme so white text reads */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, background: "linear-gradient(to right, rgba(8,22,8,0.90) 40%, rgba(8,22,8,0.68) 100%)" }} />
+        {/* Content */}
+        <div style={{ position: "relative", zIndex: 2, maxWidth: 1152, margin: "0 auto", paddingTop: "4rem", paddingBottom: "3rem" }}>
           <Link
             href="/"
             style={{
               fontSize: "0.82rem",
-              color: "rgba(255,255,255,0.6)",
+              color: "rgba(255,255,255,0.7)",
               fontFamily: "var(--font-work-sans), sans-serif",
               marginBottom: "1.5rem",
               display: "flex",
@@ -165,7 +168,7 @@ export default async function MarketplacePage() {
           >
             ← Back to Home
           </Link>
-          <span className="pill" style={{ marginBottom: "1.25rem", display: "inline-flex" }}>Neighbourhood Market</span>
+          <span className="pill" style={{ marginBottom: "1.25rem", display: "inline-flex", color: "#82DB7E", borderColor: "rgba(130,219,126,0.35)", background: "rgba(130,219,126,0.12)" }}>Neighbourhood Market</span>
           <h1
             className="font-display"
             style={{
@@ -180,12 +183,12 @@ export default async function MarketplacePage() {
             Buy &amp; sell with{" "}
             <em style={{ color: "#82DB7E", fontStyle: "italic" }}>people you know.</em>
           </h1>
-          <p style={{ fontSize: "1.05rem", lineHeight: 1.75, color: "rgba(240,237,232,0.65)", fontWeight: 300, maxWidth: 460, marginBottom: "2rem" }}>
+          <p style={{ fontSize: "1.05rem", lineHeight: 1.75, color: "rgba(240,237,232,0.75)", fontWeight: 300, maxWidth: 460, marginBottom: "2rem" }}>
             A local marketplace for your community — fresh produce, trusted services, secondhand items and more from verified neighbours.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
             <a href="https://app.yrdly.ng" target="_blank" rel="noreferrer" className="btn-cta">Browse Listings</a>
-            <a href="https://app.yrdly.ng" target="_blank" rel="noreferrer" className="btn-outline" style={{ borderColor: "rgba(255,255,255,0.3)", color: "#f0ede8" }}>Post a Listing Free</a>
+            <a href="https://app.yrdly.ng" target="_blank" rel="noreferrer" className="btn-outline" style={{ borderColor: "rgba(255,255,255,0.35)", color: "#f0ede8" }}>Post a Listing Free</a>
           </div>
         </div>
       </section>
